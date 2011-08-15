@@ -1,13 +1,14 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_gfxPrimitives.h>
+#include <SDL/SDL_rotozoom.h>
 #include <iostream>
 #include "gfx.h"
 #include "citymap.h"
 
 using namespace std;
-#define WIDTH 1024
-#define HEIGHT 768
+#define WIDTH (640*2)
+#define HEIGHT (480*2)
 int main( int /*argc*/, char** /*args[]*/ )
 
 {
@@ -16,6 +17,11 @@ int main( int /*argc*/, char** /*args[]*/ )
   SDL_Init( SDL_INIT_EVERYTHING );
 
   SDL_Surface * screen;
+  SDL_Surface * gui, *t;
+
+  t = IMG_Load("ufodata/buybase2.pcx");
+  gui = zoomSurface(t, 2, 2, 0);
+  SDL_FreeSurface(t);
 
   screen = SDL_SetVideoMode(WIDTH, HEIGHT, 32, SDL_SWSURFACE);
 
@@ -65,27 +71,52 @@ int main( int /*argc*/, char** /*args[]*/ )
     int ticks = SDL_GetTicks();
 
     SDL_FillRect(screen, NULL, 0);
-    for (int tz = 0; tz<10; tz++)
+    for (int tz = 0; tz<1; tz++)
     {
       int sx=camera.x, sy=camera.y;
-      int ftx, fty, ltx, lty;
+      int ftx, fty, ltx, lty, a, b;
+#define XX ((sx/*-camera.x*/ + 2 * sy/* - 2*camera.y */+ 32*tz)/64)
+#define YY ((2*sy /*- 2*camera.y */+ 32*tz - sx /*+ camera.x*/)/64)
 
-      // First tiles to start drawing from
-      ftx = (sx + 2*sy + 16 * tz)/64 -1;
-      fty = (2*sy - sx + 16 * tz)/64 -1;
+      // Find tile ranges
+      sx = camera.x + 0;
+      sy = camera.y + 0;
+      ftx = XX;
+      fty = YY;
+      ltx = a = ftx;
+      lty = b = fty;
 
       sx = camera.x + WIDTH;
+      a = XX;
+      b = YY;
+      ftx = min(a, ftx); fty = min(b, fty); ltx = max(a, ltx); lty = max(b, lty);
+
       sy = camera.y + HEIGHT;
+      a = XX;
+      b = YY;
+      ftx = min(a, ftx); fty = min(b, fty); ltx = max(a, ltx); lty = max(b, lty);
+
+      sx = camera.x + 0;
+      a = XX;
+      b = YY;
+      ftx = min(a, ftx); fty = min(b, fty); ltx = max(a, ltx); lty = max(b, lty);
 
       // Last tiles to end drawing at
-      ltx = (sx + 2*sy + 16 * tz)/64 +1;
-      lty = (2*sy - sx + 16 * tz)/64 +1;
-      ltx = lty = 100;
-      ftx=fty=0;
-      //cout << "Frame" << ftx << "x" << fty << "   " << ltx << "x" << lty << endl;
+//      ltx = (sx-camera.x + 2 * sy - 2*camera.y + 32*tz)/64;//(sx + 2*sy + 16 * tz)/64 +1;
+//      lty = (2*sy - 2*camera.y + 32*tz - sx + camera.x)/64;//(2*sy - sx + 16 * tz)/64 +1;
+
+
+      //ltx++; lty++; ftx--;fty--;
+      //ltx = lty = 100;
+      //ftx=fty=0;
 
       //s.x=camera.x;//-64;
       //s.y=camera.y;//-64;
+
+      // Clip map
+      ftx = max(0, ftx); fty = max(0, fty); ltx=min(100, ltx); lty = min(100, lty);
+
+      cout << "Frame" << ftx << "x" << fty << "   " << ltx << "x" << lty << " CAM " << camera.x << "x" << camera.y << endl;
 
       for (int tx=ftx; tx<ltx; tx++)
       {
@@ -93,14 +124,11 @@ int main( int /*argc*/, char** /*args[]*/ )
         s.y = camera.y + (tx * 16) - (tz*16);
         for (int ty=fty; ty<lty; ty++)
         {
-          if (tx >= 0 && tx < 100 && ty >= 0 && ty < 100)
+          Tile * t = &cm.map[tx][ty][tz];
+          if (s.x> 0 && s.y > 0 && s.x+1<WIDTH && s.y+1<HEIGHT)
           {
-            Tile * t = &cm.map[tx][ty][tz];
-            if (s.x> 0 && s.y > 0 && s.x<WIDTH && s.y<HEIGHT)
-            {
-              if (t->tile && t->tile < city->count())
-                SDL_BlitSurface(city->getSprite(t->tile)->img, NULL, screen, &s);
-            }
+            if (t->tile && t->tile < city->count())
+              SDL_BlitSurface(city->getSprite(t->tile)->img, NULL, screen, &s);
           }
           s.x-=32;
           s.y+=16;
@@ -170,6 +198,7 @@ int main( int /*argc*/, char** /*args[]*/ )
       s.y = (tx * 16) - (tz*16);
     }
 #endif
+    SDL_BlitSurface(gui, NULL, screen, NULL);
     SDL_Flip(screen);
 
 
@@ -192,15 +221,15 @@ int main( int /*argc*/, char** /*args[]*/ )
     if (keystates[SDLK_LSHIFT])
       speed = speed * 5;
     if (keystates[SDLK_UP])
-      camera.y+=speed;
-    if (keystates[SDLK_DOWN])
       camera.y-=speed;
+    if (keystates[SDLK_DOWN])
+      camera.y+=speed;
     if (keystates[SDLK_LEFT])
-      camera.x+=speed;
-    if (keystates[SDLK_RIGHT])
       camera.x-=speed;
+    if (keystates[SDLK_RIGHT])
+      camera.x+=speed;
 
-    SDL_Delay( (1000/30) - (SDL_GetTicks() - ticks) );
+    SDL_Delay( (1000/30));// - (SDL_GetTicks() - ticks) );
     ticks = 0;
   }
 
