@@ -3,8 +3,10 @@
 #include <SDL/SDL_gfxPrimitives.h>
 #include <SDL/SDL_rotozoom.h>
 #include <iostream>
+#include <stdlib.h>
 #include "gfx.h"
 #include "citymap.h"
+#include "cityitem.h"
 
 using namespace std;
 #define WIDTH (640*2)
@@ -13,6 +15,7 @@ int main( int /*argc*/, char** /*args[]*/ )
 
 {
   GfxManager gfx;
+  srand(42);
   //Start
   SDL_Init( SDL_INIT_EVERYTHING );
 
@@ -26,6 +29,10 @@ int main( int /*argc*/, char** /*args[]*/ )
   screen = SDL_SetVideoMode(WIDTH, HEIGHT, 32, SDL_SWSURFACE);
 
   SpritePack *city = gfx.getPack("ufodata/CITY");
+
+  SpritePack *ptang = gfx.getPack("ufodata/PTANG");
+
+  SpritePack *ufos = gfx.getPack("ufodata/SAUCER");
 
   CityMap cm(100,100,10);
 
@@ -42,28 +49,22 @@ int main( int /*argc*/, char** /*args[]*/ )
   camera.x = 0;
   camera.y = 0;
 
-//  for (int tz=0; tz<10; ++tz)
-//  for (int tx=0; tx<100; tx++)
-//  {
-//    for (int ty=0; ty<100; ty++)
-//    {
-//      Tile * t = &cm.map[tx][ty][tz];
-//      if (t->tile < city->count())
-//        if (s.x>-100 && s.y >-100 && s.x<WIDTH && s.y<HEIGHT)
-//        {
-//          if (t->tile)
-//            SDL_BlitSurface(city->getSprite(t->tile)->img, NULL, screen, &s);
-//        }
-//      s.y+=16;
-//      s.x-=32;
-//    }
-//    s.x = (tx * 32) + (tz*0);
-//    s.y = (tx * 16) - (tz*16);
-//  }
-
-//  SDL_Flip(screen);
-
   bool quit = false;
+
+  CityItem * ci1, *ci2, *ufo;
+  ci1 = new DimensionGate();
+  ci2 = new DimensionGate();
+  ufo = new Ufo(ci1, ci2);
+
+  ci1->images = ptang;
+  ci2->images = ptang;
+  ci2->frame = ci1->frame = ci1->start_frame = ci2->start_frame = 42;
+  ci1->end_frame = ci2->end_frame = 73;
+
+  ufo->images = ufos;
+  ufo->start_frame = ufo->frame = 79;
+  ufo->end_frame = 90;
+
 
   while (!quit)
   {
@@ -71,7 +72,11 @@ int main( int /*argc*/, char** /*args[]*/ )
     int ticks = SDL_GetTicks();
 
     SDL_FillRect(screen, NULL, 0);
-    for (int tz = 0; tz<1; tz++)
+    ci1->update();
+    ci2->update();
+    ufo->update();
+
+    for (int tz = 0; tz<10; tz++)
     {
       int sx=camera.x, sy=camera.y;
       int ftx, fty, ltx, lty, a, b;
@@ -107,8 +112,8 @@ int main( int /*argc*/, char** /*args[]*/ )
 
 
       //ltx++; lty++; ftx--;fty--;
-      //ltx = lty = 100;
-      //ftx=fty=0;
+      ltx = lty = 100;
+      ftx=fty=0;
 
       //s.x=camera.x;//-64;
       //s.y=camera.y;//-64;
@@ -116,7 +121,7 @@ int main( int /*argc*/, char** /*args[]*/ )
       // Clip map
       ftx = max(0, ftx); fty = max(0, fty); ltx=min(100, ltx); lty = min(100, lty);
 
-      cout << "Frame" << ftx << "x" << fty << "   " << ltx << "x" << lty << " CAM " << camera.x << "x" << camera.y << endl;
+      //cout << "Frame" << ftx << "x" << fty << "   " << ltx << "x" << lty << " CAM " << camera.x << "x" << camera.y << endl;
 
       for (int tx=ftx; tx<ltx; tx++)
       {
@@ -130,77 +135,23 @@ int main( int /*argc*/, char** /*args[]*/ )
             if (t->tile && t->tile < city->count())
               SDL_BlitSurface(city->getSprite(t->tile)->img, NULL, screen, &s);
           }
+
+          if (tx == ci1->tx && ty == ci1->ty && tz == ci1->tz)
+            ci1->blit(screen, &s);
+
+          if (tx == ci2->tx && ty == ci2->ty && tz == ci2->tz)
+            ci2->blit(screen, &s);
+          if (tx == ufo->tx && ty == ufo->ty && tz == ufo->tz)
+            ufo->blit(screen, &s);
+
           s.x-=32;
           s.y+=16;
         }
       }
     }
-#if 0
-      while (sx < camera.x+WIDTH || sy < camera.y + HEIGHT)
-      {
-        tx = (sx + 2*sy + 16 * sz)/64;
-        ty = (2*sy - sx + 16 * sz)/64;
-        if (tx > 0 && tx < 100 && ty > 0 && ty < 100)
-        {
-          Tile * t = &cm.map[tx][ty][sz];
-          s.x=sx-camera.x; s.y=sy-camera.y;
-          if (t->tile)
-            SDL_BlitSurface(city->getSprite(t->tile)->img, NULL, screen, &s);
-        }
-        sx += 63;
-        if (sx > camera.x + WIDTH)
-        {
-          sy += 31;
-            if (sy > camera.y + HEIGHT)
-              break;
-          sx = 0;
-        }
-//        sx-=32;
-//        sy+=16;
-//        sx = (tx+1)*32;
-//        sy = (ty+1)*32;
-      }
-    }
-#endif
-#if 0
-    for (int sx=camera.x-50; sx<camera.x+WIDTH; sx++)
-      for (int sy=camera.y-50; sy<camera.y+HEIGHT; sy++)
-      {
-        int tx, ty;
-        tx = (sx + 2*sy + 16 * sz)/64;
-        ty = (2*sy - sx + 16 * sz)/64;
-        if (tx > 0 && tx < 100 && ty > 0 && ty < 100)
-        {
-          Tile * t = &cm.map[tx][ty][sz];
-          s.x=sx-camera.x; s.y=sy-camera.y;
-          //if (t->tile)
-            SDL_BlitSurface(city->getSprite(t->tile)->img, NULL, screen, &s);
-        }
-      }
-#endif
-#if 0
-    for (int tz=0; tz<10; ++tz)
-    for (int tx=0; tx<100; tx++)
-    {
-      for (int ty=0; ty<100; ty++)
-      {
-        Tile * t = &cm.map[tx][ty][tz];
-        if (t->tile < city->count())
-          if (s.x>-100 && s.y >-100 && s.x<WIDTH && s.y<HEIGHT)
-          {
-            if (t->tile)
-              SDL_BlitSurface(city->getSprite(t->tile)->img, NULL, screen, &s);
-          }
-        s.x-=32;
-        s.y+=16;
-      }
-      s.x = (tx * 32) + (tz*0);
-      s.y = (tx * 16) - (tz*16);
-    }
-#endif
+
     SDL_BlitSurface(gui, NULL, screen, NULL);
     SDL_Flip(screen);
-
 
     while (SDL_PollEvent(&event))
     {
@@ -216,7 +167,7 @@ int main( int /*argc*/, char** /*args[]*/ )
     }
 
     Uint8 *keystates = SDL_GetKeyState(NULL);
-    int speed = 5;
+    int speed = -5;
 
     if (keystates[SDLK_LSHIFT])
       speed = speed * 5;
@@ -229,7 +180,9 @@ int main( int /*argc*/, char** /*args[]*/ )
     if (keystates[SDLK_RIGHT])
       camera.x+=speed;
 
-    SDL_Delay( (1000/30));// - (SDL_GetTicks() - ticks) );
+    ticks = SDL_GetTicks() - ticks;
+    if (1000/30 > ticks)
+      SDL_Delay( (1000/30) - ticks);
     ticks = 0;
   }
 

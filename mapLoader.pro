@@ -10,9 +10,11 @@ INCLUDEPATH += .
 # Input
 HEADERS += gfx.h \
     citymap.h \
-    citybuilding.h
+    citybuilding.h \
+    cityitem.h
 SOURCES += gfx.cpp main.cpp \
     citymap.cpp \
-    citybuilding.cpp
+    citybuilding.cpp \
+    cityitem.cpp
 
 LIBS += -lSDL -lSDL_image -lSDL_gfx
