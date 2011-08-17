@@ -11,7 +11,7 @@
 using namespace std;
 #define WIDTH (640*2)
 #define HEIGHT (480*2)
-int main( int /*argc*/, char** /*args[]*/ )
+int main( int argc, char* argv[] )
 
 {
   GfxManager gfx;
@@ -39,7 +39,11 @@ int main( int /*argc*/, char** /*args[]*/ )
   cout << "Loading city map..." << std::flush;
 
   bool res;
+if (argc <2)
   res = cm.load("ufodata/citymap1");
+else
+ res = cm.load(argv[1]);
+
   cout << res << std::endl;
 
   SDL_Rect s;
@@ -62,8 +66,9 @@ int main( int /*argc*/, char** /*args[]*/ )
   ci1->end_frame = ci2->end_frame = 73;
 
   ufo->images = ufos;
-  ufo->start_frame = ufo->frame = 79;
-  ufo->end_frame = 90;
+  ufo->start_frame = ufo->frame = 66;
+  ufo->frame *=2;
+  ufo->end_frame = 77;
 
 
   while (!quit)
