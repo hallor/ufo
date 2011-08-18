@@ -4,6 +4,7 @@
 #include <SDL/SDL.h>
 #include <stdlib.h>
 #include <iostream>
+#include <cmath>
 #include "gfx.h"
 
 
@@ -12,88 +13,161 @@ class CityItem
 public:
     CityItem()
     {
-      tx = 0; ty = 0; tz = 8;
-      frame = 0;
+      tz = 8;
+      tx = 0.1 * (rand() % 1000);
+      ty = 0.1 * (rand() % 1000);
+      frame = start_frame = end_frame = 0;
+      anim_speed = 0.7;
+      is_garbage = false;
     }
 
     /* Called in the beginnig on every frame */
     virtual void update()
     {
-      frame++;
-      if (frame/2 > end_frame)
-        frame = start_frame*2;
+      frame += anim_speed;
+      if ((int)frame > end_frame)
+        frame = start_frame;
     }
 
     void blit(SDL_Surface * to, SDL_Rect * rect)
     {
-      SDL_BlitSurface(images->getSprite(frame/2)->img, NULL, to, rect);
+      if (!is_garbage)
+        SDL_BlitSurface(images->getSprite(frame)->img, NULL, to, rect);
     }
+
+    virtual bool garbage() { return is_garbage; }
 
     SpritePack * images;
-    int start_frame, end_frame, frame;
-    int tx, ty, tz;
+    int start_frame, end_frame;
+    float frame, anim_speed;
+    float tx, ty, tz;
+    bool is_garbage;
 };
 
-class DimensionGate : public CityItem
+class SingleShotItem : public CityItem
 {
 public:
-  DimensionGate() : CityItem()
+  SingleShotItem() : CityItem()
   {
-    tx = 10 + rand() % 90; ty = 10 + rand() % 90; tz = 8;
-    std::cout << "Generated gate item at" << tx << "x" << ty << std::endl;
+
   }
 
-  void update()
+  /* Called in the beginnig on every frame */
+  virtual void update()
+  {
+    frame += anim_speed;
+    if ((int)frame > end_frame)
+      is_garbage = true;
+  }
+};
+
+class MovableCityItem : public CityItem
+{
+public:
+  MovableCityItem() : CityItem()
+  {
+    dx = tx; dy = ty; dz = tz;
+    speed = 0.1;
+  }
+
+  virtual void update()
   {
     CityItem::update();
-    if (rand() % 30 == 0)
+
+    //immovable
+    if (speed < 0.001)
+      return;
+ //TODO: rewrite this crap
+    if ( fabs(tx - dx) > speed || fabs(ty - dy) > speed || fabs(tz - dz) > speed)
     {
-      tx += (rand() % 3) - 1;
-      ty += (rand() % 3) - 1;
-      if (tx > 100) tx = 100;
-      if (tx < 0) tx = 0;
-      if (ty > 100) ty = 100;
-      if (ty < 0) ty = 0;
+        if (fabs(tx - dx) > speed)
+          tx += speed*((dx - tx) / fabs((dx - tx)));
+        if (fabs(ty - dy) > speed)
+          ty += speed*((dy - ty) / fabs((dy - ty)));
+        if (fabs(tz - dz) > speed)
+          tz += speed*((dz - tz) / fabs((dz - tz)));
     }
+    else
+      arrived();
+
+    if (tx > 100) tx = 100;
+    if (tx < 0) tx = 0;
+    if (ty > 100) ty = 100;
+    if (ty < 0) ty = 0;
+    if (tz > 9) tz = 9;
+    if (tz < 0) tz = 0;
+  }
+
+  virtual void arrived()
+  {
+    dx = 0.1 * (rand() % 1000);
+    dy = 0.1 * (rand() % 1000);
+  }
+
+  float dx, dy, dz;
+  float speed;
+};
+
+
+class SingleShotMovableItem : public MovableCityItem
+{
+public:
+  SingleShotMovableItem() : MovableCityItem()
+  {
+
+  }
+
+  /* Called in the beginnig on every frame */
+  virtual void arrived()
+  {
+    is_garbage = true;
   }
 };
 
-class Ufo : public CityItem
+class DimensionGate : public MovableCityItem
 {
 public:
-  Ufo(CityItem * source,CityItem * dest) : CityItem(), g_source(source), g_dest(dest)
+  DimensionGate() : MovableCityItem()
+  {
+    arrived();
+    speed=0.03;
+    std::cout << "Generated gate item at " << tx << "x" << ty <<
+                 " Destination to " << dx << "x" << dy <<std::endl;
+  }
+  virtual void update()
+  {
+    MovableCityItem::update();
+  }
+};
+
+class Ufo : public MovableCityItem
+{
+public:
+  Ufo(CityItem * source,CityItem * dest) : MovableCityItem(), g_source(source), g_dest(dest)
   {
     tz = source->tz +1;
     tx = source->tx;
     ty = source->ty;
-    speedaccum=0;
+    speed = 0.05;
+    arrived();
     std::cout << "Generated ufo at" << tx << "x" << ty << std::endl;
   }
 
   void update()
   {
-    CityItem::update();
-    if (tx != g_dest->tx || ty != g_dest->ty)
-    {
-      speedaccum++;
-      if (speedaccum > 10)
-      {
-        speedaccum=0;
-        if (tx != g_dest->tx)
-          tx += (g_dest->tx - tx) / abs((g_dest->tx - tx));
-        if (ty != g_dest->ty)
-          ty += (g_dest->ty - ty) / abs((g_dest->ty - ty));
-      }
-    } else // swap gates
-    {
+    dx = g_dest->tx;
+    dy = g_dest->ty;
+
+    MovableCityItem::update();
+  }
+
+  void arrived()
+  {
       CityItem * d = g_source;
       g_source = g_dest;
       g_dest = d;
-    }
   }
-
   CityItem * g_source, *g_dest;
-  int speedaccum;
 };
 
 #endif // CITYITEM_H

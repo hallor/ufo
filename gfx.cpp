@@ -65,6 +65,19 @@ SpritePack * GfxManager::getPack(const std::string & filename)
     SDL_SetColorKey(surf, SDL_SRCCOLORKEY, 0);
     co.push_back(surf);
   }
+
+  if (!co.size()) /* Maybe 1-element?? */
+  {
+    SDL_Surface * surf;
+
+    surf = IMG_Load(filename.c_str());
+    if (surf)
+    {
+      //SDL_SetColorKey(surf, SDL_SRCCOLORKEY, 0);
+      co.push_back(surf);
+    }
+  }
+
   resources[filename] = new SpritePack(co);
 
   std::cout << "Loaded " << resources[filename]->count() << " sprites." << std::endl;

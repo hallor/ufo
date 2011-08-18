@@ -3,7 +3,9 @@
 #include <SDL/SDL_gfxPrimitives.h>
 #include <SDL/SDL_rotozoom.h>
 #include <iostream>
+#include <algorithm>
 #include <stdlib.h>
+#include <boost/foreach.hpp>
 #include "gfx.h"
 #include "citymap.h"
 #include "cityitem.h"
@@ -11,6 +13,43 @@
 using namespace std;
 #define WIDTH (640*2)
 #define HEIGHT (480*2)
+
+#define TILE_WIDTH 64
+#define TILE_HEIGHT 32
+
+/* Must supply also tile_z */
+inline void screen_to_tile(int sx, int sy, float & tile_x, float & tile_y, float tile_z)
+{
+  tile_x = (float)sx/TILE_WIDTH + (float)sy/TILE_HEIGHT + tile_z/2;
+  tile_y = (float)sy/TILE_HEIGHT + tile_z/2 -  (float)sx/TILE_WIDTH;
+}
+
+inline void tile_to_screen(float tile_x, float tile_y, float tile_z, int & sx, int & sy)
+{
+  sx = (tile_x - tile_y) * TILE_WIDTH/2;
+  sy = (tile_x + tile_y - tile_z) * TILE_HEIGHT/2;
+}
+
+class Mouse : public CityItem
+{
+public:
+  Mouse() : CityItem()
+  {
+    tz = 9;
+  }
+
+  virtual void update()
+  {
+    SDL_GetMouseState(&sx, &sy);
+    screen_to_tile(sx+camera.x, sy+camera.y, tx, ty, tz);
+//    cout << "Mouse pos " << sx << "x" << sy << "->" << tx << "x" << ty << "x" << tz << endl;
+  }
+
+  int sx, sy;
+  SDL_Rect camera;
+};
+
+
 int main( int argc, char* argv[] )
 
 {
@@ -22,17 +61,23 @@ int main( int argc, char* argv[] )
   SDL_Surface * screen;
   SDL_Surface * gui, *t;
 
+
   t = IMG_Load("ufodata/buybase2.pcx");
   gui = zoomSurface(t, 2, 2, 0);
   SDL_FreeSurface(t);
 
   screen = SDL_SetVideoMode(WIDTH, HEIGHT, 32, SDL_SWSURFACE);
+  SDL_ShowCursor(false);
 
   SpritePack *city = gfx.getPack("ufodata/CITY");
 
   SpritePack *ptang = gfx.getPack("ufodata/PTANG");
 
   SpritePack *ufos = gfx.getPack("ufodata/SAUCER");
+
+  SpritePack * invalid = gfx.getPack("ufodata/DESCURS");
+
+  SpritePack * mouse_img = gfx.getPack("cursor.png");
 
   CityMap cm(100,100,10);
 
@@ -56,9 +101,13 @@ else
   bool quit = false;
 
   CityItem * ci1, *ci2, *ufo;
+  Mouse * mouse;
+  std::list<CityItem *> items;
+  std::list<CityItem *> temp_items;
   ci1 = new DimensionGate();
   ci2 = new DimensionGate();
   ufo = new Ufo(ci1, ci2);
+  mouse = new Mouse();
 
   ci1->images = ptang;
   ci2->images = ptang;
@@ -66,94 +115,105 @@ else
   ci1->end_frame = ci2->end_frame = 73;
 
   ufo->images = ufos;
-  ufo->start_frame = ufo->frame = 66;
-  ufo->frame *=2;
-  ufo->end_frame = 77;
+  ufo->start_frame = ufo->frame = 92;
+  ufo->end_frame = 94;
+  ufo->anim_speed = 0.3;
+
+  mouse->images = mouse_img;
+  mouse->start_frame = mouse->end_frame = mouse->frame = 0;
+  mouse->tx = 10; mouse->ty = 10; mouse->tz = 9;
+
+  items.push_back(ci1);
+  items.push_back(ci2);
+  items.push_back(ufo);
+  items.push_back(mouse);
 
 
   while (!quit)
   {
     SDL_Event event;
     int ticks = SDL_GetTicks();
+    list<CityItem*> to_remove;
 
     SDL_FillRect(screen, NULL, 0);
-    ci1->update();
-    ci2->update();
-    ufo->update();
+
+    BOOST_FOREACH(CityItem *i, items)
+    {
+      i->update();
+    }
+
+    BOOST_FOREACH(CityItem *i, temp_items)
+    {
+      i->update();
+      if (i->garbage())
+        to_remove.push_back(i);
+    }
+
+    BOOST_FOREACH(CityItem *i, to_remove)
+    {
+      temp_items.remove(i);
+      delete i;
+    }
 
     for (int tz = 0; tz<10; tz++)
     {
-      int sx=camera.x, sy=camera.y;
-      int ftx, fty, ltx, lty, a, b;
-#define XX ((sx/*-camera.x*/ + 2 * sy/* - 2*camera.y */+ 32*tz)/64)
-#define YY ((2*sy /*- 2*camera.y */+ 32*tz - sx /*+ camera.x*/)/64)
-
-      // Find tile ranges
-      sx = camera.x + 0;
-      sy = camera.y + 0;
-      ftx = XX;
-      fty = YY;
-      ltx = a = ftx;
-      lty = b = fty;
-
-      sx = camera.x + WIDTH;
-      a = XX;
-      b = YY;
-      ftx = min(a, ftx); fty = min(b, fty); ltx = max(a, ltx); lty = max(b, lty);
-
-      sy = camera.y + HEIGHT;
-      a = XX;
-      b = YY;
-      ftx = min(a, ftx); fty = min(b, fty); ltx = max(a, ltx); lty = max(b, lty);
-
-      sx = camera.x + 0;
-      a = XX;
-      b = YY;
-      ftx = min(a, ftx); fty = min(b, fty); ltx = max(a, ltx); lty = max(b, lty);
-
-      // Last tiles to end drawing at
-//      ltx = (sx-camera.x + 2 * sy - 2*camera.y + 32*tz)/64;//(sx + 2*sy + 16 * tz)/64 +1;
-//      lty = (2*sy - 2*camera.y + 32*tz - sx + camera.x)/64;//(2*sy - sx + 16 * tz)/64 +1;
-
-
-      //ltx++; lty++; ftx--;fty--;
-      ltx = lty = 100;
-      ftx=fty=0;
-
-      //s.x=camera.x;//-64;
-      //s.y=camera.y;//-64;
-
-      // Clip map
-      ftx = max(0, ftx); fty = max(0, fty); ltx=min(100, ltx); lty = min(100, lty);
-
-      //cout << "Frame" << ftx << "x" << fty << "   " << ltx << "x" << lty << " CAM " << camera.x << "x" << camera.y << endl;
+      int ftx = 0, ltx=100, fty=0, lty=100;
 
       for (int tx=ftx; tx<ltx; tx++)
       {
-        s.x = camera.x + (tx * 32) + (tz*0);
-        s.y = camera.y + (tx * 16) - (tz*16);
         for (int ty=fty; ty<lty; ty++)
         {
           Tile * t = &cm.map[tx][ty][tz];
-          if (s.x> 0 && s.y > 0 && s.x+1<WIDTH && s.y+1<HEIGHT)
+          int sx, sy;
+          tile_to_screen(tx, ty, tz, sx, sy);
+          if (sx+TILE_WIDTH > camera.x && sy+TILE_HEIGHT+15> camera.y && sx - camera.x <WIDTH && sy - camera.y <HEIGHT)
           {
-            if (t->tile && t->tile < city->count())
-              SDL_BlitSurface(city->getSprite(t->tile)->img, NULL, screen, &s);
+            sx -= camera.x;
+            sy -= camera.y;
+            s.x = sx;
+            s.y = sy;
+            if (t->tile)
+            {
+              if (t->tile < city->count())
+                SDL_BlitSurface(city->getSprite(t->tile)->img, NULL, screen, &s);
+              else
+                SDL_BlitSurface(invalid->getSprite(1)->img, NULL, screen, &s);
+            }
           }
+        }
+      }
 
-          if (tx == ci1->tx && ty == ci1->ty && tz == ci1->tz)
-            ci1->blit(screen, &s);
+      BOOST_FOREACH(CityItem *i, temp_items)
+      {
+        int sx, sy;
+        if ((int)i->tz == tz)
+        {
+          tile_to_screen(i->tx, i->ty, i->tz, sx, sy);
+          sx -= camera.x;
+          sy -= camera.y;
+          s.x = sx;
+          s.y = sy;
+          // Don't clip for now - SDL should do the clipping anyway
+          i->blit(screen, &s);
+        }
+      }
 
-          if (tx == ci2->tx && ty == ci2->ty && tz == ci2->tz)
-            ci2->blit(screen, &s);
-          if (tx == ufo->tx && ty == ufo->ty && tz == ufo->tz)
-            ufo->blit(screen, &s);
-
-          s.x-=32;
-          s.y+=16;
+      BOOST_FOREACH(CityItem *i, items)
+      {
+        int sx, sy;
+        if ((int)i->tz == tz)
+        {
+          tile_to_screen(i->tx, i->ty, i->tz, sx, sy);
+          sx -= camera.x;
+          sy -= camera.y;
+          s.x = sx;
+          s.y = sy;
+          // Don't clip for now - SDL should do the clipping anyway
+          i->blit(screen, &s);
         }
       }
     }
+
 
     SDL_BlitSurface(gui, NULL, screen, NULL);
     SDL_Flip(screen);
@@ -169,10 +229,41 @@ else
           case SDLK_ESCAPE: quit = true; break;
         default: break;
         }
+      if (event.type == SDL_MOUSEBUTTONUP)
+      {
+        SingleShotItem * shot = new SingleShotItem();
+
+        shot->tx = mouse->tx;
+        shot->ty = mouse->ty;
+        shot->tz = mouse->tz;
+        shot->anim_speed=1;
+        shot->images = ptang;
+        switch(event.button.button)
+        {
+        case SDL_BUTTON_RIGHT:
+          shot->start_frame = 8; shot->end_frame = 25;
+          break;
+
+        case SDL_BUTTON_MIDDLE:
+          shot->start_frame =74; shot->end_frame=83;
+          break;
+
+        case SDL_BUTTON_LEFT:
+          shot->start_frame =0; shot->end_frame=7;
+          break;
+
+        default:
+          shot->start_frame =29; shot->end_frame=41;
+          break;
+          break;
+        }
+        shot->frame = shot->start_frame - shot->anim_speed;
+        temp_items.push_back(shot);
+      }
     }
 
     Uint8 *keystates = SDL_GetKeyState(NULL);
-    int speed = -5;
+    int speed = 5;
 
     if (keystates[SDLK_LSHIFT])
       speed = speed * 5;
@@ -184,6 +275,14 @@ else
       camera.x-=speed;
     if (keystates[SDLK_RIGHT])
       camera.x+=speed;
+    if (keystates[SDLK_HOME])
+    {
+      int cx, cy;
+      tile_to_screen(ufo->tx, ufo->ty, ufo->tz, cx, cy);
+      camera.x = cx - WIDTH/2;
+      camera.y = cy - HEIGHT/2;
+    }
+    mouse->camera = camera;
 
     ticks = SDL_GetTicks() - ticks;
     if (1000/30 > ticks)
