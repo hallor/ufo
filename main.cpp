@@ -66,7 +66,7 @@ int main( int argc, char* argv[] )
   gui = zoomSurface(t, 2, 2, 0);
   SDL_FreeSurface(t);
 
-  screen = SDL_SetVideoMode(WIDTH, HEIGHT, 32, SDL_SWSURFACE);
+  screen = SDL_SetVideoMode(WIDTH, HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
   SDL_ShowCursor(false);
 
   SpritePack *city = gfx.getPack("ufodata/CITY");
