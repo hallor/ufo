@@ -11,10 +11,12 @@ INCLUDEPATH += .
 HEADERS += gfx.h \
     citymap.h \
     citybuilding.h \
-    cityitem.h
+    cityitem.h \
+    timer.h
 SOURCES += gfx.cpp main.cpp \
     citymap.cpp \
     citybuilding.cpp \
-    cityitem.cpp
+    cityitem.cpp \
+    timer.cpp
 
 LIBS += -lSDL -lSDL_image -lSDL_gfx

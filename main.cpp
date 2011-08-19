@@ -1,7 +1,6 @@
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_gfxPrimitives.h>
-#include <SDL/SDL_rotozoom.h>
+//#include <SDL/SDL.h>
+//#include <SDL/SDL_image.h>
+//#include <SDL/SDL_gfxPrimitives.h>
 #include <iostream>
 #include <algorithm>
 #include <stdlib.h>
@@ -9,6 +8,7 @@
 #include "gfx.h"
 #include "citymap.h"
 #include "cityitem.h"
+#include "timer.h"
 
 using namespace std;
 #define WIDTH (640*2)
@@ -45,29 +45,32 @@ public:
 //    cout << "Mouse pos " << sx << "x" << sy << "->" << tx << "x" << ty << "x" << tz << endl;
   }
 
+  virtual void draw(Raster * to)
+  {
+    Rect t;
+    t.x = sx; t.y = sy;
+    image->blit(NULL, to, &t);
+  }
+
   int sx, sy;
-  SDL_Rect camera;
+  Rect camera;
+  Raster * image;
 };
 
 
 int main( int argc, char* argv[] )
-
 {
   GfxManager gfx;
   srand(42);
   //Start
   SDL_Init( SDL_INIT_EVERYTHING );
 
-  SDL_Surface * screen;
-  SDL_Surface * gui, *t;
+  Screen * screen;
 
+  screen = new Screen(WIDTH, HEIGHT, "X-Com 42");
 
-  t = IMG_Load("ufodata/buybase2.pcx");
-  gui = zoomSurface(t, 2, 2, 0);
-  SDL_FreeSurface(t);
-
-  screen = SDL_SetVideoMode(WIDTH, HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
-  SDL_ShowCursor(false);
+  Raster * menu = gfx.getRaster("ufodata/buybase2.pcx", false);
+  menu->zoom(2,2);
 
   SpritePack *city = gfx.getPack("ufodata/CITY");
 
@@ -75,9 +78,9 @@ int main( int argc, char* argv[] )
 
   SpritePack *ufos = gfx.getPack("ufodata/SAUCER");
 
-  SpritePack * invalid = gfx.getPack("ufodata/DESCURS");
+  SpritePack *invalid = gfx.getPack("ufodata/DESCURS");
 
-  SpritePack * mouse_img = gfx.getPack("cursor.png");
+  Raster *mouse_img = gfx.getRaster("cursor.png");
 
   CityMap cm(100,100,10);
 
@@ -91,12 +94,14 @@ else
 
   cout << res << std::endl;
 
-  SDL_Rect s;
-  SDL_Rect camera;
+  Rect s;
+  Rect camera;
 
   s.x = s.y = 0;
   camera.x = 0;
   camera.y = 0;
+  camera.w = WIDTH;
+  camera.h = HEIGHT * 0.76;
 
   bool quit = false;
 
@@ -119,23 +124,25 @@ else
   ufo->end_frame = 94;
   ufo->anim_speed = 0.3;
 
-  mouse->images = mouse_img;
+  //mouse->images = mouse_img;
   mouse->start_frame = mouse->end_frame = mouse->frame = 0;
   mouse->tx = 10; mouse->ty = 10; mouse->tz = 9;
+  mouse->image = mouse_img;
 
   items.push_back(ci1);
   items.push_back(ci2);
   items.push_back(ufo);
-  items.push_back(mouse);
+//  items.push_back(mouse);
 
+  FpsTimer timer(30);
 
   while (!quit)
   {
-    SDL_Event event;
-    int ticks = SDL_GetTicks();
-    list<CityItem*> to_remove;
+    timer.startOfFrame();
 
-    SDL_FillRect(screen, NULL, 0);
+
+    /* Update animations etc */
+    list<CityItem*> to_remove;
 
     BOOST_FOREACH(CityItem *i, items)
     {
@@ -155,6 +162,12 @@ else
       delete i;
     }
 
+    mouse->update();
+
+    /* Drawing */
+    screen->clear();
+
+
     for (int tz = 0; tz<10; tz++)
     {
       int ftx = 0, ltx=100, fty=0, lty=100;
@@ -166,7 +179,7 @@ else
           Tile * t = &cm.map[tx][ty][tz];
           int sx, sy;
           tile_to_screen(tx, ty, tz, sx, sy);
-          if (sx+TILE_WIDTH > camera.x && sy+TILE_HEIGHT+15> camera.y && sx - camera.x <WIDTH && sy - camera.y <HEIGHT)
+          if (sx+TILE_WIDTH > camera.x && sy+TILE_HEIGHT+15> camera.y && sx - camera.x <camera.w && sy - camera.y <camera.h)
           {
             sx -= camera.x;
             sy -= camera.y;
@@ -175,9 +188,9 @@ else
             if (t->tile)
             {
               if (t->tile < city->count())
-                SDL_BlitSurface(city->getSprite(t->tile)->img, NULL, screen, &s);
+                city->getSprite(t->tile)->blit(NULL, screen, &s);
               else
-                SDL_BlitSurface(invalid->getSprite(1)->img, NULL, screen, &s);
+                invalid->getSprite(1)->blit(NULL, screen, &s);
             }
           }
         }
@@ -214,10 +227,14 @@ else
       }
     }
 
+    menu->blit(NULL, screen, NULL);
+    mouse->draw(screen);
 
-    SDL_BlitSurface(gui, NULL, screen, NULL);
-    SDL_Flip(screen);
+    screen->flip();
 
+    /* EVENT processing */
+
+    SDL_Event event;
     while (SDL_PollEvent(&event))
     {
       if (event.type == SDL_QUIT)
@@ -284,10 +301,7 @@ else
     }
     mouse->camera = camera;
 
-    ticks = SDL_GetTicks() - ticks;
-    if (1000/30 > ticks)
-      SDL_Delay( (1000/30) - ticks);
-    ticks = 0;
+    timer.endOfFrame();
   }
 
   //Quit

@@ -44,6 +44,11 @@ GfxManager::~GfxManager()
   for (it=resources.begin(); it!=resources.end(); ++it)
     delete (*it).second;
   resources.clear();
+
+  RasterMap::iterator it2;
+  for (it2=rasters.begin(); it2!=rasters.end(); ++it2)
+    delete (*it2).second;
+  rasters.clear();
 }
 
 SpritePack * GfxManager::getPack(const std::string & filename)
@@ -62,20 +67,8 @@ SpritePack * GfxManager::getPack(const std::string & filename)
     surf = IMG_Load( (filename + boost::lexical_cast<std::string>(i)).c_str() );
     if (!surf)
       break;
-    SDL_SetColorKey(surf, SDL_SRCCOLORKEY, 0);
+    SDL_SetColorKey(surf, SDL_SRCCOLORKEY | SDL_RLEACCEL, 0);
     co.push_back(surf);
-  }
-
-  if (!co.size()) /* Maybe 1-element?? */
-  {
-    SDL_Surface * surf;
-
-    surf = IMG_Load(filename.c_str());
-    if (surf)
-    {
-      //SDL_SetColorKey(surf, SDL_SRCCOLORKEY, 0);
-      co.push_back(surf);
-    }
   }
 
   resources[filename] = new SpritePack(co);
@@ -83,4 +76,25 @@ SpritePack * GfxManager::getPack(const std::string & filename)
   std::cout << "Loaded " << resources[filename]->count() << " sprites." << std::endl;
 
   return resources[filename];
+}
+
+Raster * GfxManager::getRaster(const std::string & filename, bool colorKey)
+{
+  if (rasters.count(filename))
+    return rasters[filename];
+
+  SDL_Surface * surf = IMG_Load(filename.c_str());
+  if (surf)
+  {
+    if (colorKey)
+      SDL_SetColorKey(surf, SDL_SRCCOLORKEY | SDL_RLEACCEL, 0);
+    else
+      SDL_SetColorKey(surf, 0, 0);
+    Raster * r = new Raster();
+    if (r)
+      r->setSurface(surf);
+    std::cout << "Loaded raster from " << filename << " Size: " << surf->w << "x" << surf->h << std::endl;
+    return r;
+  }
+  return NULL;
 }

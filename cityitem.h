@@ -2,6 +2,7 @@
 #define CITYITEM_H
 
 #include <SDL/SDL.h>
+#include <SDL/SDL_gfxPrimitives.h>
 #include <stdlib.h>
 #include <iostream>
 #include <cmath>
@@ -29,10 +30,13 @@ public:
         frame = start_frame;
     }
 
-    void blit(SDL_Surface * to, SDL_Rect * rect)
+    virtual void blit(Raster * to, Rect * rect)
     {
       if (!is_garbage)
-        SDL_BlitSurface(images->getSprite(frame)->img, NULL, to, rect);
+      {
+        Sprite * img = images->getSprite(frame);
+        img->blit(NULL, to, rect);
+      }
     }
 
     virtual bool garbage() { return is_garbage; }
