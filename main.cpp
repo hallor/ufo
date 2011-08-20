@@ -1,6 +1,6 @@
-//#include <SDL/SDL.h>
-//#include <SDL/SDL_image.h>
-//#include <SDL/SDL_gfxPrimitives.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
+#include <SDL/SDL_gfxPrimitives.h>
 #include <iostream>
 #include <algorithm>
 #include <stdlib.h>
@@ -70,7 +70,7 @@ int main( int argc, char* argv[] )
   screen = new Screen(WIDTH, HEIGHT, "X-Com 42");
 
   Raster * menu = gfx.getRaster("ufodata/buybase2.pcx", false);
-  menu->zoom(2,2);
+  menu->zoom2x();
 
   SpritePack *city = gfx.getPack("ufodata/CITY");
 
@@ -87,10 +87,11 @@ int main( int argc, char* argv[] )
   cout << "Loading city map..." << std::flush;
 
   bool res;
-if (argc <2)
-  res = cm.load("ufodata/citymap1");
-else
- res = cm.load(argv[1]);
+
+  if (argc <2)
+    res = cm.load("ufodata/citymap1");
+  else
+    res = cm.load(argv[1]);
 
   cout << res << std::endl;
 
@@ -166,7 +167,6 @@ else
 
     /* Drawing */
     screen->clear();
-
 
     for (int tz = 0; tz<10; tz++)
     {

@@ -19,4 +19,4 @@ SOURCES += gfx.cpp main.cpp \
     cityitem.cpp \
     timer.cpp
 
-LIBS += -lSDL -lSDL_image -lSDL_gfx
+LIBS += -lSDL -lSDL_image

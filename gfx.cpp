@@ -66,8 +66,11 @@ SpritePack * GfxManager::getPack(const std::string & filename)
 
     surf = IMG_Load( (filename + boost::lexical_cast<std::string>(i)).c_str() );
     if (!surf)
+    {
+      std::cout << "Failed loading " << filename + boost::lexical_cast<std::string>(i) << std::endl;
       break;
-    SDL_SetColorKey(surf, SDL_SRCCOLORKEY | SDL_RLEACCEL, 0);
+    }
+    SDL_SetColorKey(surf, SDL_SRCCOLORKEY | SDL_RLEACCEL, surf->format->colorkey);
     co.push_back(surf);
   }
 
@@ -87,7 +90,7 @@ Raster * GfxManager::getRaster(const std::string & filename, bool colorKey)
   if (surf)
   {
     if (colorKey)
-      SDL_SetColorKey(surf, SDL_SRCCOLORKEY | SDL_RLEACCEL, 0);
+      SDL_SetColorKey(surf, SDL_SRCCOLORKEY | SDL_RLEACCEL, surf->format->colorkey);
     else
       SDL_SetColorKey(surf, 0, 0);
     Raster * r = new Raster();
