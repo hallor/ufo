@@ -88,6 +88,9 @@ class Screen
 public:
   Screen(int width, int height, std::string window_title="ufo")
   {
+    SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
+    SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, 1 );
+
     surface = SDL_SetVideoMode(width, height, 32, SDL_HWSURFACE | SDL_GL_DOUBLEBUFFER | SDL_OPENGL);
     SDL_WM_SetCaption(window_title.c_str(), NULL);
     SDL_ShowCursor(false);
