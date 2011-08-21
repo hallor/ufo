@@ -235,6 +235,32 @@ int main( int argc, char* argv[] )
         {
           case SDLK_q:
           case SDLK_ESCAPE: quit = true; break;
+        case SDLK_z:
+        {
+          SingleShotItem * shot;
+          for (int i=0; i<4; ++i)
+          {
+            shot = new SingleShotItem();
+            shot->tx = mouse->tx;
+            shot->ty = mouse->ty;
+            shot->tz = mouse->tz;
+            shot->anim_speed = 0.1;
+            shot->images = ptang;
+            int q =0;
+            switch(i)
+            {
+              case 0: q=160; break;
+            case 1: q=204; shot->tx++; break;
+            case 2:q=194; shot->tx++; shot->ty++; break;
+            case 3:q=184; shot->ty++; break;
+            }
+            shot->start_frame =q;
+            shot->frame = shot->start_frame;
+            shot->end_frame = shot->start_frame + 9;
+            temp_items.push_back(shot);
+          }
+        }
+          break;
         default: break;
         }
       if (event.type == SDL_MOUSEBUTTONUP)
