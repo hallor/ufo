@@ -6,98 +6,124 @@
 #include <list>
 #include <SDL/SDL.h>
 #include <SDL/SDL_rotozoom.h>
-
+#include <GL/gl.h>
 
 typedef SDL_Rect Rect;
+
+SDL_Surface * loadTexture(const char * filename, bool colorKey);
+bool loadSurfacetoVram(SDL_Surface * surface, GLuint & tex_id, Rect & tex_rect);
+bool unloadSurfacefromVram(GLuint & tex_id);
 
 // Base class for all drawable items
 class Raster
 {
-  friend class GfxManager;
 public:
-  Raster() : surface(NULL) {}
+  Raster() : surface(NULL), in_vram(false) { zoom=1;}
 
   ~Raster()
   {
     SDL_FreeSurface(surface);
+    if (in_vram)
+      unloadSurfacefromVram(tex_id);
   }
 
-  const Rect & rect() const { return surface_rect; }
-
-  inline void blit(Rect * src_rect, Raster * to, Rect * to_rect)
+  const Rect rect() const
   {
-    SDL_BlitSurface(surface, src_rect, to->surface, to_rect);
+    Rect r;
+    r.w = surface->w;
+    r.h = surface->h;
+    return r;
   }
 
-  void zoom2x()
+  inline void renderAt(const Rect & pos)
   {
-    if (!surface || surface->format->BitsPerPixel!=8)
+    if (in_vram)
     {
-      std::cout << "Invalid pixel format for xzoom!";
-      return;
-    }
-    SDL_Surface * ni = SDL_CreateRGBSurface(SDL_SWSURFACE, surface->w*2, surface->h*2,
-                                           surface->format->BitsPerPixel, surface->format->Rmask,
-                                           surface->format->Gmask, surface->format->Bmask, surface->format->Amask);
-    unsigned char * pixels_orig, *pixels_new;
-
-    pixels_orig = (unsigned char *)surface->pixels;
-    pixels_new = (unsigned char *)ni->pixels;
-
-    SDL_LockSurface(surface);
-    SDL_LockSurface(ni);
-
-    for (int y=0; y<ni->h; ++y)
-      for (int x=0; x<ni->w; ++x)
-      {
-        pixels_new[(y * ni->w) + x] = pixels_orig[(y/2 * surface->w) + x/2];
-      }
-
-    SDL_SetPalette(ni, SDL_LOGPAL | SDL_PHYSPAL, surface->format->palette->colors, 0, surface->format->palette->ncolors);
-    SDL_SetColorKey(ni, SDL_SRCCOLORKEY | SDL_RLEACCEL, surface->format->colorkey);
-
-    SDL_UnlockSurface(surface);
-    SDL_UnlockSurface(ni);
-    SDL_FreeSurface(surface);
-    surface = ni;
+      glBindTexture(GL_TEXTURE_2D, tex_id);
+      glMatrixMode(GL_TEXTURE);
+      glLoadIdentity();
+      glScalef(sx, sy, 1);
+      glBegin(GL_QUADS);
+        glTexCoord2i( 0, 0 ); glVertex3f(pos.x*zoom, pos.y*zoom, 0);
+        glTexCoord2i( surface->w, 0 ); glVertex3f(pos.x*zoom+surface->w*zoom, pos.y*zoom, 0);
+        glTexCoord2i( surface->w, surface->h); glVertex3f(pos.x*zoom+surface->w*zoom, pos.y*zoom+ surface->h*zoom, 0);
+        glTexCoord2i( 0, surface->h ); glVertex3f(pos.x, pos.y*zoom+surface->h*zoom, 0);
+      glEnd();
+    } else
+      std::cout << "Surface not in vram!" << std::endl;
   }
-
-protected:
 
   void setSurface(SDL_Surface * surf)
   {
     if (surface)
       SDL_FreeSurface(surface);
+    if (in_vram)
+    {
+      unloadSurfacefromVram(tex_id);
+      in_vram = false;
+    }
+
     surface = surf;
-    surface_rect.w = surface->w;
-    surface_rect.h = surface->h;
+    if (loadSurfacetoVram(surface, tex_id, gl_tex_size))
+    {
+      in_vram = true;
+      sx = 1.0/gl_tex_size.w;
+      sy = 1.0/gl_tex_size.h;
+    }
   }
 
-  SDL_Surface * surface;
-  Rect surface_rect;
+  void setZoom(int n) { zoom = n; }
+
+private:
+  SDL_Surface * surface; // Copy of texture - usually stored in vram - this is texture with original size/bpp (To be converted)
+  GLuint tex_id;
+  float zoom;
+  Rect gl_tex_size;
+  float sx, sy;
+  bool in_vram; // if set - tex_id can be used, else we must copy surface to vram
 };
 
-class Screen : public Raster
+class Screen
 {
 public:
-  Screen(int width, int height, std::string window_title="ufo") : Raster()
+  Screen(int width, int height, std::string window_title="ufo")
   {
-    surface = SDL_SetVideoMode(width, height, 32, SDL_SWSURFACE);
+    surface = SDL_SetVideoMode(width, height, 32, SDL_HWSURFACE | SDL_GL_DOUBLEBUFFER | SDL_OPENGL);
     SDL_WM_SetCaption(window_title.c_str(), NULL);
     SDL_ShowCursor(false);
     SDL_FillRect(surface, NULL, 0);
+
+    glClearColor(0, 0, 0, 0);
+
+    glViewport(0, 0, width, height);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    glOrtho(0, width, height, 0, 10, -1);
+
+    glMatrixMode(GL_MODELVIEW);
+
+    glEnable(GL_TEXTURE_2D);
+
+    glLoadIdentity();
+
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER,0.1f);
   }
 
   void flip()
   {
-    SDL_Flip(surface);
+    SDL_GL_SwapBuffers();
   }
 
   void clear()
   {
-    SDL_FillRect(surface, NULL, 1);
+    glClearColor(0,0,0,0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   }
-
+private:
+  SDL_Surface * surface;
 };
 
 class Sprite : public Raster
@@ -107,7 +133,6 @@ public:
   ~Sprite()
   {
   }
-protected:
   Sprite(SDL_Surface *s) : Raster()
   {
     setSurface(s);

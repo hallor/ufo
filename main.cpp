@@ -9,20 +9,9 @@
 #include "citymap.h"
 #include "cityitem.h"
 #include "timer.h"
+#include "mouse.h"
 
 using namespace std;
-#define WIDTH (640*2)
-#define HEIGHT (480*2)
-
-#define TILE_WIDTH 64
-#define TILE_HEIGHT 32
-
-/* Must supply also tile_z */
-inline void screen_to_tile(int sx, int sy, float & tile_x, float & tile_y, float tile_z)
-{
-  tile_x = (float)sx/TILE_WIDTH + (float)sy/TILE_HEIGHT + tile_z/2;
-  tile_y = (float)sy/TILE_HEIGHT + tile_z/2 -  (float)sx/TILE_WIDTH;
-}
 
 inline void tile_to_screen(float tile_x, float tile_y, float tile_z, int & sx, int & sy)
 {
@@ -30,47 +19,44 @@ inline void tile_to_screen(float tile_x, float tile_y, float tile_z, int & sx, i
   sy = (tile_x + tile_y - tile_z) * TILE_HEIGHT/2;
 }
 
-class Mouse : public CityItem
+bool initAll()
 {
-public:
-  Mouse() : CityItem()
-  {
-    tz = 9;
-  }
+  if (SDL_Init( SDL_INIT_EVERYTHING ) < 0)
+    return false;
 
-  virtual void update()
-  {
-    SDL_GetMouseState(&sx, &sy);
-    screen_to_tile(sx+camera.x, sy+camera.y, tx, ty, tz);
-//    cout << "Mouse pos " << sx << "x" << sy << "->" << tx << "x" << ty << "x" << tz << endl;
-  }
+  SDL_GL_SetAttribute(SDL_GL_RED_SIZE,    	    8);
+  SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE,  	    8);
+  SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,   	    8);
+  SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE,  	    8);
 
-  virtual void draw(Raster * to)
-  {
-    Rect t;
-    t.x = sx; t.y = sy;
-    image->blit(NULL, to, &t);
-  }
+  //SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,  	    16);
+  SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE,		    32);
 
-  int sx, sy;
-  Rect camera;
-  Raster * image;
-};
+  SDL_GL_SetAttribute(SDL_GL_ACCUM_RED_SIZE,	    8);
+  SDL_GL_SetAttribute(SDL_GL_ACCUM_GREEN_SIZE,	8);
+  SDL_GL_SetAttribute(SDL_GL_ACCUM_BLUE_SIZE,	    8);
+  SDL_GL_SetAttribute(SDL_GL_ACCUM_ALPHA_SIZE,	8);
 
+  //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS,  1);
+  //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES,  2);
+
+  return true;
+}
 
 int main( int argc, char* argv[] )
 {
   GfxManager gfx;
   srand(42);
   //Start
-  SDL_Init( SDL_INIT_EVERYTHING );
+  if (!initAll())
+    return -1;
 
-  Screen * screen;
 
-  screen = new Screen(WIDTH, HEIGHT, "X-Com 42");
+  Screen * screen = new Screen(WIDTH, HEIGHT, "X-Com 42");
 
-  Raster * menu = gfx.getRaster("ufodata/buybase2.pcx", false);
-  menu->zoom2x();
+  Raster * menu = gfx.getRaster("ufodata/buybase2.pcx");
+  menu->setZoom(2);
+  //menu->zoom2x();
 
   SpritePack *city = gfx.getPack("ufodata/CITY");
 
@@ -81,6 +67,7 @@ int main( int argc, char* argv[] )
   SpritePack *invalid = gfx.getPack("ufodata/DESCURS");
 
   Raster *mouse_img = gfx.getRaster("cursor.png");
+
 
   CityMap cm(100,100,10);
 
@@ -135,7 +122,7 @@ int main( int argc, char* argv[] )
   items.push_back(ufo);
 //  items.push_back(mouse);
 
-  FpsTimer timer(30);
+  FpsTimer timer(60);
 
   while (!quit)
   {
@@ -166,7 +153,12 @@ int main( int argc, char* argv[] )
     mouse->update();
 
     /* Drawing */
+    glEnable(GL_TEXTURE_2D);
     screen->clear();
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+//    glTranslatef(camera.x, camera.y, 0);
 
     for (int tz = 0; tz<10; tz++)
     {
@@ -188,9 +180,9 @@ int main( int argc, char* argv[] )
             if (t->tile)
             {
               if (t->tile < city->count())
-                city->getSprite(t->tile)->blit(NULL, screen, &s);
+                city->getSprite(t->tile)->renderAt(s);
               else
-                invalid->getSprite(1)->blit(NULL, screen, &s);
+                invalid->getSprite(1)->renderAt(s);
             }
           }
         }
@@ -207,7 +199,7 @@ int main( int argc, char* argv[] )
           s.x = sx;
           s.y = sy;
           // Don't clip for now - SDL should do the clipping anyway
-          i->blit(screen, &s);
+          i->renderAt(s);
         }
       }
 
@@ -222,13 +214,16 @@ int main( int argc, char* argv[] )
           s.x = sx;
           s.y = sy;
           // Don't clip for now - SDL should do the clipping anyway
-          i->blit(screen, &s);
+          i->renderAt(s);
         }
       }
     }
 
-    menu->blit(NULL, screen, NULL);
-    mouse->draw(screen);
+    s.x =0;
+    s.y =0;
+
+    menu->renderAt(s);
+    mouse->renderAt(s);
 
     screen->flip();
 
@@ -298,6 +293,12 @@ int main( int argc, char* argv[] )
       tile_to_screen(ufo->tx, ufo->ty, ufo->tz, cx, cy);
       camera.x = cx - WIDTH/2;
       camera.y = cy - HEIGHT/2;
+    }
+    if (keystates[SDLK_LALT])
+    {
+      SDL_EventState(SDL_MOUSEMOTION, SDL_IGNORE);
+      SDL_WarpMouse(WIDTH/2, HEIGHT/2);
+      SDL_EventState(SDL_MOUSEMOTION, SDL_ENABLE);
     }
     mouse->camera = camera;
 

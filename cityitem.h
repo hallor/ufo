@@ -30,12 +30,13 @@ public:
         frame = start_frame;
     }
 
-    virtual void blit(Raster * to, Rect * rect)
+    virtual void renderAt(Rect & pos)
     {
       if (!is_garbage)
       {
         Sprite * img = images->getSprite(frame);
-        img->blit(NULL, to, rect);
+        if (img)
+          img->renderAt(pos);
       }
     }
 

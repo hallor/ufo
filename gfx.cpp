@@ -1,8 +1,9 @@
 #include <SDL/SDL_image.h>
 #include <boost/lexical_cast.hpp>
 #include <iostream>
-
+#include <cmath>
 #include "gfx.h"
+using namespace std;
 
 SpritePack::SpritePack(const std::list<SDL_Surface*> & s)
 {
@@ -64,13 +65,12 @@ SpritePack * GfxManager::getPack(const std::string & filename)
   {
     SDL_Surface * surf;
 
-    surf = IMG_Load( (filename + boost::lexical_cast<std::string>(i)).c_str() );
+    surf = loadTexture( (filename + boost::lexical_cast<std::string>(i)).c_str(), true);
     if (!surf)
     {
       std::cout << "Failed loading " << filename + boost::lexical_cast<std::string>(i) << std::endl;
       break;
     }
-    SDL_SetColorKey(surf, SDL_SRCCOLORKEY | SDL_RLEACCEL, surf->format->colorkey);
     co.push_back(surf);
   }
 
@@ -86,18 +86,143 @@ Raster * GfxManager::getRaster(const std::string & filename, bool colorKey)
   if (rasters.count(filename))
     return rasters[filename];
 
-  SDL_Surface * surf = IMG_Load(filename.c_str());
+  SDL_Surface * surf = loadTexture(filename.c_str(), colorKey);
   if (surf)
   {
-    if (colorKey)
-      SDL_SetColorKey(surf, SDL_SRCCOLORKEY | SDL_RLEACCEL, surf->format->colorkey);
-    else
-      SDL_SetColorKey(surf, 0, 0);
     Raster * r = new Raster();
     if (r)
+    {
       r->setSurface(surf);
-    std::cout << "Loaded raster from " << filename << " Size: " << surf->w << "x" << surf->h << std::endl;
+      std::cout << "Loaded raster from " << filename << " Original Size: " << surf->w << "x" << surf->h << std::endl;
+    }
     return r;
   }
   return NULL;
+}
+
+bool unloadSurfacefromVram(GLuint & tex_id)
+{
+  glDeleteTextures(1, &tex_id);
+  return true;
+}
+
+bool loadSurfacetoVram(SDL_Surface * surface, GLuint & tex_id, Rect & tex_rect)
+{
+  GLenum texture_format;
+  GLint  nOfColors;
+
+  // Convert to HW format (32bit etc)
+  surface = SDL_DisplayFormat(surface);
+
+  int neww = surface->w;
+  int newh = surface->h;
+
+  // Check that the image's width is a power of 2
+  if ( (surface->w & (surface->w - 1)) != 0 ) {
+    neww = 1 << (int)ceil(log2(surface->w));
+    if (surface->w > 300)
+    cout << "warning: image's width is not a power of 2, adjusting to " << neww <<  endl;
+  }
+
+  // Also check if the height is a power of 2
+  if ( (surface->h & (surface->h - 1)) != 0 ) {
+    newh = 1 << (int)ceil(log2(surface->h));
+    if (surface->h > 300)
+    cout << "warning: image's height is not a power of 2, adjuting to " << newh <<  endl;
+  }
+
+  tex_rect.w = neww;
+  tex_rect.h = newh;
+
+  /* Resize if needed */
+  if (neww !=surface->w || newh !=surface->h)
+  {
+    Uint32 rmask, gmask, bmask, amask;
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    rmask = 0xff000000;
+    gmask = 0x00ff0000;
+    bmask = 0x0000ff00;
+    amask = 0x000000ff;
+#else
+    rmask = 0x000000ff;
+    gmask = 0x0000ff00;
+    bmask = 0x00ff0000;
+    amask = 0xff000000;
+#endif
+    SDL_Surface * n = SDL_CreateRGBSurface(SDL_SWSURFACE, neww, newh, 32,rmask,gmask,bmask,amask);
+    if (!n)
+    {
+      SDL_FreeSurface(surface);
+      return false;
+    }
+    // Clear
+    //SDL_FillRect(n, NULL, SDL_MapRGBA(n->format,0,0,100,0));
+    // Copy
+    SDL_BlitSurface(surface, NULL, n, NULL);
+    SDL_FreeSurface(surface);
+    surface = n;
+    if (neww>500)
+    cout << "Surface resized succesfully"<<endl;
+  }
+
+  // get the number of channels in the SDL surface
+  nOfColors = surface->format->BytesPerPixel;
+  if (nOfColors == 4)     // contains an alpha channel
+  {
+    if (surface->format->Rmask == 0x000000ff)
+      texture_format = GL_RGBA;
+    else
+      texture_format = GL_BGRA;
+  } else if (nOfColors == 3)     // no alpha channel
+  {
+    if (surface->format->Rmask == 0x000000ff)
+      texture_format = GL_RGB;
+    else
+      texture_format = GL_BGR;
+  } else {
+    cout << "warning: the image is not truecolor..  this will probably break\n" << endl;
+    // this error should not go unhandled
+  }
+
+
+  if (neww >500)
+  {
+    cout << "Image has " << (int)surface->format->BytesPerPixel << "bpp, amask=" << surface->format->Amask << endl;
+    cout << "Image format is " << (texture_format == GL_RGBA ? "RGBA" : "BGRA") << endl;
+  }
+
+  // Have OpenGL generate a texture object handle for us
+  glGenTextures( 1, &tex_id );
+  if (glGetError())
+    cout << "GL error" << glGetError() << endl;
+
+  // Bind the texture object
+  glBindTexture( GL_TEXTURE_2D, tex_id );
+
+  // Set the texture's stretching properties
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+
+  // Edit the texture object's image data using the information SDL_Surface gives us
+  glTexImage2D( GL_TEXTURE_2D, 0, nOfColors, surface->w, surface->h, 0,
+               texture_format, GL_UNSIGNED_BYTE, surface->pixels );
+
+
+  SDL_FreeSurface(surface);
+  return true;
+}
+
+
+SDL_Surface * loadTexture(const char * filename, bool colorKey)
+{
+  SDL_Surface *surface;	// This surface will tell us the details of the image
+
+  surface = IMG_Load(filename);
+  if (!surface)
+    return NULL;
+
+  if (colorKey)
+    SDL_SetColorKey(surface, SDL_SRCCOLORKEY | SDL_RLEACCEL, 0);
+
+  return surface;
 }

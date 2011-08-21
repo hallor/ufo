@@ -12,11 +12,13 @@ HEADERS += gfx.h \
     citymap.h \
     citybuilding.h \
     cityitem.h \
-    timer.h
+    timer.h \
+    mouse.h
 SOURCES += gfx.cpp main.cpp \
     citymap.cpp \
     citybuilding.cpp \
     cityitem.cpp \
-    timer.cpp
+    timer.cpp \
+    mouse.cpp
 
-LIBS += -lSDL -lSDL_image
+LIBS += -lSDL -lSDL_image -lGL
