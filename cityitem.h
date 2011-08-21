@@ -7,6 +7,7 @@
 #include <iostream>
 #include <cmath>
 #include "gfx.h"
+#include "citymap.h"
 
 
 class CityItem
@@ -127,6 +128,34 @@ public:
   {
     is_garbage = true;
   }
+};
+
+class PewPewItem : public SingleShotMovableItem
+{
+public:
+  PewPewItem(const CityMap & c) : SingleShotMovableItem(), city(c)
+  {
+    hit = false;
+  }
+
+  virtual void update()
+  {
+    if (!hit)
+    {
+      SingleShotMovableItem::update();
+      if (city.map[(int)tx][(int)ty][(int)tz].tile)
+      {
+        hit = true;
+        is_garbage = true;
+      }
+    }
+  }
+
+  bool is_hit() const { return hit; }
+
+private:
+  const CityMap & city;
+  bool hit;
 };
 
 class DimensionGate : public MovableCityItem

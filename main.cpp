@@ -62,6 +62,8 @@ int main( int argc, char* argv[] )
 
   SpritePack *invalid = gfx.getPack("ufodata/DESCURS");
 
+  SpritePack *pequip = gfx.getPack("ufodata/PEQUIP");
+
   Raster *mouse_img = gfx.getRaster("cursor.png");
 
 
@@ -93,6 +95,7 @@ int main( int argc, char* argv[] )
   Mouse * mouse;
   std::list<CityItem *> items;
   std::list<CityItem *> temp_items;
+  std::list<PewPewItem *> shots;
   ci1 = new DimensionGate();
   ci2 = new DimensionGate();
   ufo = new Ufo(ci1, ci2);
@@ -138,6 +141,46 @@ int main( int argc, char* argv[] )
       i->update();
       if (i->garbage())
         to_remove.push_back(i);
+    }
+
+    for (list<PewPewItem*>::iterator it=shots.begin(); it!=shots.end(); ++it)
+    {
+      PewPewItem *i=*it;
+      i->update();
+
+      if (i->is_hit()) // process hit
+      {
+        if ((int)i->tz==0)
+          cm.map[(int)i->tx][(int)i->ty][(int)i->tz].tile = 1;
+        else
+          cm.map[(int)i->tx][(int)i->ty][(int)i->tz].tile = 0;
+
+        for (int x=-1; x<2; ++x)
+          for (int y=-1; y<2; ++y)
+            {
+              SingleShotItem * shot = new SingleShotItem();
+
+              shot->tx = i->tx+x;
+              shot->ty = i->ty+y;
+              shot->tz = i->tz;
+              shot->anim_speed=1;
+              shot->images = ptang;
+              if (x!=0 || y!=0)
+              {
+                shot->start_frame = shot->frame = 29;
+                shot->end_frame=41;
+              }
+              else
+              {
+                shot->start_frame = shot->frame = 74;
+                shot->end_frame=83;
+              }
+              temp_items.push_back(shot);
+            }
+      }
+
+      if (i->garbage())
+        it = shots.erase(it);
     }
 
     BOOST_FOREACH(CityItem *i, to_remove)
@@ -213,6 +256,21 @@ int main( int argc, char* argv[] )
           i->renderAt(s);
         }
       }
+
+      BOOST_FOREACH(CityItem *i, shots)
+      {
+        int sx, sy;
+        if ((int)i->tz == tz)
+        {
+          Utils::tile_to_screen(i->tx, i->ty, i->tz, sx, sy);
+          sx -= camera.x;
+          sy -= camera.y;
+          s.x = sx;
+          s.y = sy;
+          // Don't clip for now - SDL should do the clipping anyway
+          i->renderAt(s);
+        }
+      }
     }
 
     s.x =0;
@@ -222,6 +280,22 @@ int main( int argc, char* argv[] )
     mouse->renderAt(s);
 
     screen->flip();
+
+    /* Shot at the city! */
+    if (rand() % 10 > 8)
+    {
+      PewPewItem *pp = new PewPewItem(cm);
+      pp->tx=ufo->tx;
+      pp->ty=ufo->ty;
+      pp->tz=ufo->tz;
+      pp->dx=rand() % 100;
+      pp->dy=rand() % 100;
+      pp->dz=0;
+      pp->images=pequip;
+      pp->start_frame = pp->frame = 75;
+      pp->end_frame=75;
+      shots.push_back(pp);
+    }
 
     /* EVENT processing */
 
@@ -261,6 +335,20 @@ int main( int argc, char* argv[] )
           }
         }
           break;
+        case SDLK_f:
+        {
+          PewPewItem *pp = new PewPewItem(cm);
+          pp->tx=ufo->tx;
+          pp->ty=ufo->ty;
+          pp->tz=ufo->tz;
+          pp->dx=rand() % 100;
+          pp->dy=rand() % 100;
+          pp->dz=0;
+          pp->images=pequip;
+          pp->start_frame = pp->frame = 75;
+          pp->end_frame=75;
+          shots.push_back(pp);
+        } break;
         default: break;
         }
       if (event.type == SDL_MOUSEBUTTONUP)

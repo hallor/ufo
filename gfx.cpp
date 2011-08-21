@@ -120,15 +120,11 @@ bool loadSurfacetoVram(SDL_Surface * surface, GLuint & tex_id, Rect & tex_rect)
   // Check that the image's width is a power of 2
   if ( (surface->w & (surface->w - 1)) != 0 ) {
     neww = 1 << (int)ceil(log2(surface->w));
-    if (surface->w > 300)
-    cout << "warning: image's width is not a power of 2, adjusting to " << neww <<  endl;
   }
 
   // Also check if the height is a power of 2
   if ( (surface->h & (surface->h - 1)) != 0 ) {
     newh = 1 << (int)ceil(log2(surface->h));
-    if (surface->h > 300)
-    cout << "warning: image's height is not a power of 2, adjuting to " << newh <<  endl;
   }
 
   tex_rect.w = neww;
@@ -161,8 +157,6 @@ bool loadSurfacetoVram(SDL_Surface * surface, GLuint & tex_id, Rect & tex_rect)
     SDL_BlitSurface(surface, NULL, n, NULL);
     SDL_FreeSurface(surface);
     surface = n;
-    if (neww>500)
-    cout << "Surface resized succesfully"<<endl;
   }
 
   // get the number of channels in the SDL surface
@@ -182,13 +176,6 @@ bool loadSurfacetoVram(SDL_Surface * surface, GLuint & tex_id, Rect & tex_rect)
   } else {
     cout << "warning: the image is not truecolor..  this will probably break\n" << endl;
     // this error should not go unhandled
-  }
-
-
-  if (neww >500)
-  {
-    cout << "Image has " << (int)surface->format->BytesPerPixel << "bpp, amask=" << surface->format->Amask << endl;
-    cout << "Image format is " << (texture_format == GL_RGBA ? "RGBA" : "BGRA") << endl;
   }
 
   // Have OpenGL generate a texture object handle for us
