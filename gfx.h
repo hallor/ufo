@@ -83,52 +83,6 @@ private:
   bool in_vram; // if set - tex_id can be used, else we must copy surface to vram
 };
 
-class Screen
-{
-public:
-  Screen(int width, int height, std::string window_title="ufo")
-  {
-    SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
-    SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, 1 );
-
-    surface = SDL_SetVideoMode(width, height, 32, SDL_HWSURFACE | SDL_GL_DOUBLEBUFFER | SDL_OPENGL);
-    SDL_WM_SetCaption(window_title.c_str(), NULL);
-    SDL_ShowCursor(false);
-    SDL_FillRect(surface, NULL, 0);
-
-    glClearColor(0, 0, 0, 0);
-
-    glViewport(0, 0, width, height);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-    glOrtho(0, width, height, 0, 10, -1);
-
-    glMatrixMode(GL_MODELVIEW);
-
-    glEnable(GL_TEXTURE_2D);
-
-    glLoadIdentity();
-
-    glEnable(GL_ALPHA_TEST);
-    glAlphaFunc(GL_GREATER,0.1f);
-  }
-
-  void flip()
-  {
-    SDL_GL_SwapBuffers();
-  }
-
-  void clear()
-  {
-    glClearColor(0,0,0,0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  }
-private:
-  SDL_Surface * surface;
-};
-
 class Sprite : public Raster
 {
   friend class SpritePack;

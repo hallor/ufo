@@ -10,14 +10,10 @@
 #include "cityitem.h"
 #include "timer.h"
 #include "mouse.h"
+#include "screen.h"
+#include "utils.h"
 
 using namespace std;
-
-inline void tile_to_screen(float tile_x, float tile_y, float tile_z, int & sx, int & sy)
-{
-  sx = (tile_x - tile_y) * TILE_WIDTH/2;
-  sy = (tile_x + tile_y - tile_z) * TILE_HEIGHT/2;
-}
 
 bool initAll()
 {
@@ -170,7 +166,7 @@ int main( int argc, char* argv[] )
         {
           Tile * t = &cm.map[tx][ty][tz];
           int sx, sy;
-          tile_to_screen(tx, ty, tz, sx, sy);
+          Utils::tile_to_screen(tx, ty, tz, sx, sy);
           if (sx+TILE_WIDTH > camera.x && sy+TILE_HEIGHT+15> camera.y && sx - camera.x <camera.w && sy - camera.y <camera.h)
           {
             sx -= camera.x;
@@ -193,7 +189,7 @@ int main( int argc, char* argv[] )
         int sx, sy;
         if ((int)i->tz == tz)
         {
-          tile_to_screen(i->tx, i->ty, i->tz, sx, sy);
+          Utils::tile_to_screen(i->tx, i->ty, i->tz, sx, sy);
           sx -= camera.x;
           sy -= camera.y;
           s.x = sx;
@@ -208,7 +204,7 @@ int main( int argc, char* argv[] )
         int sx, sy;
         if ((int)i->tz == tz)
         {
-          tile_to_screen(i->tx, i->ty, i->tz, sx, sy);
+          Utils::tile_to_screen(i->tx, i->ty, i->tz, sx, sy);
           sx -= camera.x;
           sy -= camera.y;
           s.x = sx;
@@ -290,7 +286,7 @@ int main( int argc, char* argv[] )
     if (keystates[SDLK_HOME])
     {
       int cx, cy;
-      tile_to_screen(ufo->tx, ufo->ty, ufo->tz, cx, cy);
+      Utils::tile_to_screen(ufo->tx, ufo->ty, ufo->tz, cx, cy);
       camera.x = cx - WIDTH/2;
       camera.y = cy - HEIGHT/2;
     }
