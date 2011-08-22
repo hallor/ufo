@@ -6,7 +6,8 @@
 #include <list>
 #include <SDL/SDL.h>
 #include <SDL/SDL_rotozoom.h>
-#include <GL/gl.h>
+#include <GL/glew.h>
+#include "shaderprogram.h"
 
 typedef SDL_Rect Rect;
 
@@ -35,19 +36,22 @@ public:
     return r;
   }
 
-  inline void renderAt(const Rect & pos)
+  inline void renderAt(const Rect & pos, const ShaderProgram & sp)
   {
     if (in_vram)
     {
+//      int my_sampler_uniform_location = glGetUniformLocation(sp.get_sp(), "tex");
       glBindTexture(GL_TEXTURE_2D, tex_id);
+//      glUniform1iARB(my_sampler_uniform_location, GL_TEXTURE0);
+
       glMatrixMode(GL_TEXTURE);
       glLoadIdentity();
       glScalef(sx, sy, 1);
       glBegin(GL_QUADS);
         glTexCoord2i( 0, 0 ); glVertex3f(pos.x*zoom, pos.y*zoom, 0);
-        glTexCoord2i( surface->w, 0 ); glVertex3f(pos.x*zoom+surface->w*zoom, pos.y*zoom, 0);
-        glTexCoord2i( surface->w, surface->h); glVertex3f(pos.x*zoom+surface->w*zoom, pos.y*zoom+ surface->h*zoom, 0);
-        glTexCoord2i( 0, surface->h ); glVertex3f(pos.x, pos.y*zoom+surface->h*zoom, 0);
+        glTexCoord2i( (float)surface->w, 0 ); glVertex3f(pos.x*zoom+surface->w*zoom, pos.y*zoom, 0);
+        glTexCoord2i( (float)surface->w, (float)surface->h); glVertex3f(pos.x*zoom+surface->w*zoom, pos.y*zoom+ surface->h*zoom, 0);
+        glTexCoord2i( 0, (float)surface->h); glVertex3f(pos.x, pos.y*zoom+surface->h*zoom, 0);
       glEnd();
     } else
       std::cout << "Surface not in vram!" << std::endl;
@@ -74,9 +78,9 @@ public:
 
   void setZoom(int n) { zoom = n; }
 
+  GLuint tex_id;
 private:
   SDL_Surface * surface; // Copy of texture - usually stored in vram - this is texture with original size/bpp (To be converted)
-  GLuint tex_id;
   float zoom;
   Rect gl_tex_size;
   float sx, sy;

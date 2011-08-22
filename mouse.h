@@ -19,11 +19,11 @@ public:
     Utils::screen_to_tile(sx+camera.x, sy+camera.y, tx, ty, tz);
   }
 
-  virtual void renderAt(Rect & /*pos*/)
+  virtual void renderAt(Rect & /*pos*/, const ShaderProgram & sp)
   {
     Rect t;
     t.x = sx; t.y = sy;
-    image->renderAt(t);
+    image->renderAt(t, sp);
   }
 
   int sx, sy;

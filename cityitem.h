@@ -9,6 +9,7 @@
 #include "gfx.h"
 #include "citymap.h"
 
+class ShaderProgram;
 
 class CityItem
 {
@@ -31,13 +32,13 @@ public:
         frame = start_frame;
     }
 
-    virtual void renderAt(Rect & pos)
+    virtual void renderAt(Rect & pos, const ShaderProgram & sp)
     {
       if (!is_garbage)
       {
         Sprite * img = images->getSprite(frame);
         if (img)
-          img->renderAt(pos);
+          img->renderAt(pos,sp);
       }
     }
 

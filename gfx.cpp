@@ -187,8 +187,8 @@ bool loadSurfacetoVram(SDL_Surface * surface, GLuint & tex_id, Rect & tex_rect)
   glBindTexture( GL_TEXTURE_2D, tex_id );
 
   // Set the texture's stretching properties
-  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 
   // Edit the texture object's image data using the information SDL_Surface gives us
   glTexImage2D( GL_TEXTURE_2D, 0, nOfColors, surface->w, surface->h, 0,

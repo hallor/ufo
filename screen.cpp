@@ -22,10 +22,11 @@ Screen::Screen(int width, int height, const char * window_title)
   glOrtho(0, width, height, 0, 10, -1);
 
   glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
 
   glEnable(GL_TEXTURE_2D);
 
-  glLoadIdentity();
+  glPolygonMode(GL_FRONT, GL_FILL);
 
   glEnable(GL_ALPHA_TEST);
   glAlphaFunc(GL_GREATER,0.1f);
@@ -39,5 +40,5 @@ void Screen::flip()
 void Screen::clear()
 {
   glClearColor(0,0,0,0);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT /*| GL_DEPTH_BUFFER_BIT*/);
 }

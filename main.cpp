@@ -1,4 +1,6 @@
 #include <SDL/SDL.h>
+#include <GL/glew.h>
+
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_gfxPrimitives.h>
 #include <iostream>
@@ -12,6 +14,7 @@
 #include "mouse.h"
 #include "screen.h"
 #include "utils.h"
+#include "shaderprogram.h"
 
 using namespace std;
 
@@ -47,8 +50,31 @@ int main( int argc, char* argv[] )
   if (!initAll())
     return -1;
 
-
   Screen * screen = new Screen(WIDTH, HEIGHT, "X-Com 42");
+
+  {
+    int ret;
+    if ( (ret = glewInit())!= GLEW_OK)
+    {
+      cout << "Error initializing glew: " << glewGetErrorString(ret) << endl;
+      return false;
+    }
+  }
+
+  ShaderProgram sp("city.vert", "city.frag");
+
+  if (!sp.compile())
+  {
+    cout << "Error compiling shader program." << endl;
+    return -1;
+  }
+
+  if (!sp.link())
+  {
+    cout << "Error linking shader program."<< endl;
+    return -1;
+  }
+
 
   Raster * menu = gfx.getRaster("ufodata/buybase2.pcx");
   menu->setZoom(2);
@@ -65,7 +91,6 @@ int main( int argc, char* argv[] )
   SpritePack *pequip = gfx.getPack("ufodata/PEQUIP");
 
   Raster *mouse_img = gfx.getRaster("cursor.png");
-
 
   CityMap cm(100,100,10);
 
@@ -163,7 +188,7 @@ int main( int argc, char* argv[] )
               shot->tx = i->tx+x;
               shot->ty = i->ty+y;
               shot->tz = i->tz;
-              shot->anim_speed=1;
+              shot->anim_speed=0.5;
               shot->images = ptang;
               if (x!=0 || y!=0)
               {
@@ -192,11 +217,16 @@ int main( int argc, char* argv[] )
     mouse->update();
 
     /* Drawing */
-    glEnable(GL_TEXTURE_2D);
+//    glEnable(GL_TEXTURE_2D);
     screen->clear();
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    sp.use();
+
+    int param = glGetUniformLocation(sp.get_sp(), "mousePos");
+    glUniform2f(param, mouse->sx, mouse->sy);
+
 //    glTranslatef(camera.x, camera.y, 0);
 
     for (int tz = 0; tz<10; tz++)
@@ -219,9 +249,9 @@ int main( int argc, char* argv[] )
             if (t->tile)
             {
               if (t->tile < city->count())
-                city->getSprite(t->tile)->renderAt(s);
+                city->getSprite(t->tile)->renderAt(s, sp);
               else
-                invalid->getSprite(1)->renderAt(s);
+                invalid->getSprite(1)->renderAt(s, sp);
             }
           }
         }
@@ -238,7 +268,7 @@ int main( int argc, char* argv[] )
           s.x = sx;
           s.y = sy;
           // Don't clip for now - SDL should do the clipping anyway
-          i->renderAt(s);
+          i->renderAt(s, sp);
         }
       }
 
@@ -253,7 +283,7 @@ int main( int argc, char* argv[] )
           s.x = sx;
           s.y = sy;
           // Don't clip for now - SDL should do the clipping anyway
-          i->renderAt(s);
+          i->renderAt(s, sp);
         }
       }
 
@@ -268,16 +298,17 @@ int main( int argc, char* argv[] )
           s.x = sx;
           s.y = sy;
           // Don't clip for now - SDL should do the clipping anyway
-          i->renderAt(s);
+          i->renderAt(s, sp);
         }
       }
     }
+    //sp.unuse();
 
     s.x =0;
     s.y =0;
 
-    menu->renderAt(s);
-    mouse->renderAt(s);
+    menu->renderAt(s, sp);
+    mouse->renderAt(s, sp);
 
     screen->flip();
 
@@ -285,8 +316,8 @@ int main( int argc, char* argv[] )
     if (rand() % 10 > 8)
     {
       PewPewItem *pp = new PewPewItem(cm);
-      pp->tx=ufo->tx;
-      pp->ty=ufo->ty;
+      pp->tx=ufo->tx+1;
+      pp->ty=ufo->ty+1;
       pp->tz=ufo->tz;
       pp->dx=rand() % 100;
       pp->dy=rand() % 100;

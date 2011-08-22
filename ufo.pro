@@ -15,7 +15,8 @@ HEADERS += gfx.h \
     timer.h \
     mouse.h \
     screen.h \
-    utils.h
+    utils.h \
+    shaderprogram.h
 SOURCES += gfx.cpp main.cpp \
     citymap.cpp \
     citybuilding.cpp \
@@ -23,6 +24,7 @@ SOURCES += gfx.cpp main.cpp \
     timer.cpp \
     mouse.cpp \
     screen.cpp \
-    utils.cpp
+    utils.cpp \
+    shaderprogram.cpp
 
-LIBS += -lSDL -lSDL_image -lGL
+LIBS += -lSDL -lSDL_image -lGL -lGLU -lGLEW
