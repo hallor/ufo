@@ -1,4 +1,5 @@
 #include <SDL/SDL.h>
+#include <GL/glew.h>
 #include <GL/gl.h>
 #include "screen.h"
 
@@ -10,7 +11,6 @@ Screen::Screen(int width, int height, const char * window_title)
   surface = SDL_SetVideoMode(width, height, 32, SDL_HWSURFACE | SDL_GL_DOUBLEBUFFER | SDL_OPENGL);
   SDL_WM_SetCaption(window_title, NULL);
   SDL_ShowCursor(false);
-  SDL_FillRect(surface, NULL, 0);
 
   glClearColor(0, 0, 0, 0);
 
@@ -19,17 +19,20 @@ Screen::Screen(int width, int height, const char * window_title)
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
 
-  glOrtho(0, width, height, 0, 10, -1);
+  glOrtho(0, width, height, 0, 12, -1);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
   glEnable(GL_TEXTURE_2D);
 
-  glPolygonMode(GL_FRONT, GL_FILL);
+//  glEnable(GL_DEPTH_TEST);
+//  glDepthFunc(GL_ALWAYS);
 
-  glEnable(GL_ALPHA_TEST);
-  glAlphaFunc(GL_GREATER,0.1f);
+//  glPolygonMode(GL_FRONT, GL_FILL);
+
+//  glEnable(GL_ALPHA_TEST);
+//  glAlphaFunc(GL_GREATER,0.1f);
 }
 
 void Screen::flip()
@@ -40,5 +43,6 @@ void Screen::flip()
 void Screen::clear()
 {
   glClearColor(0,0,0,0);
+  //glClearDepth(15.0);
   glClear(GL_COLOR_BUFFER_BIT /*| GL_DEPTH_BUFFER_BIT*/);
 }

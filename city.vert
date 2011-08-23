@@ -1,8 +1,9 @@
 /* Vertex shader */
-varying vec2 vTexCoord;
+varying float zd;
 
 void main(void)
 {
-  vTexCoord = gl_MultiTexCoord0.xy;
+  gl_TexCoord[0] = gl_MultiTexCoord0;
   gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+  zd = gl_Vertex.z;
 }

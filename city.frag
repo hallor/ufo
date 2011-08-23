@@ -1,19 +1,22 @@
 /* Fragment shader */
+uniform sampler2D tex;
 uniform vec2 mousePos;
-//uniform sampler2D tex;
-varying vec2 vTexCoord;
+varying float zd;
 
 void main()
 {
-  vec4 col = texture2D(texUnit0, vTexCoord);
-//  if (col.a < 0.5)
-//    discard;
-//  vec4 mouseCol = vec4(1,1,1,1);
-//  float dist = distance(gl_FragCoord, mousePos);
+  vec4 col = texture2D(tex, gl_TexCoord[0].st);
 
-//  if (dist > 2000)
-    gl_FragColor = vec4(1,1,1,1);
-//  else
-//    gl_FragColor = col ;
+  if (col.a < 0.5)
+    discard;
+
+  vec2 mp = vec2(mousePos.x, -mousePos.y);
+  float d = distance(mousePos, gl_FragCoord.xy) / 100.0;
+
+  d = clamp(d, 0.0, 1.0);
+  if (zd > 9.0/20.0)
+    d = 1.0;
+
+  gl_FragColor = col * d + vec4(1.0, 1.0, 0.0, 1.0-d) * (1.0 - d);
 }
 

@@ -4,9 +4,10 @@
 #include <string>
 #include <map>
 #include <list>
+#include <GL/glew.h>
+#include <GL/gl.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_rotozoom.h>
-#include <GL/glew.h>
 #include "shaderprogram.h"
 
 typedef SDL_Rect Rect;
@@ -36,22 +37,22 @@ public:
     return r;
   }
 
-  inline void renderAt(const Rect & pos, const ShaderProgram & sp)
+  inline void renderAt(const Rect & pos, const ShaderProgram & sp, float z)
   {
+    z=z/20;
     if (in_vram)
     {
-//      int my_sampler_uniform_location = glGetUniformLocation(sp.get_sp(), "tex");
-      glBindTexture(GL_TEXTURE_2D, tex_id);
-//      glUniform1iARB(my_sampler_uniform_location, GL_TEXTURE0);
+      int my_sampler_uniform_location = glGetUniformLocation(sp.get_sp(), "tex");
 
-      glMatrixMode(GL_TEXTURE);
-      glLoadIdentity();
-      glScalef(sx, sy, 1);
+      glActiveTexture(GL_TEXTURE0);
+      glBindTexture(GL_TEXTURE_2D, tex_id);
+      glUniform1i(my_sampler_uniform_location, GL_TEXTURE0);
+
       glBegin(GL_QUADS);
-        glTexCoord2i( 0, 0 ); glVertex3f(pos.x*zoom, pos.y*zoom, 0);
-        glTexCoord2i( (float)surface->w, 0 ); glVertex3f(pos.x*zoom+surface->w*zoom, pos.y*zoom, 0);
-        glTexCoord2i( (float)surface->w, (float)surface->h); glVertex3f(pos.x*zoom+surface->w*zoom, pos.y*zoom+ surface->h*zoom, 0);
-        glTexCoord2i( 0, (float)surface->h); glVertex3f(pos.x, pos.y*zoom+surface->h*zoom, 0);
+        glTexCoord2f( 0, 0 ); glVertex3f(pos.x*zoom, pos.y*zoom, z);
+        glTexCoord2f( sx, 0 ); glVertex3f(pos.x*zoom+surface->w*zoom, pos.y*zoom, z);
+        glTexCoord2f( sx, sy); glVertex3f(pos.x*zoom+surface->w*zoom, pos.y*zoom+ surface->h*zoom, z);
+        glTexCoord2f( 0, sy); glVertex3f(pos.x, pos.y*zoom+surface->h*zoom, z);
       glEnd();
     } else
       std::cout << "Surface not in vram!" << std::endl;
@@ -71,8 +72,8 @@ public:
     if (loadSurfacetoVram(surface, tex_id, gl_tex_size))
     {
       in_vram = true;
-      sx = 1.0/gl_tex_size.w;
-      sy = 1.0/gl_tex_size.h;
+      sx = (float)surface->w/gl_tex_size.w;
+      sy = (float)surface->h/gl_tex_size.h;
     }
   }
 

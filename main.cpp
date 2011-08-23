@@ -28,7 +28,7 @@ bool initAll()
   SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,   	    8);
   SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE,  	    8);
 
-  //SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,  	    16);
+//  SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,  	    16);
   SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE,		    32);
 
   SDL_GL_SetAttribute(SDL_GL_ACCUM_RED_SIZE,	    8);
@@ -225,7 +225,7 @@ int main( int argc, char* argv[] )
     sp.use();
 
     int param = glGetUniformLocation(sp.get_sp(), "mousePos");
-    glUniform2f(param, mouse->sx, mouse->sy);
+    glUniform2f(param, mouse->sx, HEIGHT-mouse->sy);
 
 //    glTranslatef(camera.x, camera.y, 0);
 
@@ -249,9 +249,9 @@ int main( int argc, char* argv[] )
             if (t->tile)
             {
               if (t->tile < city->count())
-                city->getSprite(t->tile)->renderAt(s, sp);
+                city->getSprite(t->tile)->renderAt(s, sp,tz);
               else
-                invalid->getSprite(1)->renderAt(s, sp);
+                invalid->getSprite(1)->renderAt(s, sp,tz);
             }
           }
         }
@@ -268,7 +268,7 @@ int main( int argc, char* argv[] )
           s.x = sx;
           s.y = sy;
           // Don't clip for now - SDL should do the clipping anyway
-          i->renderAt(s, sp);
+          i->renderAt(s, sp, tz);
         }
       }
 
@@ -283,7 +283,7 @@ int main( int argc, char* argv[] )
           s.x = sx;
           s.y = sy;
           // Don't clip for now - SDL should do the clipping anyway
-          i->renderAt(s, sp);
+          i->renderAt(s, sp, tz);
         }
       }
 
@@ -298,7 +298,7 @@ int main( int argc, char* argv[] )
           s.x = sx;
           s.y = sy;
           // Don't clip for now - SDL should do the clipping anyway
-          i->renderAt(s, sp);
+          i->renderAt(s, sp,tz);
         }
       }
     }
@@ -307,8 +307,8 @@ int main( int argc, char* argv[] )
     s.x =0;
     s.y =0;
 
-    menu->renderAt(s, sp);
-    mouse->renderAt(s, sp);
+    menu->renderAt(s, sp,11);
+    mouse->renderAt(s, sp,11);
 
     screen->flip();
 

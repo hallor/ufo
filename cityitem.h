@@ -32,13 +32,13 @@ public:
         frame = start_frame;
     }
 
-    virtual void renderAt(Rect & pos, const ShaderProgram & sp)
+    virtual void renderAt(Rect & pos, const ShaderProgram & sp, float z)
     {
       if (!is_garbage)
       {
         Sprite * img = images->getSprite(frame);
         if (img)
-          img->renderAt(pos,sp);
+          img->renderAt(pos,sp, z);
       }
     }
 

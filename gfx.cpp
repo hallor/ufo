@@ -184,6 +184,7 @@ bool loadSurfacetoVram(SDL_Surface * surface, GLuint & tex_id, Rect & tex_rect)
     cout << "GL error" << glGetError() << endl;
 
   // Bind the texture object
+  glActiveTexture(GL_TEXTURE0);
   glBindTexture( GL_TEXTURE_2D, tex_id );
 
   // Set the texture's stretching properties
