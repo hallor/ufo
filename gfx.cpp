@@ -108,7 +108,7 @@ bool unloadSurfacefromVram(GLuint & tex_id)
 
 bool loadSurfacetoVram(SDL_Surface * surface, GLuint & tex_id, Rect & tex_rect)
 {
-  GLenum texture_format;
+  GLenum texture_format = 0;
   GLint  nOfColors;
 
   // Convert to HW format (32bit etc)

@@ -16,7 +16,8 @@ HEADERS += gfx.h \
     mouse.h \
     screen.h \
     utils.h \
-    shaderprogram.h
+    shaderprogram.h \
+    logger.h
 SOURCES += gfx.cpp main.cpp \
     citymap.cpp \
     citybuilding.cpp \
@@ -25,6 +26,7 @@ SOURCES += gfx.cpp main.cpp \
     mouse.cpp \
     screen.cpp \
     utils.cpp \
-    shaderprogram.cpp
+    shaderprogram.cpp \
+    logger.cpp
 
 LIBS += -lSDL -lSDL_image -lGL -lGLU -lGLEW

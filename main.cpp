@@ -80,7 +80,7 @@ int main( int argc, char* argv[] )
   menu->setZoom(2);
   //menu->zoom2x();
 
-  SpritePack *city = gfx.getPack("ufodata/CITY");
+  SpritePack *city = gfx.getPack("unpacked_bmp/city");
 
   SpritePack *ptang = gfx.getPack("ufodata/PTANG");
 
@@ -176,9 +176,9 @@ int main( int argc, char* argv[] )
       if (i->is_hit()) // process hit
       {
         if ((int)i->tz==0)
-          cm.map[(int)i->tx][(int)i->ty][(int)i->tz].tile = 1;
+          cm.setTile(i->tx, i->ty, i->tz, Tile(1));
         else
-          cm.map[(int)i->tx][(int)i->ty][(int)i->tz].tile = 0;
+          cm.setTile(i->tx, i->ty, i->tz, Tile(0));
 
         for (int x=-1; x<2; ++x)
           for (int y=-1; y<2; ++y)
@@ -232,12 +232,14 @@ int main( int argc, char* argv[] )
     for (int tz = 0; tz<10; tz++)
     {
       int ftx = 0, ltx=100, fty=0, lty=100;
+      const Tile * t = NULL;
 
-      for (int tx=ftx; tx<ltx; tx++)
+      for (int ty=fty; ty<lty; ++ty)
       {
-        for (int ty=fty; ty<lty; ty++)
+        t = cm.getTileLine(ty, tz);
+
+        for (int tx=ftx; tx<ltx; ++tx)
         {
-          Tile * t = &cm.map[tx][ty][tz];
           int sx, sy;
           Utils::tile_to_screen(tx, ty, tz, sx, sy);
           if (sx+TILE_WIDTH > camera.x && sy+TILE_HEIGHT+15> camera.y && sx - camera.x <camera.w && sy - camera.y <camera.h)
@@ -246,10 +248,10 @@ int main( int argc, char* argv[] )
             sy -= camera.y;
             s.x = sx;
             s.y = sy;
-            if (t->tile)
+            if (t[tx])
             {
-              if (t->tile < city->count())
-                city->getSprite(t->tile)->renderAt(s, sp,tz);
+              if (t[tx] < city->count())
+                city->getSprite(t[tx])->renderAt(s, sp,tz);
               else
                 invalid->getSprite(1)->renderAt(s, sp,tz);
             }

@@ -144,7 +144,7 @@ public:
     if (!hit)
     {
       SingleShotMovableItem::update();
-      if (city.map[(int)tx][(int)ty][(int)tz].tile)
+      if (city.getTile(tx, ty, tz))
       {
         hit = true;
         is_garbage = true;

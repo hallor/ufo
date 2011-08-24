@@ -1,19 +1,13 @@
 #include <fstream>
-#include <iostream>
 
 #include "citymap.h"
+#include "logger.h"
 
 using namespace std;
 
 void CityMap::free()
 {
   if (map)
-    for (int i=0; i<width; i++)
-    {
-      for (int j=0; j<height; j++)
-        delete [] map[i][j];
-      delete [] map[i];
-    }
     delete [] map;
   map = NULL;
 }
@@ -23,42 +17,38 @@ bool CityMap::load(const std::string & filename)
 {
   free();
 
-  if (width<1 || height<1)
+  if (width<1 || height<1 || depth < 1)
     return false;
 
-  map = new Tile **[width];
-  for (int i=0; i<width; ++i)
-  {
-    map[i] = new Tile *[height];
-    for (int j=0; j<height; j++)
-      map[i][j] = new Tile[depth];
-  }
+  // TODO: hack to remove ;)
+  if (width*height*depth > 1000*1000*100)
+    return false;
 
-  cout << "Loading map " << width << "x" << height << "x" << depth << " from " << filename << endl;
+  map = new Tile [width * height * depth];
+
+  LogDebug("Loading map %ix%ix%i from %s.", width, height, depth, filename.c_str());
 
   ifstream ff;
-  int x=0,y=0,z=0;
-  Uint16 tile;
+  unsigned short tile;
+  size_t x=0, num_rec=width*height*depth;
   ff.open(filename.c_str(), ios::in | ios::binary);
+
   while (ff.good())
   {
     ff.read((char*)&tile, 2);
-    map[x][y][z].tile = tile;
+    map[x] = Tile(tile);
     x++;
-    if (x >= width)
-    {
-      y++;
-      if (y >= height)
-      {
-        z++;
-        if (z >= depth)
-          break;
-        y=0;
-      }
-      x = 0;
-    }
+    if (x >= num_rec)
+      break;
   }
-  cout << "Loaded map of size: " << x << "x" << y <<"x" << z << endl;
 
-  return x+1 == width && y+1 == height && z+1 == depth;
+  if (x==num_rec)
+  {
+    LogInfo("Map %s loaded correctly.", filename.c_str());
+    return true;
+  } else
+  {
+    LogError("Unable to load map %s.", filename.c_str());
+    return false;
+  }
 }
