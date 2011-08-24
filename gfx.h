@@ -7,7 +7,8 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <SDL/SDL.h>
-#include <SDL/SDL_rotozoom.h>
+#include <boost/foreach.hpp>
+
 #include "shaderprogram.h"
 
 typedef SDL_Rect Rect;
@@ -42,11 +43,8 @@ public:
     z=z/20;
     if (in_vram)
     {
-      int my_sampler_uniform_location = glGetUniformLocation(sp.get_sp(), "tex");
-
-      glActiveTexture(GL_TEXTURE0);
+      glActiveTexture(GL_TEXTURE0); // We use texture 0 for images
       glBindTexture(GL_TEXTURE_2D, tex_id);
-      glUniform1i(my_sampler_uniform_location, GL_TEXTURE0);
 
       glBegin(GL_QUADS);
         glTexCoord2f( 0, 0 ); glVertex3f(pos.x*zoom, pos.y*zoom, z);
@@ -77,7 +75,7 @@ public:
     }
   }
 
-  void setZoom(int n) { zoom = n; }
+  void setZoom(float n) { zoom = n; }
 
   GLuint tex_id;
 private:
@@ -114,6 +112,43 @@ private:
 
   Sprite ** sprites;
   size_t sprite_count;
+  std::string origin;
+};
+
+class Texture
+{
+public:
+  float dx, dy, w, h; //coords on global texture
+  GLuint tex_id; //Texture ID in opengl
+};
+
+class TextureLibrary
+{
+public:
+  // Works best if textures are of similar sizes
+  TextureLibrary(const std::list<SDL_Surface*> & pck)
+  {
+    GLint max_size;
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max_size);
+    int row_height=0, row_width=0;
+
+    BOOST_FOREACH(SDL_Surface *s, pck)
+    {
+      row_height = std::max(row_height, s->h);
+      row_width = std::max(row_width, s->w);
+    }
+
+  }
+
+
+  Texture * getTexture(size_t no)
+  {
+
+  }
+
+  Texture ** textures;
+  size_t count_per_pack;
+  size_t count;
   std::string origin;
 };
 

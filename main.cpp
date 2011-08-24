@@ -15,6 +15,7 @@
 #include "screen.h"
 #include "utils.h"
 #include "shaderprogram.h"
+#include "logger.h"
 
 using namespace std;
 
@@ -147,6 +148,16 @@ int main( int argc, char* argv[] )
 //  items.push_back(mouse);
 
   FpsTimer timer(60);
+  GLint t;
+  glGetIntegerv(GL_MAX_TEXTURE_SIZE, &t);
+  LogError("Max texture size: %i", t);
+
+  int my_sampler_uniform_location = glGetUniformLocation(sp.get_sp(), "tex");
+  glActiveTexture(GL_TEXTURE0);
+  glUniform1i(my_sampler_uniform_location, GL_TEXTURE0);
+        glActiveTexture(GL_TEXTURE0); // We use texture 0 for images
+        glBindTexture(GL_TEXTURE_2D, city->getSprite(140)->tex_id);
+  LogError("cycek: %i", city->getSprite(140)->tex_id);
 
   while (!quit)
   {
@@ -237,7 +248,7 @@ int main( int argc, char* argv[] )
       for (int ty=fty; ty<lty; ++ty)
       {
         t = cm.getTileLine(ty, tz);
-
+        int sx, sy;
         for (int tx=ftx; tx<ltx; ++tx)
         {
           int sx, sy;

@@ -2,6 +2,7 @@
 #define SCREEN_H
 
 struct SDL_Surface;
+
 class Screen
 {
 public:

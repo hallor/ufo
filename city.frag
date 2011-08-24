@@ -10,6 +10,9 @@ void main()
   if (col.a < 0.5)
     discard;
 
+//  gl_FragColor = col;
+//  return;
+
   vec2 mp = vec2(mousePos.x, -mousePos.y);
   float d = distance(mousePos, gl_FragCoord.xy) / 100.0;
 

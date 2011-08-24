@@ -4,7 +4,8 @@
 #include <stdarg.h>
 #include <unistd.h>
 
-Logger log;
+namespace Logger {
+Logger __log;
 
 Logger::Logger()
 {
@@ -20,3 +21,4 @@ void Logger::log(const char *prefix, const char * format,...)
   fprintf(stderr, "\n");
 }
 
+};
