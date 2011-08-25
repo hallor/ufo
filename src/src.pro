@@ -20,7 +20,8 @@ HEADERS += citybuilding.h \
            utils.h \
            importer/palette.h \
            importer/bitmap.h \
-           importer/tabfile.h
+           importer/tabfile.h \
+    importer/pcxfile.h
 SOURCES += citybuilding.cpp \
            cityitem.cpp \
            citymap.cpp \
@@ -34,6 +35,7 @@ SOURCES += citybuilding.cpp \
            utils.cpp \
            importer/palette.cpp \
            importer/tabfile.cpp \
-           importer/bitmap.cpp
+           importer/bitmap.cpp \
+    importer/pcxfile.cpp
 
 LIBS+= -lSDL -lGL -lGLEW -lSDL_image -lboost_filesystem

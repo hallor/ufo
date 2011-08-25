@@ -11,11 +11,12 @@ cPalette::cPalette() : m_Valid(false)
 }
 
 
-bool cPalette::loadFrom(std::istream &file)
+bool cPalette::loadFrom(std::istream &file, int num_colors)
 {
   clear();
 
   m_Data.reserve(256);
+  int rr = 0;
 
   while (file.good())
   {
@@ -24,12 +25,20 @@ bool cPalette::loadFrom(std::istream &file)
     file.read((char*)&c, sizeof(c));
 
     if (file.gcount() == sizeof(c))
+    {
       m_Data.push_back(c);
+      ++rr;
+    }
     else
+      break;
+
+    if (num_colors && rr == num_colors)
       break;
   }
 
-  return m_Data.size() == 256;
+  m_Valid = m_Data.size() == 256 || m_Data.size() == 16;
+
+  return m_Valid;
 }
 
 bool cPalette::saveTo(std::ostream & file) const
@@ -59,7 +68,7 @@ const SRGBcolor & cPalette::color(uint8_t pos) const
 
 bool cPalette::isValid() const
 {
-  return m_Valid && m_Data.size() == 256;
+  return m_Valid && (m_Data.size() == 256 || m_Data.size() == 16);
 }
 
 void cPalette::clear()

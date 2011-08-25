@@ -18,7 +18,7 @@ public:
   cPalette();
 
   /** Loads palette from stream. */
-  bool loadFrom(std::istream &file);
+  bool loadFrom(std::istream &file, int num_colors=256);
 
   /** Saves palette to stream (raw-data format). */
   bool saveTo(std::ostream & file) const;
