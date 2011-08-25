@@ -1,50 +1,44 @@
-#include <algorithm>
-#include <cctype>
-#include <fstream>
-#include <boost/filesystem.hpp>
-
 #include "tabfile.h"
-
 #include "logger.h"
 
 using namespace Importer;
-
-using namespace boost;
 
 cTabFile::cTabFile() : m_Valid(false)
 {
 }
 
-bool cTabFile::loadFrom(const std::string &base_name)
+bool cTabFile::loadFrom(std::istream &file)
+//bool cTabFile::loadFrom(const std::string &base_name)
 {
   clear();
 
-  std::string fn(base_name+".tab");
+//  std::string fn(base_name+".tab");
 
-  if (!filesystem::exists(fn))
-    std::transform(fn.begin(), fn.end(), fn.begin(), (int(*)(int))std::toupper);
-  if (!filesystem::exists(fn))
-    std::transform(fn.begin(), fn.end(), fn.begin(), (int(*)(int))std::tolower);
+//  if (!filesystem::exists(fn))
+//    std::transform(fn.begin(), fn.end(), fn.begin(), (int(*)(int))std::toupper);
+//  if (!filesystem::exists(fn))
+//    std::transform(fn.begin(), fn.end(), fn.begin(), (int(*)(int))std::tolower);
 
-  if (!filesystem::exists(fn) && !filesystem::is_regular_file(fn))
-    return false;
+//  if (!filesystem::exists(fn) && !filesystem::is_regular_file(fn))
+//    return false;
 
-  std::ifstream file(fn.c_str());
+//  std::ifstream file(fn.c_str());
+
+
+  //Warning - code not safe (race conditions if file is deleted/written to).
+
+//  LogDebug("Opened file %s, size %i.", fn.c_str(), filesystem::file_size(fn));
 
   if (!file.good())
     return false;
 
-  //Warning - code not safe (race conditions if file is deleted/written to).
-
-  LogDebug("Opened file %s, size %i.", fn.c_str(), filesystem::file_size(fn));
-
   // Number of records in file
-  int num_records = filesystem::file_size(fn) / sizeof(int);
+//  int num_records = filesystem::file_size(fn) / sizeof(int);
 
-  if (num_records < 1)
-    return false;
+//  if (num_records < 1)
+//    return false;
 
-  m_Offsets.reserve(num_records);
+  m_Offsets.reserve(100);
 
   while(file.good())
   {
