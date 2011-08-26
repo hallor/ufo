@@ -6,26 +6,34 @@
 using namespace std;
 using namespace Importer;
 
+
 cPalette::cPalette() : m_Valid(false)
 {
 }
 
 
-bool cPalette::loadFrom(std::istream &file, int num_colors)
+bool cPalette::loadFrom(std::istream &file, int colorKey, int num_colors)
 {
   clear();
 
-  m_Data.reserve(256);
+  m_Data.reserve(num_colors);
   int rr = 0;
 
   while (file.good())
   {
-    SRGBcolor c;
+    uint8_t x[3];
+    tRGBA c;
 
-    file.read((char*)&c, sizeof(c));
+    // Read entry
+    file.read((char*)x, sizeof(x));
+    c = (tRGBA)x[0] << 24 | x[1] << 16 | x[2] << 8;
 
-    if (file.gcount() == sizeof(c))
+    if (file.gcount() == sizeof(x))
     {
+      /* Apply alpha */ //TODO: integer overflow??
+      if (m_Data.size()+1 != colorKey)
+        c |= 0xFF;
+
       m_Data.push_back(c);
       ++rr;
     }
@@ -47,24 +55,23 @@ bool cPalette::saveTo(std::ostream & file) const
     return false;
   size_t s = m_Data.size();
   size_t i=0;
+  uint8_t x[3];
 
   for (i=0; i<s; ++i)
   {
+    tRGBA q = m_Data[i];
+
+    x[0] = (q >> 24);
+    x[1] = (q >> 16) & 0xFF;
+    x[2] = (q >> 8) & 0xFF;
+
     if (file.good())
-      file.write((char*)&m_Data[i], sizeof(SRGBcolor));
+      file.write((char*)x, sizeof(x));
     else break;
   }
 
   return i == m_Data.size();
 }
-
-const SRGBcolor & cPalette::color(uint8_t pos) const
-{
-  if(pos >= m_Data.size())
-    throw std::out_of_range("Invalid color requested.");
-
-  return m_Data[pos];
-};
 
 bool cPalette::isValid() const
 {

@@ -73,6 +73,8 @@ void cTabFile::performInternalCheck()
   }
 
   int prev = -1;
+  m_maxPackedImageSize = 0;
+
   for(int i = 0; i < getOffsetsCount(); ++i)
   {
     int next = getImageOffset(i);
@@ -81,6 +83,8 @@ void cTabFile::performInternalCheck()
       clear();
       return;
     }
+    if (i>0)
+      m_maxPackedImageSize = std::max(m_maxPackedImageSize, next - prev);
     prev = next;
   }
 
@@ -91,4 +95,5 @@ void cTabFile::clear()
 {
   m_Valid = false;
   m_Offsets.clear();
+  m_maxPackedImageSize = 0;
 }

@@ -2,6 +2,7 @@
 #include <cstring>
 
 #include "bitmap.h"
+#include "palette.h"
 
 using namespace Importer;
 
@@ -26,6 +27,31 @@ tPixel & c8bppBitmap::pixel(int x, int y)
 
   return m_PixelData[x + m_Width * y];
 }
+
+tPixel c8bppBitmap::pixel(int x, int y) const
+{
+  if(x < 0 || x >= m_Width)
+    return 0;
+
+  if(y < 0 || y >= m_Height)
+    return 0;
+
+  return m_PixelData[x + m_Width * y];
+}
+
+tRGBA * c8bppBitmap::render(const cPalette & pal) const
+{
+  int size = m_Width * m_Height;
+  if (size < 1)
+    return NULL;
+
+  tRGBA * x = new tRGBA[size];
+
+  for (int i=0; i<size; ++i)
+    x[i] = pal.colorRGBA(m_PixelData[i]);
+  return x;
+}
+
 
 bool c8bppBitmap::create(int width, int height)
 {

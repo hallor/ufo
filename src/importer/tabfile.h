@@ -30,6 +30,9 @@ public:
   bool isValid() const { return m_Valid; }
   operator bool() const { return isValid(); }
 
+  /** Returns size of largest (packed) image (in bytes) */
+  int getMaxPackedImageSize() const { return m_maxPackedImageSize; }
+
   /** Removes indices loaded by @sa loadFrom */
   void clear();
 
@@ -37,6 +40,7 @@ private:
   void performInternalCheck();
 
   bool m_Valid;
+  int m_maxPackedImageSize;
   std::vector<int> m_Offsets;
 };
 

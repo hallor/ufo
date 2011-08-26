@@ -6,10 +6,7 @@
 
 namespace Importer {
 
-/** Single palette entry */
-struct SRGBcolor {
-  uint8_t r, g, b;
-} __attribute__((packed));
+typedef uint32_t tRGBA;
 
 /** Class represeting 8-bit palette */
 class cPalette
@@ -17,13 +14,23 @@ class cPalette
 public:
   cPalette();
 
-  /** Loads palette from stream. */
-  bool loadFrom(std::istream &file, int num_colors=256);
+  /** Loads palette from stream.
+  @warning Palette is loaded from "old-school" 24-bit format. Alpha is zeroed for entry colorKeyNo (if >0)
+  */
+  bool loadFrom(std::istream &file, int colorKeyNo=0, int num_colors=256);
 
-  /** Saves palette to stream (raw-data format). */
+  /** Saves palette to stream (raw-data format).
+  @warning Palette is saved in "old-school" 24-bit format (alpha is ignored)
+  */
   bool saveTo(std::ostream & file) const;
 
-  const SRGBcolor & color(uint8_t pos) const;
+  /** Returns color asociated with position pos. If color is not valid exception is thrown. */
+  tRGBA colorRGBA(uint8_t pos) const
+  {
+      if (pos < m_Data.size())
+        return m_Data[pos];
+      return 0;
+  }
 
   bool isValid() const;
   operator bool() const { return isValid(); }
@@ -31,7 +38,7 @@ public:
   void clear();
 
 private:
-  std::vector<SRGBcolor> m_Data;
+  std::vector<tRGBA> m_Data;
   bool m_Valid;
 };
 
