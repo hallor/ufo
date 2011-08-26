@@ -31,7 +31,7 @@ bool cPalette::loadFrom(std::istream &file, int colorKey, int num_colors)
     if (file.gcount() == sizeof(x))
     {
       /* Apply alpha */ //TODO: integer overflow??
-      if (m_Data.size()+1 != colorKey)
+      if ((int)m_Data.size()+1 != colorKey)
         c |= 0xFF;
 
       m_Data.push_back(c);

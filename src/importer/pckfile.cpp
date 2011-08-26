@@ -49,7 +49,7 @@ struct sPckEofTag
 
   bool isValid() const { return m_Data[0] == 0xFFFFFFFF; }
 
-  int m_Data[4];
+  unsigned int m_Data[4];
 };
 
 struct sPckLineHeader
@@ -125,7 +125,7 @@ bool cPckLine::makeFrom(void *data, int data_size)
   if(!data)
     return false;
 
-  if(data_size < sizeof(m_Header))
+  if(data_size < (int)sizeof(m_Header))
     return false;
 
   int data_done = 0;
@@ -195,7 +195,7 @@ bool cPckBitmap::makeFrom(void *data, int data_size)
   if(!data)
     return false;
 
-  if(data_size < sizeof(m_Header) + sizeof(m_Eof)) // header + eof size
+  if(data_size < (int)sizeof(m_Header) + (int)sizeof(m_Eof)) // header + eof size
     return false;
 
   int data_done = 0;
@@ -208,7 +208,7 @@ bool cPckBitmap::makeFrom(void *data, int data_size)
 
   while(data_done < data_size)
   {
-    if(data_size - data_done < sizeof(m_Eof))
+    if(data_size - data_done < (int)sizeof(m_Eof))
       return false;
 
     memcpy(&m_Eof, (unsigned char*)data + data_done, sizeof(m_Eof));
@@ -245,7 +245,7 @@ c8bppBitmap * cPckBitmap::generateBitmap() const
     delete bmp;
     return NULL;
   }
-  for (int l=0; l<m_Lines.size(); ++l)
+  for (unsigned int l=0; l<m_Lines.size(); ++l)
   {
     cPckLine *line = m_Lines[l];
 
@@ -300,7 +300,7 @@ public:
       delete [] m_Buffer;
     m_Buffer = NULL;
 
-    for (int i=0; i<bitmaps.size(); ++i)
+    for (unsigned int i=0; i<bitmaps.size(); ++i)
       delete bitmaps[i];
     bitmaps.clear();
   }
@@ -378,7 +378,7 @@ bool cPckFile::loadPck(const cTabFile & f, std::istream & file)
 
 const c8bppBitmap *cPckFile::getBitmap(int no) const
 {
-  if (!isValid() || no >= p->bitmaps.size())
+  if (!isValid() || no >= (int)p->bitmaps.size())
     return NULL;
 
   if (!p->bitmaps[no])
