@@ -4,6 +4,7 @@
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_gfxPrimitives.h>
 #include <iostream>
+#include <fstream>
 #include <algorithm>
 #include <stdlib.h>
 #include <boost/foreach.hpp>
@@ -16,6 +17,13 @@
 #include "utils.h"
 #include "shaderprogram.h"
 #include "logger.h"
+
+#include <boost/lexical_cast.hpp>
+
+#include "importer/cpngfile.h"
+#include "importer/pckfile.h"
+#include "importer/tabfile.h"
+#include "importer/bitmap.h"
 
 using namespace std;
 
@@ -43,8 +51,43 @@ bool initAll()
   return true;
 }
 
+using namespace Importer;
+
 int main( int argc, char* argv[] )
 {
+#if 0
+  ifstream file_pal("screenshots/ufo010.pal");
+  ifstream file_pck("XCOMA/UFODATA/SAUCER.PCK");
+  ifstream file_tab("XCOMA/UFODATA/SAUCER.TAB");
+
+  cPalette pal;
+  cPckFile pck;
+  cTabFile tab;
+
+  pal.loadFrom(file_pal);
+  tab.loadFrom(file_tab);
+  pck.loadPck(tab, file_pck);
+
+  LogDebug("Loaded %i images.", pck.bitmapCount());
+
+
+  int lim=std::min(pck.bitmapCount(), 210);
+
+  for (int i=0; i<lim; ++i)
+  {
+    ofstream out( ("out/out"+boost::lexical_cast<std::string>(i) + ".png").c_str());
+    const c8bppBitmap * b = pck.getBitmap(i);
+    cPNGFile f;
+
+    tRGBA * raster = b->render(pal);
+    f.setRaster(raster, b->width(), b->height());
+    f.save(out);
+    LogInfo("Wrote %i'th, raster %ix%i", i, b->width(), b->height());
+  }
+
+  return 0;
+#endif
+
   GfxManager gfx;
   srand(42);
   //Start
@@ -62,7 +105,7 @@ int main( int argc, char* argv[] )
     }
   }
 
-  ShaderProgram sp("city.vert", "city.frag");
+  ShaderProgram sp("shaders/city.vert", "shaders/city.frag");
 
   if (!sp.compile())
   {
@@ -77,21 +120,21 @@ int main( int argc, char* argv[] )
   }
 
 
-  Raster * menu = gfx.getRaster("ufodata/buybase2.pcx");
-  menu->setZoom(2);
+  //Raster * menu = gfx.getRaster("XCOMA/UFODATA/BUYBASE2.PCX");
+ // menu->setZoom(2);
   //menu->zoom2x();
 
-  SpritePack *city = gfx.getPack("unpacked_bmp/city");
+  SpritePack *city = gfx.getPack("XCOMA/UFODATA/CITY");
 
-  SpritePack *ptang = gfx.getPack("ufodata/PTANG");
+  SpritePack *ptang = gfx.getPack("XCOMA/UFODATA/PTANG");
 
-  SpritePack *ufos = gfx.getPack("ufodata/SAUCER");
+  SpritePack *ufos = gfx.getPack("XCOMA/UFODATA/SAUCER");
 
-  SpritePack *invalid = gfx.getPack("ufodata/DESCURS");
+  SpritePack *invalid = gfx.getPack("XCOMA/UFODATA/DESCURS");
 
-  SpritePack *pequip = gfx.getPack("ufodata/PEQUIP");
+  SpritePack *pequip = gfx.getPack("XCOMA/UFODATA/PEQUIP");
 
-  Raster *mouse_img = gfx.getRaster("cursor.png");
+  //Raster *mouse_img = gfx.getRaster("resources/cursor.png");
 
   CityMap cm(100,100,10);
 
@@ -100,7 +143,7 @@ int main( int argc, char* argv[] )
   bool res;
 
   if (argc <2)
-    res = cm.load("ufodata/citymap1");
+    res = cm.load("XCOMA/UFODATA/CITYMAP1");
   else
     res = cm.load(argv[1]);
 
@@ -140,7 +183,7 @@ int main( int argc, char* argv[] )
   //mouse->images = mouse_img;
   mouse->start_frame = mouse->end_frame = mouse->frame = 0;
   mouse->tx = 10; mouse->ty = 10; mouse->tz = 9;
-  mouse->image = mouse_img;
+//  mouse->image = mouse_img;
 
   items.push_back(ci1);
   items.push_back(ci2);
@@ -225,7 +268,7 @@ int main( int argc, char* argv[] )
       delete i;
     }
 
-    mouse->update();
+//    mouse->update();
 
     /* Drawing */
 //    glEnable(GL_TEXTURE_2D);
@@ -320,8 +363,8 @@ int main( int argc, char* argv[] )
     s.x =0;
     s.y =0;
 
-    menu->renderAt(s, sp,11);
-    mouse->renderAt(s, sp,11);
+//    menu->renderAt(s, sp,11);
+//    mouse->renderAt(s, sp,11);
 
     screen->flip();
 

@@ -7,6 +7,9 @@
 #include "tabfile.h"
 #include "bitmap.h"
 
+
+#include "logger.h"
+
 using namespace Importer;
 
 static const int PckLookupTable[10] = {0, 0, 1, 1, 1, 2, 2, 3, 3, 3};
@@ -65,12 +68,12 @@ struct sPckLineHeader
   }
 
   unsigned char m_Checksum;
-  unsigned short m_LineIndex;
-  unsigned char m_Unknown1[1]; //
+  unsigned char m_LineIndex;
+  unsigned char m_Unknown1[2]; //
   unsigned char m_Skip;
   unsigned char m_DataLength;
   unsigned char m_Unknown2[2];
-};
+} __attribute__((packed));
 
 class cPckLine
 {
@@ -260,7 +263,7 @@ c8bppBitmap * cPckBitmap::generateBitmap() const
     for(int j = hdr.m_Skip; j < hdr.m_DataLength + hdr.m_Skip && j < m_Header.m_Width; ++j)
     {
       int idx = line->getData()[j - hdr.m_Skip];
-      bmp->pixel(j, m_Header.m_Height - line_in_bmp - 1) = idx;
+      bmp->pixel(j, /*m_Header.m_Height - */line_in_bmp) = idx;
     }
   }
 
@@ -344,7 +347,8 @@ bool cPckFile::loadPck(const cTabFile & f, std::istream & file)
 
   p->m_Buffer = new unsigned char[max_data_size];
 
-  for (int i=0; i<images_count; ++i)
+  int i=0;
+  for (i=0; i<images_count; ++i)
   {
     int data_size = 0;
 
@@ -364,11 +368,15 @@ bool cPckFile::loadPck(const cTabFile & f, std::istream & file)
     if (!file.good() || file.gcount()!=data_size) // Failed reading
       return false;
 
-    p->m_Chunks[i].makeFrom(p->m_Buffer, data_size);
+    if (!p->m_Chunks[i].makeFrom(p->m_Buffer, data_size))
+      LogError("Error loading chunk %i", i);
   }
+
+  LogDebug("Loaded %i chunks from pck file.", i);
 
   // Free not needed buffer
   delete[] p->m_Buffer;
+  p->m_Buffer = NULL;
 
   p->m_Valid = true;
 

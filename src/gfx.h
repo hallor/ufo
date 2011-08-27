@@ -10,22 +10,50 @@
 #include <boost/foreach.hpp>
 
 #include "shaderprogram.h"
+#include "importer/palette.h"
 
 typedef SDL_Rect Rect;
 
-SDL_Surface * loadTexture(const char * filename, bool colorKey);
-bool loadSurfacetoVram(SDL_Surface * surface, GLuint & tex_id, Rect & tex_rect);
+//SDL_Surface * loadTexture(const char * filename, bool colorKey);
+//bool loadSurfacetoVram(SDL_Surface * surface, GLuint & tex_id, Rect & tex_rect);
 bool unloadSurfacefromVram(GLuint & tex_id);
+
+struct Surface
+{
+  Surface() : pixels(0), w(0), h(0) {}
+
+  bool isValid() const { return pixels && w>0 && h >0; }
+
+  bool set(Importer::tRGBA *p, int w, int h)
+  {
+    clean();
+    pixels = p;
+    this->w = w; this->h = h;
+    return isValid();
+  }
+
+  void clean()
+  {
+    delete [] pixels;
+    pixels = 0;
+    w = h = 0;
+  }
+
+  Importer::tRGBA * pixels;
+  int w, h;
+};
+
+bool loadSurfacetoVram(Surface & surface, GLuint & tex_id, Rect & tex_rect);
 
 // Base class for all drawable items
 class Raster
 {
 public:
-  Raster() : surface(NULL), in_vram(false) { zoom=1;}
+  Raster() : surface(), in_vram(false) { zoom=1;}
 
   ~Raster()
   {
-    SDL_FreeSurface(surface);
+    surface.clean();
     if (in_vram)
       unloadSurfacefromVram(tex_id);
   }
@@ -33,8 +61,8 @@ public:
   const Rect rect() const
   {
     Rect r;
-    r.w = surface->w;
-    r.h = surface->h;
+    r.w = surface.w;
+    r.h = surface.h;
     return r;
   }
 
@@ -48,18 +76,18 @@ public:
 
       glBegin(GL_QUADS);
         glTexCoord2f( 0, 0 ); glVertex3f(pos.x*zoom, pos.y*zoom, z);
-        glTexCoord2f( sx, 0 ); glVertex3f(pos.x*zoom+surface->w*zoom, pos.y*zoom, z);
-        glTexCoord2f( sx, sy); glVertex3f(pos.x*zoom+surface->w*zoom, pos.y*zoom+ surface->h*zoom, z);
-        glTexCoord2f( 0, sy); glVertex3f(pos.x, pos.y*zoom+surface->h*zoom, z);
+        glTexCoord2f( sx, 0 ); glVertex3f(pos.x*zoom+surface.w*zoom, pos.y*zoom, z);
+        glTexCoord2f( sx, sy); glVertex3f(pos.x*zoom+surface.w*zoom, pos.y*zoom+ surface.h*zoom, z);
+        glTexCoord2f( 0, sy); glVertex3f(pos.x, pos.y*zoom+surface.h*zoom, z);
       glEnd();
     } else
       std::cout << "Surface not in vram!" << std::endl;
   }
 
-  void setSurface(SDL_Surface * surf)
+  void setSurface(Surface surf)
   {
-    if (surface)
-      SDL_FreeSurface(surface);
+    surface.clean();
+
     if (in_vram)
     {
       unloadSurfacefromVram(tex_id);
@@ -67,11 +95,12 @@ public:
     }
 
     surface = surf;
+
     if (loadSurfacetoVram(surface, tex_id, gl_tex_size))
     {
       in_vram = true;
-      sx = (float)surface->w/gl_tex_size.w;
-      sy = (float)surface->h/gl_tex_size.h;
+      sx = (float)surface.w/gl_tex_size.w;
+      sy = (float)surface.h/gl_tex_size.h;
     }
   }
 
@@ -79,7 +108,7 @@ public:
 
   GLuint tex_id;
 private:
-  SDL_Surface * surface; // Copy of texture - usually stored in vram - this is texture with original size/bpp (To be converted)
+  Surface surface;
   float zoom;
   Rect gl_tex_size;
   float sx, sy;
@@ -93,7 +122,7 @@ public:
   ~Sprite()
   {
   }
-  Sprite(SDL_Surface *s) : Raster()
+  Sprite(Surface s) : Raster()
   {
     setSurface(s);
   }
@@ -108,7 +137,7 @@ public:
   size_t count() const { return sprite_count; }
 
 private:
-  SpritePack(const std::list<SDL_Surface*> & s);
+  SpritePack(const std::list<Surface> & s);
 
   Sprite ** sprites;
   size_t sprite_count;

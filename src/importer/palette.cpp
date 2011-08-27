@@ -6,6 +6,7 @@
 using namespace std;
 using namespace Importer;
 
+#include "logger.h"
 
 cPalette::cPalette() : m_Valid(false)
 {
@@ -22,19 +23,17 @@ bool cPalette::loadFrom(std::istream &file, int colorKey, int num_colors)
   while (file.good())
   {
     uint8_t x[3];
-    tRGBA c;
+    sRGBA c;
 
     // Read entry
     file.read((char*)x, sizeof(x));
-    c = (tRGBA)x[0] << 24 | x[1] << 16 | x[2] << 8;
+    c.r = x[0]; c.g = x[1]; c.b = x[2]; c.a = 0;
+    //c = (tRGBA)x[0] << 24 | x[1] << 16 | x[2] << 8;
 
     if (file.gcount() == sizeof(x))
     {
-      /* Apply alpha */ //TODO: integer overflow??
-      if ((int)m_Data.size()+1 != colorKey)
-        c |= 0xFF;
-
-      m_Data.push_back(c);
+      c.a = 0xFF;
+      m_Data.push_back(*(tRGBA*)&c);
       ++rr;
     }
     else
@@ -45,6 +44,13 @@ bool cPalette::loadFrom(std::istream &file, int colorKey, int num_colors)
   }
 
   m_Valid = m_Data.size() == 256 || m_Data.size() == 16;
+
+
+  if (m_Valid && colorKey >=0 && colorKey < m_Data.size())
+    m_Data[colorKey] = 0;
+
+
+  LogDebug("Loaded palette with %i colors.", m_Data.size());
 
   return m_Valid;
 }

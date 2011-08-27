@@ -20,10 +20,10 @@ c8bppBitmap::~c8bppBitmap()
 tPixel & c8bppBitmap::pixel(int x, int y)
 {
   if(x < 0 || x >= m_Width)
-    throw std::out_of_range("Invalid color requested.");
+    throw std::out_of_range("Invalid width requested.");
 
   if(y < 0 || y >= m_Height)
-    throw std::out_of_range("Invalid color requested.");
+    throw std::out_of_range("Invalid height requested.");
 
   return m_PixelData[x + m_Width * y];
 }
@@ -61,6 +61,7 @@ bool c8bppBitmap::create(int width, int height)
     return false;
 
   m_PixelData = new tPixel[width * height];
+  clear();
 
   m_Width = width;
   m_Height = height;

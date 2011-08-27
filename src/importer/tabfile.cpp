@@ -51,7 +51,7 @@ bool cTabFile::loadFrom(std::istream &file)
 
   performInternalCheck();
 
-  LogDebug("Loaded %i offsets from file %s.", getOffsetsCount());
+  LogDebug("Loaded %i offsets.", getOffsetsCount());
 
   return isValid();
 }

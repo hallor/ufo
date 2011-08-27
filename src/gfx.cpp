@@ -1,20 +1,29 @@
 #include <SDL/SDL_image.h>
 #include <boost/lexical_cast.hpp>
 #include <iostream>
+#include <fstream>
 #include <cmath>
 #include "gfx.h"
-using namespace std;
 
-SpritePack::SpritePack(const std::list<SDL_Surface*> & s)
+#include "importer/cpngfile.h"
+#include "importer/pckfile.h"
+#include "importer/tabfile.h"
+#include "importer/bitmap.h"
+#include "logger.h"
+
+using namespace std;
+using namespace Importer;
+
+SpritePack::SpritePack(const std::list<Surface> & s)
 {
   if (s.size())
   {
     int i=0;
     sprite_count = s.size();
     sprites = new Sprite *[sprite_count];
-    for (std::list<SDL_Surface*>::const_iterator it = s.begin(); it!=s.end(); ++it)
+    for (std::list<Surface>::const_iterator it = s.begin(); it!=s.end(); ++it)
     {
-      if (*it)
+      if (it->isValid())
       {
         sprites[i] = new Sprite(*it);
         i++;
@@ -57,10 +66,36 @@ SpritePack * GfxManager::getPack(const std::string & filename)
   if (resources.count(filename))
     return resources[filename];
 
-  std::list<SDL_Surface*> co;
+  std::list<Surface> co;
 
   std::cout << "Loading sprite pack from file(s) " << filename << std::endl;
 
+  std::ifstream file_pal("screenshots/ufo010.pal");
+  std::ifstream file_pck((filename+".PCK").c_str());
+  std::ifstream file_tab((filename+".TAB").c_str());
+
+  cPalette pal;
+  cPckFile pck;
+  cTabFile tab;
+
+  pal.loadFrom(file_pal);
+  tab.loadFrom(file_tab);
+  pck.loadPck(tab, file_pck);
+
+  LogDebug("Loaded %i PCK chunks.", pck.bitmapCount());
+
+  for (int i=0; i<pck.bitmapCount(); ++i)
+  {
+    const c8bppBitmap *bmp = pck.getBitmap(i);
+    if (!bmp)
+      return false;
+    tRGBA * img = bmp->render(pal); //MEMLEAK TODO!!!
+    Surface s;
+    s.set(img, bmp->width(), bmp->height());
+    co.push_back(s);
+
+  }
+#if 0
   for (int i=0; i<999; ++i)
   {
     SDL_Surface * surf;
@@ -73,7 +108,7 @@ SpritePack * GfxManager::getPack(const std::string & filename)
     }
     co.push_back(surf);
   }
-
+#endif
   resources[filename] = new SpritePack(co);
 
   std::cout << "Loaded " << resources[filename]->count() << " sprites." << std::endl;
@@ -85,7 +120,11 @@ Raster * GfxManager::getRaster(const std::string & filename, bool colorKey)
 {
   if (rasters.count(filename))
     return rasters[filename];
+#if 0
+  cPNGFile q;
+  std::ifstream file_pal(filename);
 
+  q.
   SDL_Surface * surf = loadTexture(filename.c_str(), colorKey);
   if (surf)
   {
@@ -97,6 +136,7 @@ Raster * GfxManager::getRaster(const std::string & filename, bool colorKey)
     }
     return r;
   }
+#endif
   return NULL;
 }
 
@@ -106,6 +146,68 @@ bool unloadSurfacefromVram(GLuint & tex_id)
   return true;
 }
 
+bool loadSurfacetoVram(Surface & surface, GLuint & tex_id, Rect & tex_rect)
+{
+  int neww = surface.w;
+  int newh = surface.h;
+
+  // Check that the image's width is a power of 2
+  if ( (surface.w & (surface.w - 1)) != 0 ) {
+    neww = 1 << (int)ceil(log2(surface.w));
+  }
+
+  // Also check if the height is a power of 2
+  if ( (surface.h & (surface.h - 1)) != 0 ) {
+    newh = 1 << (int)ceil(log2(surface.h));
+  }
+
+  tex_rect.w = neww;
+  tex_rect.h = newh;
+
+  /* Resize if needed */
+  if (neww !=surface.w || newh !=surface.h)
+  {
+    Surface q;
+    q.set(new tRGBA [neww*newh], neww, newh);
+
+    memset(q.pixels, 0, neww*newh*sizeof(tRGBA));
+
+    tRGBA * src = surface.pixels;
+    tRGBA * dst = q.pixels;
+
+    for (int y=0; y<surface.h; ++y)
+    {
+      for (int x=0; x<surface.w; ++x)
+      {
+        *dst = *src;
+        ++dst; ++src;
+      }
+      dst+=neww - surface.w;
+    }
+    surface.clean();
+    surface = q;
+  }
+
+  // Have OpenGL generate a texture object handle for us
+  glGenTextures( 1, &tex_id );
+  if (glGetError())
+    cout << "GL error" << glGetError() << endl;
+
+  // Bind the texture object
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture( GL_TEXTURE_2D, tex_id );
+
+  // Set the texture's stretching properties
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+
+  // Edit the texture object's image data using the information SDL_Surface gives us
+  glTexImage2D( GL_TEXTURE_2D, 0, 4, surface.w, surface.h, 0,
+               GL_RGBA, GL_UNSIGNED_BYTE, surface.pixels );
+
+  return true;
+}
+#if 0
 bool loadSurfacetoVram(SDL_Surface * surface, GLuint & tex_id, Rect & tex_rect)
 {
   GLenum texture_format = 0;
@@ -214,3 +316,4 @@ SDL_Surface * loadTexture(const char * filename, bool colorKey)
 
   return surface;
 }
+#endif
