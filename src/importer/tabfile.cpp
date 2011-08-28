@@ -1,5 +1,5 @@
 #include "tabfile.h"
-#include "logger.h"
+#include "..\logger.h"
 
 using namespace Importer;
 

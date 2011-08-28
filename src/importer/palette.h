@@ -12,7 +12,8 @@ typedef struct {
   uint8_t g;
   uint8_t b;
   uint8_t a;
-} __attribute__((packed)) sRGBA;
+} sRGBA;
+
 
 typedef uint8_t tPixel;
 

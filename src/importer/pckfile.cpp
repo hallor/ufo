@@ -55,6 +55,29 @@ struct sPckEofTag
   unsigned int m_Data[4];
 };
 
+#ifdef _WIN32 
+#pragma pack(push, 1)
+struct sPckLineHeader
+{
+  sPckLineHeader()
+  {
+    clear();
+  }
+
+  void clear()
+  {
+    memset(this, 0, sizeof(*this));
+  }
+
+  unsigned char m_Checksum;
+  unsigned char m_LineIndex;
+  unsigned char m_Unknown1[2]; //
+  unsigned char m_Skip;
+  unsigned char m_DataLength;
+  unsigned char m_Unknown2[2];
+};
+#pragma pack(pop)
+#else
 struct sPckLineHeader
 {
   sPckLineHeader()
@@ -74,7 +97,7 @@ struct sPckLineHeader
   unsigned char m_DataLength;
   unsigned char m_Unknown2[2];
 } __attribute__((packed));
-
+#endif
 class cPckLine
 {
 public:

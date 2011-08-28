@@ -2,7 +2,6 @@
 #define CITYITEM_H
 
 #include <SDL/SDL.h>
-#include <SDL/SDL_gfxPrimitives.h>
 #include <stdlib.h>
 #include <iostream>
 #include <cmath>

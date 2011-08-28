@@ -6,6 +6,9 @@
 #include "surface.h"
 #include "bitmap.h"
 #include "logger.h"
+
+double log2(double n);
+
 namespace Importer
 {
 

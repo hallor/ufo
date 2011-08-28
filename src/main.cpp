@@ -1,13 +1,10 @@
 #include <SDL/SDL.h>
 #include <GL/glew.h>
 
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_gfxPrimitives.h>
 #include <iostream>
 #include <fstream>
 #include <algorithm>
 #include <stdlib.h>
-#include <boost/foreach.hpp>
 #include "gfx.h"
 #include "citymap.h"
 #include "cityitem.h"
@@ -89,7 +86,7 @@ int main( int argc, char* argv[] )
 
   Raster * menu = new Raster(); //gfx.getRaster("XCOMA/UFODATA/BUYBASE2.PCX");
   {
-    std::ifstream f("XCOMA/UFODATA/BUYBASE2.PCX");
+    std::ifstream f("XCOMA/UFODATA/BUYBASE2.PCX", std::ios_base::binary);
     LogInfo("Loading mouse cursors");
 
     cPCXFile menu_raster;
@@ -116,19 +113,19 @@ int main( int argc, char* argv[] )
   Importer::cCursor mouse_cursors;
 
   {
-  std::ifstream f("XCOMA/TACDATA/MOUSE.DAT");
-  std::ifstream file_pal("screenshots/ufo010.pal");
+  std::ifstream f("XCOMA/TACDATA/MOUSE.DAT", std::ios_base::binary);
+  std::ifstream file_pal("screenshots/ufo010.pal", std::ios_base::binary);
   cPalette pal;
   LogInfo("Loading mouse cursors");
 
   pal.loadFrom(file_pal);
 
-  mouse_cursors.loadFrom(f, pal);
+ // mouse_cursors.loadFrom(f, pal);
   }
 
   Raster * mouse_img = new Raster();
 
-  mouse_img->setSurface(*mouse_cursors.getSurface());
+  //mouse_img->setSurface(*mouse_cursors.getSurface());
 
   CityMap cm(100,100,10);
 
@@ -136,10 +133,10 @@ int main( int argc, char* argv[] )
 
   bool res;
 
-  if (argc <2)
+  //if (argc <2)
     res = cm.load("XCOMA/UFODATA/CITYMAP1");
-  else
-    res = cm.load(argv[1]);
+ /// else
+  //  res = cm.load(argv[1]);
 
   cout << res << std::endl;
 
@@ -176,7 +173,7 @@ int main( int argc, char* argv[] )
 
   mouse->start_frame = mouse->end_frame = mouse->frame = 0;
   mouse->tx = 10; mouse->ty = 10; mouse->tz = 9;
-  mouse->image = mouse_img;
+  mouse->image = ptang->getSprite(10);
 
   items.push_back(ci1);
   items.push_back(ci2);
@@ -201,16 +198,16 @@ int main( int argc, char* argv[] )
     /* Update animations etc */
     list<CityItem*> to_remove;
 
-    BOOST_FOREACH(CityItem *i, items)
+	for(std::list<CityItem*>::iterator it = items.begin(); it != items.end(); ++it)
     {
-      i->update();
+      (*it)->update();
     }
 
-    BOOST_FOREACH(CityItem *i, temp_items)
+	for(std::list<CityItem*>::iterator it = temp_items.begin(); it != temp_items.end(); ++it)
     {
-      i->update();
-      if (i->garbage())
-        to_remove.push_back(i);
+      (*it)->update();
+      if ((*it)->garbage())
+        to_remove.push_back(*it);
     }
 
     for (list<PewPewItem*>::iterator it=shots.begin(); it!=shots.end(); ++it)
@@ -247,16 +244,16 @@ int main( int argc, char* argv[] )
               }
               temp_items.push_back(shot);
             }
-      }
+      } 
 
       if (i->garbage())
         it = shots.erase(it);
     }
 
-    BOOST_FOREACH(CityItem *i, to_remove)
+ 	for(std::list<CityItem*>::iterator it = temp_items.begin(); it != temp_items.end(); ++it)
     {
-      temp_items.remove(i);
-      delete i;
+      delete (*it);
+      it = temp_items.erase(it);
     }
 
     /* Drawing */
@@ -298,48 +295,48 @@ int main( int argc, char* argv[] )
         }
       }
 
-      BOOST_FOREACH(CityItem *i, temp_items)
-      {
+	for(std::list<CityItem*>::iterator it = temp_items.begin(); it != temp_items.end(); ++it)
+    {
         int sx, sy;
-        if ((int)i->tz == tz)
+        if ((int)(*it)->tz == tz)
         {
-          Utils::tile_to_screen(i->tx, i->ty, i->tz, sx, sy);
+          Utils::tile_to_screen((*it)->tx, (*it)->ty, (*it)->tz, sx, sy);
           sx -= camera.x;
           sy -= camera.y;
           s.x = sx;
           s.y = sy;
           // Don't clip for now - SDL should do the clipping anyway
-          i->renderAt(s, sp, tz);
+          (*it)->renderAt(s, sp, tz);
         }
       }
 
-      BOOST_FOREACH(CityItem *i, items)
-      {
+	for(std::list<CityItem*>::iterator it = items.begin(); it != items.end(); ++it)
+    {
         int sx, sy;
-        if ((int)i->tz == tz)
+        if ((int)(*it)->tz == tz)
         {
-          Utils::tile_to_screen(i->tx, i->ty, i->tz, sx, sy);
+          Utils::tile_to_screen((*it)->tx, (*it)->ty, (*it)->tz, sx, sy);
           sx -= camera.x;
           sy -= camera.y;
           s.x = sx;
           s.y = sy;
           // Don't clip for now - SDL should do the clipping anyway
-          i->renderAt(s, sp, tz);
+          (*it)->renderAt(s, sp, tz);
         }
       }
 
-      BOOST_FOREACH(CityItem *i, shots)
-      {
+	for(std::list<PewPewItem*>::iterator it = shots.begin(); it != shots.end(); ++it)
+    {
         int sx, sy;
-        if ((int)i->tz == tz)
+        if ((int)(*it)->tz == tz)
         {
-          Utils::tile_to_screen(i->tx, i->ty, i->tz, sx, sy);
+          Utils::tile_to_screen((*it)->tx, (*it)->ty, (*it)->tz, sx, sy);
           sx -= camera.x;
           sy -= camera.y;
           s.x = sx;
           s.y = sy;
           // Don't clip for now - SDL should do the clipping anyway
-          i->renderAt(s, sp,tz);
+          (*it)->renderAt(s, sp,tz);
         }
       }
     }

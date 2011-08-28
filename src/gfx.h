@@ -7,8 +7,6 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <SDL/SDL.h>
-#include <boost/foreach.hpp>
-
 #include "shaderprogram.h"
 #include "importer/palette.h"
 #include "surface.h"
@@ -137,10 +135,10 @@ public:
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max_size);
     int row_height=0, row_width=0;
 
-    BOOST_FOREACH(SDL_Surface *s, pck)
-    {
-      row_height = std::max(row_height, s->h);
-      row_width = std::max(row_width, s->w);
+	for(std::list<SDL_Surface*>::const_iterator it = pck.begin(); it != pck.end(); ++it)
+	{
+      row_height = std::max(row_height, (*it)->h);
+      row_width = std::max(row_width, (*it)->w);
     }
 
   }
