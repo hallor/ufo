@@ -1,0 +1,4 @@
+*.cpp text=auto
+*.h   text=auto
+*.txt text=auto
+src/version.h ident
