@@ -50,12 +50,16 @@ bool initAll()
 
 int main( int argc, char* argv[] )
 {
-	iFile *file = CreateFileIO();
-	file->Open("duapa.txt", FFileOpenFlags::OpenExisting | FFileOpenFlags::Read);
-	char str[18] = {0};
-	file->Read(str, sizeof(str));
-	file->Close();
-	ReleaseFileIO(file);
+  iFile *file = CreateFileIO();
+  if (file)
+  {
+    file->Open("duapa.txt", FFileOpenFlags::OpenExisting | FFileOpenFlags::Read);
+    char str[18] = {0};
+    file->Read(str, sizeof(str));
+    file->Close();
+    ReleaseFileIO(file);
+  }
+
   GfxManager gfx;
   srand(42);
   //Start
@@ -205,12 +209,12 @@ int main( int argc, char* argv[] )
     /* Update animations etc */
     list<CityItem*> to_remove;
 
-	for(std::list<CityItem*>::iterator it = items.begin(); it != items.end(); ++it)
+  for(std::list<CityItem*>::iterator it = items.begin(); it != items.end(); ++it)
     {
       (*it)->update();
     }
 
-	for(std::list<CityItem*>::iterator it = temp_items.begin(); it != temp_items.end(); ++it)
+  for(std::list<CityItem*>::iterator it = temp_items.begin(); it != temp_items.end(); ++it)
     {
       (*it)->update();
       if ((*it)->garbage())
@@ -242,24 +246,24 @@ int main( int argc, char* argv[] )
               if (x!=0 || y!=0)
               {
                 shot->start_frame = 29;
-				shot->frame = 29;
+        shot->frame = 29;
                 shot->end_frame=41;
               }
               else
               {
                 shot->start_frame = 74;
-				shot->frame = 74;
+        shot->frame = 74;
                 shot->end_frame=83;
               }
               temp_items.push_back(shot);
             }
-      } 
+      }
 
       if (i->garbage())
         it = shots.erase(it);
     }
 
- 	for(std::list<CityItem*>::iterator it = temp_items.begin(); it != temp_items.end(); ++it)
+  for(std::list<CityItem*>::iterator it = temp_items.begin(); it != temp_items.end(); ++it)
     {
       delete (*it);
       it = temp_items.erase(it);
@@ -304,7 +308,7 @@ int main( int argc, char* argv[] )
         }
       }
 
-	for(std::list<CityItem*>::iterator it = temp_items.begin(); it != temp_items.end(); ++it)
+  for(std::list<CityItem*>::iterator it = temp_items.begin(); it != temp_items.end(); ++it)
     {
         int sx, sy;
         if ((int)(*it)->tz == tz)
@@ -319,7 +323,7 @@ int main( int argc, char* argv[] )
         }
       }
 
-	for(std::list<CityItem*>::iterator it = items.begin(); it != items.end(); ++it)
+  for(std::list<CityItem*>::iterator it = items.begin(); it != items.end(); ++it)
     {
         int sx, sy;
         if ((int)(*it)->tz == tz)
@@ -334,7 +338,7 @@ int main( int argc, char* argv[] )
         }
       }
 
-	for(std::list<PewPewItem*>::iterator it = shots.begin(); it != shots.end(); ++it)
+  for(std::list<PewPewItem*>::iterator it = shots.begin(); it != shots.end(); ++it)
     {
         int sx, sy;
         if ((int)(*it)->tz == tz)
@@ -370,7 +374,7 @@ int main( int argc, char* argv[] )
       pp->dz=0.0f;
       pp->images=pequip;
       pp->start_frame = 75;
-	  pp->frame = 75.0f;
+    pp->frame = 75.0f;
       pp->end_frame=75;
       shots.push_back(pp);
     }
@@ -424,7 +428,7 @@ int main( int argc, char* argv[] )
           pp->dz=0.0f;
           pp->images=pequip;
           pp->start_frame = 75;
-		  pp->frame = 75.0f;
+      pp->frame = 75.0f;
           pp->end_frame=75;
           shots.push_back(pp);
         } break;

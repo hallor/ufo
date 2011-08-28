@@ -1,6 +1,6 @@
 #ifndef SURFACE_H
 #define SURFACE_H
-#include "importer\palette.h"
+#include "importer/palette.h"
 
 //typedef uint32_t tRGBA;
 

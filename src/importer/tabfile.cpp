@@ -1,5 +1,5 @@
 #include "tabfile.h"
-#include "..\logger.h"
+#include "logger.h"
 
 
 cTabFile::cTabFile() : m_Valid(false)

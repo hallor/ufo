@@ -1,8 +1,8 @@
 #pragma once
 
 #include <iostream>
-#include "importer\palette.h"
-#include "importer\bitmap.h"
+#include "importer/palette.h"
+#include "importer/bitmap.h"
 
 /** Loader for PCX files */
 class cPCXFile
