@@ -1,7 +1,6 @@
 #include "tabfile.h"
 #include "..\logger.h"
 
-using namespace Importer;
 
 cTabFile::cTabFile() : m_Valid(false)
 {

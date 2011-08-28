@@ -10,6 +10,7 @@
 #include "logger.h"
 #include "importer/cursor.h"
 
+#ifdef _WIN32
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "SDL.lib")
 #pragma comment(lib, "SDLmain.lib")
@@ -20,9 +21,10 @@
 #else
 #pragma comment(lib, "glew32.lib")
 #pragma comment(lib, "glew32s.lib")
-#endif
+#endif //_DEBUG
+#endif //_WIN32
+
 using namespace std;
-using namespace Importer;
 
 SpritePack::SpritePack(const std::list<Surface> & s)
 {

@@ -10,7 +10,6 @@
 
 #include "logger.h"
 
-using namespace Importer;
 
 static const int PckLookupTable[10] = {0, 0, 1, 1, 1, 2, 2, 3, 3, 3};
 
@@ -354,7 +353,7 @@ bool cPckFile::loadPck(const cTabFile & f, std::istream & file)
     return false;
 
   file.seekg(0, std::ios::end);
-  int file_size = file.tellg();
+  int file_size = (int)file.tellg();
   file.seekg(0, std::ios::beg);
 
   int images_count = f.getOffsetsCount();

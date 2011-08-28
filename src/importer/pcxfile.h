@@ -1,11 +1,8 @@
 #pragma once
 
 #include <iostream>
-#include "palette.h"
-#include "bitmap.h"
-
-namespace Importer
-{
+#include "importer\palette.h"
+#include "importer\bitmap.h"
 
 /** Loader for PCX files */
 class cPCXFile
@@ -42,6 +39,4 @@ private:
   SPCXHeader		m_Header;
   cPalette		m_Palette;
   c8bppBitmap m_Bitmap;
-};
-
 };

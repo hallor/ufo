@@ -1,6 +1,5 @@
 #include "cursor.h"
 
-using namespace Importer;
 
 double log2(double n)
 {

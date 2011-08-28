@@ -5,7 +5,6 @@
 #include <string>
 #include "palette.h"
 
-namespace Importer {
 
 #ifdef HAS_LIBPNG
 class cPNGFile
@@ -35,5 +34,4 @@ private:
 };
 #endif
 
-};
 #endif // CPNGFILE_H

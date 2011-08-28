@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 
-namespace Importer {
 
 class cTabFile;
 class c8bppBitmap;
@@ -44,5 +43,4 @@ private:
   Private * p;
 };
 
-}
 #endif // PCKFILE_H

@@ -3,8 +3,6 @@
 #include <vector>
 #include <iostream>
 
-namespace Importer
-{
 
 /** Class responsible for loading, and parsing of .tab files
   Used as a helper by @see cPckFile
@@ -44,4 +42,3 @@ private:
   std::vector<int> m_Offsets;
 };
 
-};

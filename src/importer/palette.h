@@ -4,8 +4,6 @@
 #include <vector>
 #include <iostream>
 
-namespace Importer {
-
 typedef uint32_t tRGBA;
 typedef struct {
   uint8_t r;
@@ -51,4 +49,3 @@ private:
   bool m_Valid;
 };
 
-};

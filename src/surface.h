@@ -1,6 +1,6 @@
 #ifndef SURFACE_H
 #define SURFACE_H
-#include "importer/palette.h"
+#include "importer\palette.h"
 
 //typedef uint32_t tRGBA;
 
@@ -25,7 +25,7 @@ struct Surface
 
   bool isValid() const { return pixels && w>0 && h >0; }
 
-  bool set(Importer::tRGBA *p, int w, int h)
+  bool set(tRGBA *p, int w, int h)
   {
     clean();
     pixels = p;
@@ -40,7 +40,7 @@ struct Surface
     w = h = 0;
   }
 
-  Importer::tRGBA * pixels;
+  tRGBA * pixels;
   int w, h;
 };
 

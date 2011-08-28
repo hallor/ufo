@@ -11,8 +11,8 @@ namespace Utils
 {
   inline void tile_to_screen(float tile_x, float tile_y, float tile_z, int & sx, int & sy)
   {
-    sx = (tile_x - tile_y) * TILE_WIDTH/2;
-    sy = (tile_x + tile_y - tile_z) * TILE_HEIGHT/2;
+    sx = (int)((tile_x - tile_y) * TILE_WIDTH/2);
+    sy = (int)((tile_x + tile_y - tile_z) * TILE_HEIGHT/2);
   }
 
   /* Must supply also tile_z */

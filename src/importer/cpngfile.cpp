@@ -6,7 +6,6 @@
 
 #include "cpngfile.h"
 
-using namespace Importer;
 
 #ifdef HAS_LIBPNG
 

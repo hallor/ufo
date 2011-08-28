@@ -2,9 +2,7 @@
 #include <cstring>
 
 #include "bitmap.h"
-#include "palette.h"
 
-using namespace Importer;
 
 c8bppBitmap::c8bppBitmap()
 {
@@ -66,7 +64,7 @@ bool c8bppBitmap::create(int width, int height)
   m_Width = width;
   m_Height = height;
 
-  return m_PixelData;
+  return m_PixelData != NULL;
 };
 
 void c8bppBitmap::clear(const tPixel clear_color)
