@@ -1,13 +1,10 @@
 #include <SDL/SDL.h>
 #include <GL/glew.h>
 
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_gfxPrimitives.h>
 #include <iostream>
 #include <fstream>
 #include <algorithm>
 #include <stdlib.h>
-#include <boost/foreach.hpp>
 #include "gfx.h"
 #include "citymap.h"
 #include "cityitem.h"
@@ -17,7 +14,7 @@
 #include "utils.h"
 #include "shaderprogram.h"
 #include "logger.h"
-
+#include "os/FileIO.h"
 #include "importer/cpngfile.h"
 #include "importer/pckfile.h"
 #include "importer/pcxfile.h"
@@ -51,10 +48,14 @@ bool initAll()
   return true;
 }
 
-using namespace Importer;
-
 int main( int argc, char* argv[] )
 {
+	iFile *file = CreateFileIO();
+	file->Open("duapa.txt", FFileOpenFlags::OpenExisting | FFileOpenFlags::Read);
+	char str[18] = {0};
+	file->Read(str, sizeof(str));
+	file->Close();
+	ReleaseFileIO(file);
   GfxManager gfx;
   srand(42);
   //Start
@@ -89,7 +90,7 @@ int main( int argc, char* argv[] )
 
   Raster * menu = new Raster(); //gfx.getRaster("XCOMA/UFODATA/BUYBASE2.PCX");
   {
-    std::ifstream f("XCOMA/UFODATA/BUYBASE2.PCX");
+    std::ifstream f("XCOMA/UFODATA/BUYBASE2.PCX", std::ios_base::binary);
     LogInfo("Loading mouse cursors");
 
     cPCXFile menu_raster;
@@ -113,22 +114,22 @@ int main( int argc, char* argv[] )
 
   SpritePack *pequip = gfx.getPack("XCOMA/UFODATA/PEQUIP");
 
-  Importer::cCursor mouse_cursors;
+  cCursor mouse_cursors;
 
   {
-  std::ifstream f("XCOMA/TACDATA/MOUSE.DAT");
-  std::ifstream file_pal("screenshots/ufo010.pal");
+  std::ifstream f("XCOMA/TACDATA/MOUSE.DAT", std::ios_base::binary);
+  std::ifstream file_pal("screenshots/ufo010.pal", std::ios_base::binary);
   cPalette pal;
   LogInfo("Loading mouse cursors");
 
   pal.loadFrom(file_pal);
 
-  mouse_cursors.loadFrom(f, pal);
+ // mouse_cursors.loadFrom(f, pal);
   }
 
   Raster * mouse_img = new Raster();
 
-  mouse_img->setSurface(*mouse_cursors.getSurface());
+  //mouse_img->setSurface(*mouse_cursors.getSurface());
 
   CityMap cm(100,100,10);
 
@@ -136,10 +137,10 @@ int main( int argc, char* argv[] )
 
   bool res;
 
-  if (argc <2)
+  //if (argc <2)
     res = cm.load("XCOMA/UFODATA/CITYMAP1");
-  else
-    res = cm.load(argv[1]);
+ /// else
+  //  res = cm.load(argv[1]);
 
   cout << res << std::endl;
 
@@ -150,7 +151,7 @@ int main( int argc, char* argv[] )
   camera.x = 0;
   camera.y = 0;
   camera.w = WIDTH;
-  camera.h = HEIGHT * 0.76;
+  camera.h = (Uint16)(HEIGHT * 0.76f);
 
   bool quit = false;
 
@@ -166,17 +167,20 @@ int main( int argc, char* argv[] )
 
   ci1->images = ptang;
   ci2->images = ptang;
-  ci2->frame = ci1->frame = ci1->start_frame = ci2->start_frame = 42;
+  ci2->frame = ci1->frame = 42.0f;
+  ci1->start_frame = ci2->start_frame = 42;
   ci1->end_frame = ci2->end_frame = 73;
 
   ufo->images = ufos;
-  ufo->start_frame = ufo->frame = 92;
+  ufo->frame = 92;
+  ufo->start_frame = (int)ufo->frame;
   ufo->end_frame = 94;
-  ufo->anim_speed = 0.3;
+  ufo->anim_speed = 0.3f;
 
-  mouse->start_frame = mouse->end_frame = mouse->frame = 0;
-  mouse->tx = 10; mouse->ty = 10; mouse->tz = 9;
-  mouse->image = mouse_img;
+  mouse->start_frame = mouse->end_frame = 0;
+  mouse->frame = 0;
+  mouse->tx = 10.0f; mouse->ty = 10.0f; mouse->tz = 9.0f;
+  mouse->image = ptang->getSprite(10);
 
   items.push_back(ci1);
   items.push_back(ci2);
@@ -201,16 +205,16 @@ int main( int argc, char* argv[] )
     /* Update animations etc */
     list<CityItem*> to_remove;
 
-    BOOST_FOREACH(CityItem *i, items)
+	for(std::list<CityItem*>::iterator it = items.begin(); it != items.end(); ++it)
     {
-      i->update();
+      (*it)->update();
     }
 
-    BOOST_FOREACH(CityItem *i, temp_items)
+	for(std::list<CityItem*>::iterator it = temp_items.begin(); it != temp_items.end(); ++it)
     {
-      i->update();
-      if (i->garbage())
-        to_remove.push_back(i);
+      (*it)->update();
+      if ((*it)->garbage())
+        to_remove.push_back(*it);
     }
 
     for (list<PewPewItem*>::iterator it=shots.begin(); it!=shots.end(); ++it)
@@ -221,9 +225,9 @@ int main( int argc, char* argv[] )
       if (i->is_hit()) // process hit
       {
         if ((int)i->tz==0)
-          cm.setTile(i->tx, i->ty, i->tz, Tile(1));
+          cm.setTile((unsigned int)i->tx, (unsigned int)i->ty, (unsigned int)i->tz, Tile(1));
         else
-          cm.setTile(i->tx, i->ty, i->tz, Tile(0));
+          cm.setTile((unsigned int)i->tx, (unsigned int)i->ty, (unsigned int)i->tz, Tile(0));
 
         for (int x=-1; x<2; ++x)
           for (int y=-1; y<2; ++y)
@@ -233,30 +237,32 @@ int main( int argc, char* argv[] )
               shot->tx = i->tx+x;
               shot->ty = i->ty+y;
               shot->tz = i->tz;
-              shot->anim_speed=0.5;
+              shot->anim_speed=0.5f;
               shot->images = ptang;
               if (x!=0 || y!=0)
               {
-                shot->start_frame = shot->frame = 29;
+                shot->start_frame = 29;
+				shot->frame = 29;
                 shot->end_frame=41;
               }
               else
               {
-                shot->start_frame = shot->frame = 74;
+                shot->start_frame = 74;
+				shot->frame = 74;
                 shot->end_frame=83;
               }
               temp_items.push_back(shot);
             }
-      }
+      } 
 
       if (i->garbage())
         it = shots.erase(it);
     }
 
-    BOOST_FOREACH(CityItem *i, to_remove)
+ 	for(std::list<CityItem*>::iterator it = temp_items.begin(); it != temp_items.end(); ++it)
     {
-      temp_items.remove(i);
-      delete i;
+      delete (*it);
+      it = temp_items.erase(it);
     }
 
     /* Drawing */
@@ -267,7 +273,7 @@ int main( int argc, char* argv[] )
     sp.use();
 
     int param = glGetUniformLocation(sp.get_sp(), "mousePos");
-    glUniform2f(param, mouse->sx, HEIGHT-mouse->sy);
+    glUniform2f(param, (GLfloat)mouse->sx, (GLfloat)HEIGHT-mouse->sy);
 
     for (int tz = 0; tz<10; tz++)
     {
@@ -280,7 +286,7 @@ int main( int argc, char* argv[] )
         int sx, sy;
         for (int tx=ftx; tx<ltx; ++tx)
         {
-          Utils::tile_to_screen(tx, ty, tz, sx, sy);
+          Utils::tile_to_screen((float)tx, (float)ty, (float)tz, sx, sy);
           if (sx+TILE_WIDTH > camera.x && sy+TILE_HEIGHT+15> camera.y && sx - camera.x <camera.w && sy - camera.y <camera.h)
           {
             sx -= camera.x;
@@ -290,56 +296,56 @@ int main( int argc, char* argv[] )
             if (t[tx])
             {
               if (t[tx] < city->count())
-                city->getSprite(t[tx])->renderAt(s, sp,tz);
+                city->getSprite(t[tx])->renderAt(s, sp,(float)tz);
               else
-                invalid->getSprite(1)->renderAt(s, sp,tz);
+                invalid->getSprite(1)->renderAt(s, sp,(float)tz);
             }
           }
         }
       }
 
-      BOOST_FOREACH(CityItem *i, temp_items)
-      {
+	for(std::list<CityItem*>::iterator it = temp_items.begin(); it != temp_items.end(); ++it)
+    {
         int sx, sy;
-        if ((int)i->tz == tz)
+        if ((int)(*it)->tz == tz)
         {
-          Utils::tile_to_screen(i->tx, i->ty, i->tz, sx, sy);
+          Utils::tile_to_screen((*it)->tx, (*it)->ty, (*it)->tz, sx, sy);
           sx -= camera.x;
           sy -= camera.y;
           s.x = sx;
           s.y = sy;
           // Don't clip for now - SDL should do the clipping anyway
-          i->renderAt(s, sp, tz);
+          (*it)->renderAt(s, sp, (float)tz);
         }
       }
 
-      BOOST_FOREACH(CityItem *i, items)
-      {
+	for(std::list<CityItem*>::iterator it = items.begin(); it != items.end(); ++it)
+    {
         int sx, sy;
-        if ((int)i->tz == tz)
+        if ((int)(*it)->tz == tz)
         {
-          Utils::tile_to_screen(i->tx, i->ty, i->tz, sx, sy);
+          Utils::tile_to_screen((*it)->tx, (*it)->ty, (*it)->tz, sx, sy);
           sx -= camera.x;
           sy -= camera.y;
           s.x = sx;
           s.y = sy;
           // Don't clip for now - SDL should do the clipping anyway
-          i->renderAt(s, sp, tz);
+          (*it)->renderAt(s, sp, (float)tz);
         }
       }
 
-      BOOST_FOREACH(CityItem *i, shots)
-      {
+	for(std::list<PewPewItem*>::iterator it = shots.begin(); it != shots.end(); ++it)
+    {
         int sx, sy;
-        if ((int)i->tz == tz)
+        if ((int)(*it)->tz == tz)
         {
-          Utils::tile_to_screen(i->tx, i->ty, i->tz, sx, sy);
+          Utils::tile_to_screen((*it)->tx, (*it)->ty, (*it)->tz, sx, sy);
           sx -= camera.x;
           sy -= camera.y;
           s.x = sx;
           s.y = sy;
           // Don't clip for now - SDL should do the clipping anyway
-          i->renderAt(s, sp,tz);
+          (*it)->renderAt(s, sp,(float)tz);
         }
       }
     }
@@ -359,11 +365,12 @@ int main( int argc, char* argv[] )
       pp->tx=ufo->tx+1;
       pp->ty=ufo->ty+1;
       pp->tz=ufo->tz;
-      pp->dx=rand() % 100;
-      pp->dy=rand() % 100;
-      pp->dz=0;
+      pp->dx=(float)(rand() % 100);
+      pp->dy=(float)(rand() % 100);
+      pp->dz=0.0f;
       pp->images=pequip;
-      pp->start_frame = pp->frame = 75;
+      pp->start_frame = 75;
+	  pp->frame = 75.0f;
       pp->end_frame=75;
       shots.push_back(pp);
     }
@@ -389,7 +396,7 @@ int main( int argc, char* argv[] )
             shot->tx = mouse->tx;
             shot->ty = mouse->ty;
             shot->tz = mouse->tz;
-            shot->anim_speed = 0.1;
+            shot->anim_speed = 0.1f;
             shot->images = ptang;
             int q =0;
             switch(i)
@@ -400,7 +407,7 @@ int main( int argc, char* argv[] )
             case 3:q=184; shot->ty++; break;
             }
             shot->start_frame =q;
-            shot->frame = shot->start_frame;
+            shot->frame = (float)q;
             shot->end_frame = shot->start_frame + 9;
             temp_items.push_back(shot);
           }
@@ -412,11 +419,12 @@ int main( int argc, char* argv[] )
           pp->tx=ufo->tx;
           pp->ty=ufo->ty;
           pp->tz=ufo->tz;
-          pp->dx=rand() % 100;
-          pp->dy=rand() % 100;
-          pp->dz=0;
+          pp->dx=(float)(rand() % 100);
+          pp->dy=(float)(rand() % 100);
+          pp->dz=0.0f;
           pp->images=pequip;
-          pp->start_frame = pp->frame = 75;
+          pp->start_frame = 75;
+		  pp->frame = 75.0f;
           pp->end_frame=75;
           shots.push_back(pp);
         } break;

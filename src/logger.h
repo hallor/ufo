@@ -17,6 +17,10 @@ private:
 extern Logger __log;
 };
 
+#ifdef _WIN32
+#define __PRETTY_FUNCTION__ __FUNCTION__
+#endif
+
 #define LogCrit(X,...) Logger::__log.log("Critical Error at ", "%s@%s(%i): "X,__FILE__,__PRETTY_FUNCTION__,__LINE__,##__VA_ARGS__);
 #define LogError(X,...) Logger::__log.log("Error at ", "%s@%s(%i): "X,__FILE__,__PRETTY_FUNCTION__,__LINE__,##__VA_ARGS__);
 #define LogWarning(X,...) Logger::__log.log("%s: "X,"Warning",##__VA_ARGS__);

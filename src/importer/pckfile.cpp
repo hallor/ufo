@@ -10,7 +10,6 @@
 
 #include "logger.h"
 
-using namespace Importer;
 
 static const int PckLookupTable[10] = {0, 0, 1, 1, 1, 2, 2, 3, 3, 3};
 
@@ -55,6 +54,29 @@ struct sPckEofTag
   unsigned int m_Data[4];
 };
 
+#ifdef _WIN32 
+#pragma pack(push, 1)
+struct sPckLineHeader
+{
+  sPckLineHeader()
+  {
+    clear();
+  }
+
+  void clear()
+  {
+    memset(this, 0, sizeof(*this));
+  }
+
+  unsigned char m_Checksum;
+  unsigned char m_LineIndex;
+  unsigned char m_Unknown1[2]; //
+  unsigned char m_Skip;
+  unsigned char m_DataLength;
+  unsigned char m_Unknown2[2];
+};
+#pragma pack(pop)
+#else
 struct sPckLineHeader
 {
   sPckLineHeader()
@@ -74,7 +96,7 @@ struct sPckLineHeader
   unsigned char m_DataLength;
   unsigned char m_Unknown2[2];
 } __attribute__((packed));
-
+#endif
 class cPckLine
 {
 public:
@@ -331,7 +353,7 @@ bool cPckFile::loadPck(const cTabFile & f, std::istream & file)
     return false;
 
   file.seekg(0, std::ios::end);
-  int file_size = file.tellg();
+  int file_size = (int)file.tellg();
   file.seekg(0, std::ios::beg);
 
   int images_count = f.getOffsetsCount();

@@ -1,17 +1,16 @@
 #include <cstddef>
 #include "pcxfile.h"
 
-using namespace Importer;
 
 bool cPCXFile::loadFrom(std::istream & file)
 {
   if (!file.good())
     return false;
 
-  int start_pos = file.tellg();
+  int start_pos = (int)file.tellg();
 
   file.seekg(0, std::ios::end);
-  int length = file.tellg();
+  int length = (int)file.tellg();
   file.seekg(start_pos);
 
   if(length < (int)sizeof(m_Header))

@@ -2,7 +2,6 @@
 #define CITYITEM_H
 
 #include <SDL/SDL.h>
-#include <SDL/SDL_gfxPrimitives.h>
 #include <stdlib.h>
 #include <iostream>
 #include <cmath>
@@ -16,11 +15,12 @@ class CityItem
 public:
     CityItem()
     {
-      tz = 8;
-      tx = 0.1 * (rand() % 1000);
-      ty = 0.1 * (rand() % 1000);
-      frame = start_frame = end_frame = 0;
-      anim_speed = 0.7;
+      tz = 8.0f;
+      tx = 0.1f * (rand() % 1000);
+      ty = 0.1f * (rand() % 1000);
+      frame = 0.0f;
+	  start_frame = end_frame = 0;
+      anim_speed = 0.7f;
       is_garbage = false;
     }
 
@@ -29,14 +29,14 @@ public:
     {
       frame += anim_speed;
       if ((int)frame > end_frame)
-        frame = start_frame;
+        frame = (float)start_frame;
     }
 
     virtual void renderAt(Rect & pos, const ShaderProgram & sp, float z)
     {
       if (!is_garbage)
       {
-        Sprite * img = images->getSprite(frame);
+        Sprite * img = images->getSprite((size_t)frame);
         if (img)
           img->renderAt(pos,sp, z);
       }
@@ -74,7 +74,7 @@ public:
   MovableCityItem() : CityItem()
   {
     dx = tx; dy = ty; dz = tz;
-    speed = 0.1;
+    speed = 0.1f;
   }
 
   virtual void update()
@@ -107,8 +107,8 @@ public:
 
   virtual void arrived()
   {
-    dx = 0.1 * (rand() % 1000);
-    dy = 0.1 * (rand() % 1000);
+    dx = 0.1f * (rand() % 1000);
+    dy = 0.1f * (rand() % 1000);
   }
 
   float dx, dy, dz;
@@ -144,7 +144,7 @@ public:
     if (!hit)
     {
       SingleShotMovableItem::update();
-      if (city.getTile(tx, ty, tz))
+      if (city.getTile((int)tx, (int)ty, (int)tz))
       {
         hit = true;
         is_garbage = true;
@@ -165,7 +165,7 @@ public:
   DimensionGate() : MovableCityItem()
   {
     arrived();
-    speed=0.03;
+    speed=0.03f;
     std::cout << "Generated gate item at " << tx << "x" << ty <<
                  " Destination to " << dx << "x" << dy <<std::endl;
   }
@@ -183,7 +183,7 @@ public:
     tz = source->tz +1;
     tx = source->tx;
     ty = source->ty;
-    speed = 0.05;
+    speed = 0.05f;
     arrived();
     std::cout << "Generated ufo at" << tx << "x" << ty << std::endl;
   }

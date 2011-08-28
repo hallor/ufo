@@ -4,15 +4,14 @@
 #include <vector>
 #include <iostream>
 
-namespace Importer {
-
 typedef uint32_t tRGBA;
 typedef struct {
   uint8_t r;
   uint8_t g;
   uint8_t b;
   uint8_t a;
-} __attribute__((packed)) sRGBA;
+} sRGBA;
+
 
 typedef uint8_t tPixel;
 
@@ -50,4 +49,3 @@ private:
   bool m_Valid;
 };
 
-};

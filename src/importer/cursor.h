@@ -4,10 +4,10 @@
 #include <cmath>
 #include <cstring>
 #include "surface.h"
-#include "bitmap.h"
 #include "logger.h"
-namespace Importer
-{
+#include "bitmap.h"
+
+double log2(double n);
 
 class cCursor
 {
@@ -29,7 +29,7 @@ public:
     bool loadFrom(std::istream & file, const cPalette & pal)
     {
       file.seekg(0, std::ios::end);
-      int size = file.tellg();
+      int size = (int)file.tellg();
       file.seekg(0, std::ios::beg);
 
       if (!file.good() || !pal.isValid())
@@ -84,5 +84,4 @@ private:
     int raster_count;
 };
 
-}
 #endif // CURSOR_H

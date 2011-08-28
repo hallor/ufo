@@ -1,5 +1,3 @@
-#include <SDL/SDL_image.h>
-#include <boost/lexical_cast.hpp>
 #include <iostream>
 #include <fstream>
 #include <cmath>
@@ -10,9 +8,23 @@
 #include "importer/tabfile.h"
 #include "importer/bitmap.h"
 #include "logger.h"
+#include "importer/cursor.h"
+
+#ifdef _WIN32
+#pragma comment(lib, "opengl32.lib")
+#pragma comment(lib, "SDL.lib")
+#pragma comment(lib, "SDLmain.lib")
+#ifdef _DEBUG
+#pragma comment(lib, "glew32d.lib")
+#pragma comment(lib, "glew32sd.lib")
+
+#else
+#pragma comment(lib, "glew32.lib")
+#pragma comment(lib, "glew32s.lib")
+#endif //_DEBUG
+#endif //_WIN32
 
 using namespace std;
-using namespace Importer;
 
 SpritePack::SpritePack(const std::list<Surface> & s)
 {
@@ -70,9 +82,9 @@ SpritePack * GfxManager::getPack(const std::string & filename)
 
   std::cout << "Loading sprite pack from file(s) " << filename << std::endl;
 
-  std::ifstream file_pal("screenshots/ufo010.pal");
-  std::ifstream file_pck((filename+".PCK").c_str());
-  std::ifstream file_tab((filename+".TAB").c_str());
+  std::ifstream file_pal("screenshots/ufo010.pal", std::ios_base::binary);
+  std::ifstream file_pck((filename+".PCK").c_str(), std::ios_base::binary);
+  std::ifstream file_tab((filename+".TAB").c_str(), std::ios_base::binary);
 
   cPalette pal;
   cPckFile pck;

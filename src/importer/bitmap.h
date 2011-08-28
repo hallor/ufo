@@ -4,9 +4,8 @@
 #include <iostream>
 #include <string>
 
-#include "palette.h"
-namespace Importer
-{
+#include "importer/palette.h"
+
 /** Class keeping 8-bit raw images - no palette information is attached!*/
 class c8bppBitmap
 {
@@ -54,4 +53,3 @@ protected:
   tPixel *m_PixelData;
 };
 
-}

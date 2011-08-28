@@ -1,9 +1,11 @@
 #include <png.h>
+
+#ifdef HAS_LIBPNG
 #include <png++/png.hpp>
+#endif
 
 #include "cpngfile.h"
 
-using namespace Importer;
 
 #ifdef HAS_LIBPNG
 
