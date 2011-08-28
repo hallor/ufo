@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\FileIO">
+      <UniqueIdentifier>{52b5c227-9e21-414b-969b-75f0b63a8051}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\FileIO">
+      <UniqueIdentifier>{e0ef5013-fd67-4d08-80e6-1c91be284730}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\citybuilding.cpp">
@@ -69,6 +75,15 @@
     <ClCompile Include="src\utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\os\FileEnums.cpp">
+      <Filter>Source Files\FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="src\os\FileWin32.cpp">
+      <Filter>Source Files\FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="src\os\FileIO.cpp">
+      <Filter>Source Files\FileIO</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\citybuilding.h">
@@ -124,6 +139,15 @@
     </ClInclude>
     <ClInclude Include="src\utils.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\os\FileIO.h">
+      <Filter>Header Files\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="src\os\FileEnums.h">
+      <Filter>Header Files\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="src\os\FileWin32.h">
+      <Filter>Header Files\FileIO</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

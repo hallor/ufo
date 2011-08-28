@@ -90,6 +90,9 @@
     <ClCompile Include="src\logger.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\mouse.cpp" />
+    <ClCompile Include="src\os\FileEnums.cpp" />
+    <ClCompile Include="src\os\FileIO.cpp" />
+    <ClCompile Include="src\os\FileWin32.cpp" />
     <ClCompile Include="src\screen.cpp" />
     <ClCompile Include="src\shaderprogram.cpp" />
     <ClCompile Include="src\timer.cpp" />
@@ -109,6 +112,9 @@
     <ClInclude Include="src\importer\tabfile.h" />
     <ClInclude Include="src\logger.h" />
     <ClInclude Include="src\mouse.h" />
+    <ClInclude Include="src\os\FileEnums.h" />
+    <ClInclude Include="src\os\FileIO.h" />
+    <ClInclude Include="src\os\FileWin32.h" />
     <ClInclude Include="src\screen.h" />
     <ClInclude Include="src\shaderprogram.h" />
     <ClInclude Include="src\surface.h" />

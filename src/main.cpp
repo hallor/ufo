@@ -14,7 +14,7 @@
 #include "utils.h"
 #include "shaderprogram.h"
 #include "logger.h"
-
+#include "os/FileIO.h"
 #include "importer/cpngfile.h"
 #include "importer/pckfile.h"
 #include "importer/pcxfile.h"
@@ -50,6 +50,12 @@ bool initAll()
 
 int main( int argc, char* argv[] )
 {
+	iFile *file = CreateFileIO();
+	file->Open("duapa.txt", FFileOpenFlags::OpenExisting | FFileOpenFlags::Read);
+	char str[18] = {0};
+	file->Read(str, sizeof(str));
+	file->Close();
+	ReleaseFileIO(file);
   GfxManager gfx;
   srand(42);
   //Start
