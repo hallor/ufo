@@ -7,10 +7,6 @@
 #include "palette.h"
 namespace Importer
 {
-
-typedef uint8_t tPixel;
-class cPalette;
-
 /** Class keeping 8-bit raw images - no palette information is attached!*/
 class c8bppBitmap
 {
@@ -33,6 +29,16 @@ public:
   tRGBA * render(const cPalette & pal) const;
 
   bool create(int width, int height);
+
+  /** Class takes ownership of pixel data */
+  bool createFrom(tPixel * data, int width, int height)
+  {
+    free();
+    m_PixelData = data;
+    m_Width = width;
+    m_Height = height;
+    return data && width > 0 && height > 0;
+  }
 
   void clear(const tPixel clear_color = 0);
 

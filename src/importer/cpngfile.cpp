@@ -5,6 +5,8 @@
 
 using namespace Importer;
 
+#ifdef HAS_LIBPNG
+
 cPNGFile::cPNGFile()
 {
   m_Raster = NULL;
@@ -75,3 +77,4 @@ bool cPNGFile::save(std::ostream & file) const
   image.write_stream<std::ostream>(file);
   return true;
 }
+#endif

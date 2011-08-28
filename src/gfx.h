@@ -11,37 +11,13 @@
 
 #include "shaderprogram.h"
 #include "importer/palette.h"
+#include "surface.h"
 
 typedef SDL_Rect Rect;
 
 //SDL_Surface * loadTexture(const char * filename, bool colorKey);
 //bool loadSurfacetoVram(SDL_Surface * surface, GLuint & tex_id, Rect & tex_rect);
 bool unloadSurfacefromVram(GLuint & tex_id);
-
-struct Surface
-{
-  Surface() : pixels(0), w(0), h(0) {}
-
-  bool isValid() const { return pixels && w>0 && h >0; }
-
-  bool set(Importer::tRGBA *p, int w, int h)
-  {
-    clean();
-    pixels = p;
-    this->w = w; this->h = h;
-    return isValid();
-  }
-
-  void clean()
-  {
-    delete [] pixels;
-    pixels = 0;
-    w = h = 0;
-  }
-
-  Importer::tRGBA * pixels;
-  int w, h;
-};
 
 bool loadSurfacetoVram(Surface & surface, GLuint & tex_id, Rect & tex_rect);
 

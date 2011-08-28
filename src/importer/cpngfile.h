@@ -7,6 +7,7 @@
 
 namespace Importer {
 
+#ifdef HAS_LIBPNG
 class cPNGFile
 {
 public:
@@ -32,6 +33,7 @@ private:
     int m_Width;
     int m_Height;
 };
+#endif
 
 };
 #endif // CPNGFILE_H

@@ -24,6 +24,7 @@
 #include "importer/pckfile.h"
 #include "importer/tabfile.h"
 #include "importer/bitmap.h"
+#include "importer/cursor.h"
 
 using namespace std;
 
@@ -134,11 +135,29 @@ int main( int argc, char* argv[] )
 
   SpritePack *pequip = gfx.getPack("XCOMA/UFODATA/PEQUIP");
 
-  //Raster *mouse_img = gfx.getRaster("resources/cursor.png");
+  Importer::cCursor mouse_cursors;
+
+  {
+  std::ifstream f("XCOMA/TACDATA/MOUSE.DAT");
+  std::ifstream file_pal("screenshots/ufo010.pal");
+  cPalette pal;
+  LogInfo("Loading mouse cursors");
+
+  pal.loadFrom(file_pal);
+
+  mouse_cursors.loadFrom(f, pal);
+  LogInfo("Mouse raster size %ix%i", mouse_cursors.getSurface()->w, mouse_cursors.getSurface()->h);
+  }
+
+  Raster * mouse_img = new Raster();
+
+  mouse_img->setSurface(*mouse_cursors.getSurface());
+
+  //Ras/ter *mouse_img = gfx.getRaster("resources/cursor.png");
 
   CityMap cm(100,100,10);
 
-  cout << "Loading city map..." << std::flush;
+  LogInfo("Loading city map...");
 
   bool res;
 
@@ -180,15 +199,14 @@ int main( int argc, char* argv[] )
   ufo->end_frame = 94;
   ufo->anim_speed = 0.3;
 
-  //mouse->images = mouse_img;
   mouse->start_frame = mouse->end_frame = mouse->frame = 0;
   mouse->tx = 10; mouse->ty = 10; mouse->tz = 9;
-//  mouse->image = mouse_img;
+  mouse->image = mouse_img;
 
   items.push_back(ci1);
   items.push_back(ci2);
   items.push_back(ufo);
-//  items.push_back(mouse);
+  items.push_back(mouse);
 
   FpsTimer timer(60);
   GLint t;
@@ -364,7 +382,7 @@ int main( int argc, char* argv[] )
     s.y =0;
 
 //    menu->renderAt(s, sp,11);
-//    mouse->renderAt(s, sp,11);
+    mouse->renderAt(s, sp,11);
 
     screen->flip();
 

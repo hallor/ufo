@@ -23,7 +23,9 @@ HEADERS += citybuilding.h \
            importer/tabfile.h \
     importer/pcxfile.h \
     importer/pckfile.h \
-    importer/cpngfile.h
+    importer/cpngfile.h \
+    importer/cursor.h \
+    surface.h
 SOURCES += citybuilding.cpp \
            cityitem.cpp \
            citymap.cpp \
@@ -40,6 +42,7 @@ SOURCES += citybuilding.cpp \
            importer/bitmap.cpp \
     importer/pcxfile.cpp \
     importer/pckfile.cpp \
-    importer/cpngfile.cpp
+    importer/cpngfile.cpp \
+    importer/cursor.cpp
 
-LIBS+= -lSDL -lGL -lGLEW -lSDL_image -lboost_filesystem `libpng-config --ldflags`
+LIBS+= -lSDL -lGL -lGLEW

@@ -14,6 +14,8 @@ typedef struct {
   uint8_t a;
 } __attribute__((packed)) sRGBA;
 
+typedef uint8_t tPixel;
+
 /** Class represeting 8-bit palette */
 class cPalette
 {

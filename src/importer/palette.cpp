@@ -46,7 +46,7 @@ bool cPalette::loadFrom(std::istream &file, int colorKey, int num_colors)
   m_Valid = m_Data.size() == 256 || m_Data.size() == 16;
 
 
-  if (m_Valid && colorKey >=0 && colorKey < m_Data.size())
+  if (m_Valid && colorKey >=0 && colorKey < (int)m_Data.size())
     m_Data[colorKey] = 0;
 
 
