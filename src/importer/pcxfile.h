@@ -12,8 +12,7 @@ class cPCXFile
 {
 public:
   /** Loads file from stream. Warning: will play with whole stream starting at current position. */
-  bool LoadFrom(std::istream & file);
-//  void SaveTo(std::ostream & file);
+  bool loadFrom(std::istream & file);
 
   const c8bppBitmap & bitmap() const { return m_Bitmap; }
   const cPalette & palette() const { return m_Palette; }

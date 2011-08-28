@@ -18,10 +18,9 @@
 #include "shaderprogram.h"
 #include "logger.h"
 
-#include <boost/lexical_cast.hpp>
-
 #include "importer/cpngfile.h"
 #include "importer/pckfile.h"
+#include "importer/pcxfile.h"
 #include "importer/tabfile.h"
 #include "importer/bitmap.h"
 #include "importer/cursor.h"
@@ -56,39 +55,6 @@ using namespace Importer;
 
 int main( int argc, char* argv[] )
 {
-#if 0
-  ifstream file_pal("screenshots/ufo010.pal");
-  ifstream file_pck("XCOMA/UFODATA/SAUCER.PCK");
-  ifstream file_tab("XCOMA/UFODATA/SAUCER.TAB");
-
-  cPalette pal;
-  cPckFile pck;
-  cTabFile tab;
-
-  pal.loadFrom(file_pal);
-  tab.loadFrom(file_tab);
-  pck.loadPck(tab, file_pck);
-
-  LogDebug("Loaded %i images.", pck.bitmapCount());
-
-
-  int lim=std::min(pck.bitmapCount(), 210);
-
-  for (int i=0; i<lim; ++i)
-  {
-    ofstream out( ("out/out"+boost::lexical_cast<std::string>(i) + ".png").c_str());
-    const c8bppBitmap * b = pck.getBitmap(i);
-    cPNGFile f;
-
-    tRGBA * raster = b->render(pal);
-    f.setRaster(raster, b->width(), b->height());
-    f.save(out);
-    LogInfo("Wrote %i'th, raster %ix%i", i, b->width(), b->height());
-  }
-
-  return 0;
-#endif
-
   GfxManager gfx;
   srand(42);
   //Start
@@ -121,9 +87,21 @@ int main( int argc, char* argv[] )
   }
 
 
-  //Raster * menu = gfx.getRaster("XCOMA/UFODATA/BUYBASE2.PCX");
- // menu->setZoom(2);
-  //menu->zoom2x();
+  Raster * menu = new Raster(); //gfx.getRaster("XCOMA/UFODATA/BUYBASE2.PCX");
+  {
+    std::ifstream f("XCOMA/UFODATA/BUYBASE2.PCX");
+    LogInfo("Loading mouse cursors");
+
+    cPCXFile menu_raster;
+
+    menu_raster.loadFrom(f);
+
+    tRGBA * i = menu_raster.bitmap().render(menu_raster.palette());
+    Surface s;
+    s.set(i, menu_raster.bitmap().width(), menu_raster.bitmap().height());
+    menu->setSurface(s);
+  }
+  menu->setZoom(2);
 
   SpritePack *city = gfx.getPack("XCOMA/UFODATA/CITY");
 
@@ -146,14 +124,11 @@ int main( int argc, char* argv[] )
   pal.loadFrom(file_pal);
 
   mouse_cursors.loadFrom(f, pal);
-  LogInfo("Mouse raster size %ix%i", mouse_cursors.getSurface()->w, mouse_cursors.getSurface()->h);
   }
 
   Raster * mouse_img = new Raster();
 
   mouse_img->setSurface(*mouse_cursors.getSurface());
-
-  //Ras/ter *mouse_img = gfx.getRaster("resources/cursor.png");
 
   CityMap cm(100,100,10);
 
@@ -211,14 +186,12 @@ int main( int argc, char* argv[] )
   FpsTimer timer(60);
   GLint t;
   glGetIntegerv(GL_MAX_TEXTURE_SIZE, &t);
-  LogError("Max texture size: %i", t);
 
   int my_sampler_uniform_location = glGetUniformLocation(sp.get_sp(), "tex");
   glActiveTexture(GL_TEXTURE0);
   glUniform1i(my_sampler_uniform_location, GL_TEXTURE0);
         glActiveTexture(GL_TEXTURE0); // We use texture 0 for images
         glBindTexture(GL_TEXTURE_2D, city->getSprite(140)->tex_id);
-  LogError("cycek: %i", city->getSprite(140)->tex_id);
 
   while (!quit)
   {
@@ -286,10 +259,7 @@ int main( int argc, char* argv[] )
       delete i;
     }
 
-//    mouse->update();
-
     /* Drawing */
-//    glEnable(GL_TEXTURE_2D);
     screen->clear();
 
     glMatrixMode(GL_MODELVIEW);
@@ -298,8 +268,6 @@ int main( int argc, char* argv[] )
 
     int param = glGetUniformLocation(sp.get_sp(), "mousePos");
     glUniform2f(param, mouse->sx, HEIGHT-mouse->sy);
-
-//    glTranslatef(camera.x, camera.y, 0);
 
     for (int tz = 0; tz<10; tz++)
     {
@@ -312,7 +280,6 @@ int main( int argc, char* argv[] )
         int sx, sy;
         for (int tx=ftx; tx<ltx; ++tx)
         {
-          int sx, sy;
           Utils::tile_to_screen(tx, ty, tz, sx, sy);
           if (sx+TILE_WIDTH > camera.x && sy+TILE_HEIGHT+15> camera.y && sx - camera.x <camera.w && sy - camera.y <camera.h)
           {
@@ -376,12 +343,11 @@ int main( int argc, char* argv[] )
         }
       }
     }
-    //sp.unuse();
 
     s.x =0;
     s.y =0;
 
-//    menu->renderAt(s, sp,11);
+    menu->renderAt(s, sp,11);
     mouse->renderAt(s, sp,11);
 
     screen->flip();

@@ -3,7 +3,7 @@
 
 using namespace Importer;
 
-bool cPCXFile::LoadFrom(std::istream & file)
+bool cPCXFile::loadFrom(std::istream & file)
 {
   if (!file.good())
     return false;
@@ -93,15 +93,9 @@ bool cPCXFile::LoadFrom(std::istream & file)
 
 
       for(int z = 0; z < runcount && j + z < m_Bitmap.width(); ++z)
-        m_Bitmap.pixel(j + z, m_Bitmap.height() - i - 1) = runvalue;
+        m_Bitmap.pixel(j + z, i) = runvalue;
     }
   }
 
   return true;
 };
-
-//void cPCX::SaveTo(const std::string &file)
-//{
-//  if(m_Bitmap.GetHeight() > 0 && m_Bitmap.GetWidth() > 0)
-//    m_Bitmap.SaveToFile(file);
-//};

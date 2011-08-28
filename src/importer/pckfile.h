@@ -34,29 +34,12 @@ public:
   /** Returns number of bitmaps successfully parsed */
   int bitmapCount() const;
 
-//  // don't pass extensions here
-//  // loads .tab and associated .pck file if possible
-//  bool LoadPackage(const std::string &source);
-//  // loads palette to use when stripping files to .bmp
-//  bool LoadPalette(const std::string &source);
-//  // strips all loaded files and outputs them to $dest folder
-//  bool StripTo(const std::string &dest, bool strip_pck = false, bool strip_stats = false);
-//  // releases all internal data
-//  void Release();
-
-//  bool GetStats(sPckFileStats &stats);
-
   /** Returns true if loading was finished succesfully */
   bool isValid() const;
 
 private:
 
   class Private;
-
-//  void CreateBuffer(int size);
-//  void DeleteBuffer();
-
-//  void FillStats();
 
   Private * p;
 };
