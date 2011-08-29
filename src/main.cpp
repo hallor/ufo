@@ -95,7 +95,7 @@ int main( int argc, char* argv[] )
   Raster * menu = new Raster(); //gfx.getRaster("XCOMA/UFODATA/BUYBASE2.PCX");
   {
     std::ifstream f("XCOMA/UFODATA/BUYBASE2.PCX", std::ios_base::binary);
-    LogInfo("Loading mouse cursors");
+    LogInfo("Loading menu");
 
     cPCXFile menu_raster;
 
@@ -128,12 +128,12 @@ int main( int argc, char* argv[] )
 
   pal.loadFrom(file_pal);
 
- // mouse_cursors.loadFrom(f, pal);
+  mouse_cursors.loadFrom(f, pal);
   }
 
   Raster * mouse_img = new Raster();
 
-  //mouse_img->setSurface(*mouse_cursors.getSurface());
+  mouse_img->setSurface(*mouse_cursors.getSurface());
 
   CityMap cm(100,100,10);
 
@@ -141,10 +141,10 @@ int main( int argc, char* argv[] )
 
   bool res;
 
-  //if (argc <2)
+  if (argc <2)
     res = cm.load("XCOMA/UFODATA/CITYMAP1");
- /// else
-  //  res = cm.load(argv[1]);
+  else
+    res = cm.load(argv[1]);
 
   cout << res << std::endl;
 
@@ -179,12 +179,11 @@ int main( int argc, char* argv[] )
   ufo->frame = 92;
   ufo->start_frame = (int)ufo->frame;
   ufo->end_frame = 94;
-  ufo->anim_speed = 0.3f;
 
   mouse->start_frame = mouse->end_frame = 0;
   mouse->frame = 0;
   mouse->tx = 10.0f; mouse->ty = 10.0f; mouse->tz = 9.0f;
-  mouse->image = ptang->getSprite(10);
+  mouse->image = mouse_img;
 
   items.push_back(ci1);
   items.push_back(ci2);
@@ -241,18 +240,17 @@ int main( int argc, char* argv[] )
               shot->tx = i->tx+x;
               shot->ty = i->ty+y;
               shot->tz = i->tz;
-              shot->anim_speed=0.5f;
               shot->images = ptang;
               if (x!=0 || y!=0)
               {
                 shot->start_frame = 29;
-        shot->frame = 29;
+                shot->frame = 29;
                 shot->end_frame=41;
               }
               else
               {
                 shot->start_frame = 74;
-        shot->frame = 74;
+                shot->frame = 74;
                 shot->end_frame=83;
               }
               temp_items.push_back(shot);
@@ -260,14 +258,19 @@ int main( int argc, char* argv[] )
       }
 
       if (i->garbage())
+      {
         it = shots.erase(it);
+        delete i;
+      }
     }
 
-  for(std::list<CityItem*>::iterator it = temp_items.begin(); it != temp_items.end(); ++it)
+  for(std::list<CityItem*>::iterator it = to_remove.begin(); it != to_remove.end(); ++it)
     {
-      delete (*it);
-      it = temp_items.erase(it);
+      CityItem * ci = *it;
+      temp_items.remove(ci);
+      delete ci;
     }
+  to_remove.clear();
 
     /* Drawing */
     screen->clear();
@@ -374,7 +377,7 @@ int main( int argc, char* argv[] )
       pp->dz=0.0f;
       pp->images=pequip;
       pp->start_frame = 75;
-    pp->frame = 75.0f;
+      pp->frame = 75.0f;
       pp->end_frame=75;
       shots.push_back(pp);
     }

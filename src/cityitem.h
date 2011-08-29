@@ -137,6 +137,7 @@ public:
   PewPewItem(const CityMap & c) : SingleShotMovableItem(), city(c)
   {
     hit = false;
+
   }
 
   virtual void update()
@@ -166,6 +167,7 @@ public:
   {
     arrived();
     speed=0.03f;
+    anim_speed = 0.3f;
     std::cout << "Generated gate item at " << tx << "x" << ty <<
                  " Destination to " << dx << "x" << dy <<std::endl;
   }
@@ -184,6 +186,7 @@ public:
     tx = source->tx;
     ty = source->ty;
     speed = 0.05f;
+    anim_speed = 0.15f;
     arrived();
     std::cout << "Generated ufo at" << tx << "x" << ty << std::endl;
   }
