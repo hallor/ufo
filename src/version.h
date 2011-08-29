@@ -1,3 +1,3 @@
 #pragma once
 
-#define version "$Id:$"
+#define version "$Id$"
