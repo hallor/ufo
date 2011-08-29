@@ -28,7 +28,8 @@ HEADERS += citybuilding.h \
            importer/tabfile.h \
            os/FileEnums.h \
            os/FileIO.h \
-           os/FileWin32.h
+           os/FileWin32.h \
+    os/filelinux.h
 SOURCES += citybuilding.cpp \
            cityitem.cpp \
            citymap.cpp \
@@ -49,6 +50,7 @@ SOURCES += citybuilding.cpp \
            importer/tabfile.cpp \
            os/FileEnums.cpp \
            os/FileIO.cpp \
-           os/FileWin32.cpp
+           os/FileWin32.cpp \
+    os/filelinux.cpp
 
 LIBS += -lSDL -lGL -lGLEW
