@@ -5,6 +5,15 @@
 */
 #include "FileEnums.h"
 
+/*
+  TODO:
+  - add a way to do copy-by-value of files (refcounts??)
+  - and remove destructor function
+  - Maybe create wrapper so file creation will be the same for all platforms
+    without need for factory (i.e. is factory needed here?)
+  - Remove os-dependent flags/dwords/etc. replace with generic enums
+*/
+
 class iFile
 {
 public:
@@ -58,10 +67,6 @@ public:
 		0		file is either empty, or it wasn't opened exclusively with FFileOpenFlags::Read */
 	virtual DWORD GetSize() const = 0;
 
-	/* Retrieves flags for last successfull Open call
-		Return value undefined when file isn't open */
-	virtual DWORD GetOpenFlags() const = 0;
-
 	/* Returns true when file is open, false otherwise */
 	virtual bool IsOpen() const = 0;
 	virtual bool IsOpenForWrite() const = 0;
@@ -69,9 +74,6 @@ public:
 
 	/* Closes file */
 	virtual void Close() = 0;
-
-	/* For debugging purposes only */
-	virtual int GetIndex() const = 0;
 };
 
 /* Creates iFile depending on compilation platform 
