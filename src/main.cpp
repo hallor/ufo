@@ -41,7 +41,6 @@ bool initAll()
   SDL_GL_SetAttribute(SDL_GL_ACCUM_GREEN_SIZE,	8);
   SDL_GL_SetAttribute(SDL_GL_ACCUM_BLUE_SIZE,	    8);
   SDL_GL_SetAttribute(SDL_GL_ACCUM_ALPHA_SIZE,	8);
-
   //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS,  1);
   //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES,  2);
 
@@ -220,7 +219,7 @@ int main( int argc, char* argv[] )
         to_remove.push_back(*it);
     }
 
-    for (list<PewPewItem*>::iterator it=shots.begin(); it!=shots.end(); ++it)
+    for (list<PewPewItem*>::iterator it=shots.begin(); it!=shots.end(); )
     {
       PewPewItem *i=*it;
       i->update();
@@ -262,6 +261,8 @@ int main( int argc, char* argv[] )
         it = shots.erase(it);
         delete i;
       }
+      else
+          ++it;
     }
 
   for(std::list<CityItem*>::iterator it = to_remove.begin(); it != to_remove.end(); ++it)

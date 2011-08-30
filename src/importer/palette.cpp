@@ -26,12 +26,14 @@ bool cPalette::loadFrom(std::istream &file, int colorKey, int num_colors)
 
     // Read entry
     file.read((char*)x, sizeof(x));
-    c.r = x[0]; c.g = x[1]; c.b = x[2]; c.a = 0;
+    c.r = x[0];
+    c.g = x[1]; 
+    c.b = x[2]; 
+    c.a = x[0] == 0xCC || x[1] == 0xCC || x[2] == 0xC4 ? 0x00 : 0xff;
     //c = (tRGBA)x[0] << 24 | x[1] << 16 | x[2] << 8;
 
     if (file.gcount() == sizeof(x))
     {
-      c.a = 0xFF;
       m_Data.push_back(*(tRGBA*)&c);
       ++rr;
     }
