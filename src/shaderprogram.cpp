@@ -69,6 +69,8 @@ ShaderProgram::ShaderProgram(const char * vertex, const char * fragment)
 	fs = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fs, 1, (const GLchar**)&fsource, NULL);
 	is_loaded = true;
+    is_built = false;
+    is_attached = false;
 }
 
 ShaderProgram::~ShaderProgram()

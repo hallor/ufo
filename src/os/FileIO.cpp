@@ -28,7 +28,7 @@ void ReleaseFileIO(iFile*& f)
 	if(!f)
 		return;
 #ifdef _WIN32
-    LogDebug("Releasing file %i", (cFileWin32*)f->GetIndex());
+    LogDebug("Releasing file %i", ((cFileWin32*)f)->GetIndex());
 #endif
 	delete f;
 	f = NULL;

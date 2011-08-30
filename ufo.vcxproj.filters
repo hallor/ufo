@@ -84,6 +84,9 @@
     <ClCompile Include="src\os\FileIO.cpp">
       <Filter>Source Files\FileIO</Filter>
     </ClCompile>
+    <ClCompile Include="src\os\filelinux.cpp">
+      <Filter>Source Files\FileIO</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\citybuilding.h">
@@ -147,6 +150,9 @@
       <Filter>Header Files\FileIO</Filter>
     </ClInclude>
     <ClInclude Include="src\os\FileWin32.h">
+      <Filter>Header Files\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="src\os\filelinux.h">
       <Filter>Header Files\FileIO</Filter>
     </ClInclude>
   </ItemGroup>
