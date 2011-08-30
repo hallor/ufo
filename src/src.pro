@@ -29,7 +29,8 @@ HEADERS += citybuilding.h \
            os/FileEnums.h \
            os/FileIO.h \
            os/FileWin32.h \
-    os/filelinux.h
+    os/filelinux.h \
+    importer/peoplepath.h
 SOURCES += citybuilding.cpp \
            cityitem.cpp \
            citymap.cpp \
@@ -51,6 +52,7 @@ SOURCES += citybuilding.cpp \
            os/FileEnums.cpp \
            os/FileIO.cpp \
            os/FileWin32.cpp \
-    os/filelinux.cpp
+    os/filelinux.cpp \
+    importer/peoplepath.cpp
 
 LIBS += -lSDL -lGL -lGLEW
