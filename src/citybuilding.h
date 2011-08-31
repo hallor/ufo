@@ -21,14 +21,21 @@ struct CityBuildingRecord
 class CityBuilding
 {
 public:
-  CityBuilding() : name(0), owner(0), type(0) { }
+  CityBuilding() : name(""), owner(0), type(0)
+  {
+  }
 
     void print()
     {
-      LogInfo("Building %i, x(%i,%i), y(%i,%i).", rec.name_id, rec.x1, rec.x2, rec.y1, rec.y2);
+        int x = rec.x2 - rec.x1;
+        int y = rec.y2 - rec.y1;
+        float z = 216.0/(x*y);
+      LogInfo("Building '%s' (%i), x(%i,%i), y(%i,%i) dim=%ix%ix%g",
+              name.c_str(), rec.name_id, rec.x1, rec.x2, rec.y1, rec.y2,
+              x,y,z);
     }
 
-    const char * name;
+    std::string name;
     const char * owner;
     const char * type;
     CityBuildingRecord rec;
@@ -49,7 +56,7 @@ public:
     buildings.clear();
   }
 
-  bool load(const std::string & filename)
+  bool load(const std::string & filename, std::vector<std::string> & names)
   {
     clear();
 
@@ -75,6 +82,8 @@ public:
       CityBuilding * bld = new CityBuilding();
       f->Read(&bld->rec, sizeof(CityBuildingRecord));
 
+      if (names.size() > bld->rec.name_id)
+          bld->name = names[bld->rec.name_id];
       buildings.push_back(bld);
       bld->print();
     }

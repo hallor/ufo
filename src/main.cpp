@@ -22,6 +22,8 @@
 #include "importer/bitmap.h"
 #include "importer/cursor.h"
 
+#include "citybuilding.h"
+
 using namespace std;
 
 bool initAll()
@@ -58,6 +60,22 @@ int main( int argc, char* argv[] )
     file->Close();
     ReleaseFileIO(file);
   }
+
+  CityBuildings cb;
+  ifstream bn("resources/building.nam");
+  std::vector<std::string> names;
+  names.reserve(150);
+  while (bn.good())
+  {
+      std::string x;
+      getline(bn, x);
+      //bn >> x;
+      names.push_back(x);
+      LogInfo("Loaded name %s", x.c_str());
+  }
+
+
+  cb.load("XCOMA/UFODATA/CITYMAP1.BLD", names);
 
   GfxManager gfx;
   srand(42);
