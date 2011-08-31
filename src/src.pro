@@ -30,7 +30,8 @@ HEADERS += citybuilding.h \
            os/FileIO.h \
            os/FileWin32.h \
     os/filelinux.h \
-    importer/peoplepath.h
+    importer/peoplepath.h \
+
 SOURCES += citybuilding.cpp \
            cityitem.cpp \
            citymap.cpp \
