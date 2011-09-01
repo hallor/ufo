@@ -15,7 +15,7 @@ private:
 };
 
 extern Logger __log;
-};
+}
 
 #ifdef _WIN32
 #define __PRETTY_FUNCTION__ __FUNCTION__

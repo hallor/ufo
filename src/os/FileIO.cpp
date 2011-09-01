@@ -21,7 +21,7 @@ iFile *CreateFileIO()
 	++FilesCount;
 
 	return ret;
-};
+}
 
 void ReleaseFileIO(iFile*& f)
 {
@@ -32,4 +32,4 @@ void ReleaseFileIO(iFile*& f)
 #endif
 	delete f;
 	f = NULL;
-};
+}

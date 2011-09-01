@@ -1,19 +1,26 @@
 #include <stdexcept>
 #include <cstring>
-
 #include "bitmap.h"
 
 
-c8bppBitmap::c8bppBitmap()
+c8bppBitmap::c8bppBitmap() : m_Width(0), m_Height(0), m_PixelData(0)
 {
-  m_PixelData = NULL;
-  m_Width = m_Height = 0;
-};
+}
 
 c8bppBitmap::~c8bppBitmap()
 {
   free();
-};
+}
+
+bool c8bppBitmap::createFrom(tPixel * data, int width, int height)
+{
+  free();
+  m_PixelData = data;
+  m_Width = width;
+  m_Height = height;
+  return data && width > 0 && height > 0;
+}
+
 
 tPixel & c8bppBitmap::pixel(int x, int y)
 {
@@ -65,7 +72,7 @@ bool c8bppBitmap::create(int width, int height)
   m_Height = height;
 
   return m_PixelData != NULL;
-};
+}
 
 void c8bppBitmap::clear(const tPixel clear_color)
 {

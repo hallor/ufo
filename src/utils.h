@@ -21,6 +21,13 @@ namespace Utils
     tile_x = (float)sx/TILE_WIDTH + (float)sy/TILE_HEIGHT + tile_z/2;
     tile_y = (float)sy/TILE_HEIGHT + tile_z/2 -  (float)sx/TILE_WIDTH;
   }
-};
+
+  /** Assumes 32-bit integer rounded down */
+  unsigned int fastlog2floor(unsigned int number);
+
+  /** Normalizes resolution of "raster" to nearest power-of-2 */
+  unsigned int normalizeResolution(unsigned int resolution);
+
+}
 
 #endif // UTILS_H

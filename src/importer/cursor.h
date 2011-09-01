@@ -1,14 +1,13 @@
 #ifndef CURSOR_H
 #define CURSOR_H
 #include <iostream>
-#include <cmath>
 #include <cstring>
 #include "surface.h"
 #include "logger.h"
 #include "bitmap.h"
+#include "utils.h"
 
-double log2(double n);
-
+/** Class used to load MOUSE.DAT-like cursors */
 class cCursor
 {
 public:
@@ -42,7 +41,7 @@ public:
 
       c8bppBitmap bmp; //bitmap will be power-of-2 from the beginning
 
-      int height = 1 << (int)ceil(log2(24*raster_count));
+      int height = Utils::normalizeResolution(24*raster_count);
 
       tPixel * pixels = new tPixel[height*32];
       memset(pixels, 0, height* 32 * sizeof(tPixel));

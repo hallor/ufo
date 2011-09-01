@@ -8,6 +8,10 @@ DEPENDPATH += .
 INCLUDEPATH += .
 
 # Input
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    soundlibrary.cpp
 
 LIBS = -lalut
+
+HEADERS += \
+    soundlibrary.h

@@ -38,7 +38,7 @@ namespace FFileOpenFlags
 #else
 #endif
 
-};
+}
 
 namespace EFileSeekMethod
 {
@@ -52,4 +52,4 @@ namespace EFileSeekMethod
   DWORD ToMoveMethod(TYPE t);
 #else
 #endif
-};
+}

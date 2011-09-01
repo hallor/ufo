@@ -97,4 +97,4 @@ bool cPCXFile::loadFrom(std::istream & file)
   }
 
   return true;
-};
+}

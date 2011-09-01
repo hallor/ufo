@@ -6,16 +6,17 @@
 #include <AL/al.h>
 #include <AL/alut.h>
 #include <unistd.h>
+#include <cmath>
 
 #define NUM_BUFFERS 1
 #define NUM_SOURCES 1
 #define NUM_ENVIRONMENTS 1
 
-ALfloat listenerPos[]={0.0,0.0,4.0};
+ALfloat listenerPos[]={0.0,0.0,0.0};
 ALfloat listenerVel[]={0.0,0.0,0.0};
-ALfloat listenerOri[]={0.0,0.0,1.0, 0.0,1.0,0.0};
+ALfloat listenerOri[]={0.0,0.0,0.0, 0.0,1.0,0.0};
 
-ALfloat source0Pos[]={ -2.0, 0.0, 0.0};
+ALfloat source0Pos[]={ 0.0, 1.0, 0.0};
 ALfloat source0Vel[]={ 0.0, 0.0, 0.0};
 
 int main(int argc, char **argv)
@@ -30,7 +31,7 @@ int main(int argc, char **argv)
   {
     int fd = 0;
     if (argc < 2)
-      fd = open("XCOMA/RAWSOUND/ZEXTRA/ALERT.RAW", O_RDONLY);
+      fd = open("XCOMA/RAWSOUND/STRATEGC/VEHICLE/BIGUFO2.RAW", O_RDONLY);
     else
       fd = open(argv[1], O_RDONLY);
 
@@ -54,15 +55,25 @@ int main(int argc, char **argv)
   }
 
   alSourcei (source, AL_BUFFER, buffer);
+  alListenerfv(AL_POSITION, listenerPos);
+  alListenerfv(AL_ORIENTATION, listenerOri);
+  alSourcei(source, AL_LOOPING, AL_TRUE);
+
+  alSourcefv(source, AL_POSITION, source0Pos);
 
   alSourcePlay (source);
 
   int q=AL_PLAYING;
 
+  float c  = 0, r = 2;
   while (q == AL_PLAYING)
   {
     alGetSourcei(source, AL_SOURCE_STATE, &q);
+    source0Pos[0]= r *cos(c) - 0*sin(c);
+    source0Pos[1]= r *sin(c) + 0*cos(c);
+    alSourcefv(source, AL_POSITION, source0Pos);
     usleep(100000);
+    c += 0.1;
   }
 
   alutExit ();

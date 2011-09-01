@@ -31,4 +31,4 @@ void Logger::log(const char *prefix, const char * format,...)
   fprintf(stderr, "\n");
 }
 
-};
+}

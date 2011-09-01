@@ -146,7 +146,7 @@ public:
 
   Texture * getTexture(size_t no)
   {
-
+      return NULL;
   }
 
   Texture ** textures;

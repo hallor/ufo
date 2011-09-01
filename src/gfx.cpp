@@ -9,6 +9,7 @@
 #include "importer/bitmap.h"
 #include "logger.h"
 #include "importer/cursor.h"
+#include "utils.h"
 
 #ifdef _WIN32
 #pragma comment(lib, "opengl32.lib")
@@ -165,12 +166,12 @@ bool loadSurfacetoVram(Surface & surface, GLuint & tex_id, Rect & tex_rect)
 
   // Check that the image's width is a power of 2
   if ( (surface.w & (surface.w - 1)) != 0 ) {
-    neww = 1 << (int)ceil(log2(surface.w));
+    neww = Utils::normalizeResolution(surface.w);
   }
 
   // Also check if the height is a power of 2
   if ( (surface.h & (surface.h - 1)) != 0 ) {
-    newh = 1 << (int)ceil(log2(surface.h));
+    newh = Utils::normalizeResolution(surface.h);
   }
 
   tex_rect.w = neww;

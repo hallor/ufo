@@ -89,10 +89,20 @@ public:
     }
 
     ReleaseFileIO(f);
+    return true;
   }
 
-  CityBuilding * getBuilding(int no);
-  int buildingCount() const;
+  CityBuilding * getBuilding(int no)
+  {
+      if (buildings.size() >= no)
+          return buildings[no];
+      return NULL;
+  }
+
+  int buildingCount() const
+  {
+      return buildings.size();
+  }
 
   std::vector<CityBuilding*> buildings;
 };

@@ -5,13 +5,13 @@
 #include <iostream>
 
 typedef uint32_t tRGBA;
+/** Warning: do not reorder elements - used for nasty reading by cPalette ;) */
 typedef struct {
   uint8_t r;
   uint8_t g;
   uint8_t b;
   uint8_t a;
 } sRGBA;
-
 
 typedef uint8_t tPixel;
 
@@ -31,13 +31,8 @@ public:
   */
   bool saveTo(std::ostream & file) const;
 
-  /** Returns color asociated with position pos. If color is not valid exception is thrown. */
-  tRGBA colorRGBA(uint8_t pos) const
-  {
-      if (pos < m_Data.size())
-        return m_Data[pos];
-      return 0;
-  }
+  /** Returns color asociated with position pos. If color is not valid invalid color is returned. */
+  tRGBA colorRGBA(uint8_t pos) const;
 
   bool isValid() const;
   operator bool() const { return isValid(); }
@@ -45,6 +40,7 @@ public:
   void clear();
 
 private:
+  tRGBA m_Invalid;
   std::vector<tRGBA> m_Data;
   bool m_Valid;
 };

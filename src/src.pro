@@ -57,3 +57,5 @@ SOURCES += citybuilding.cpp \
     importer/peoplepath.cpp
 
 LIBS += -lSDL -lGL -lGLEW
+QMAKE_CXXFLAGS += -pedantic -std=gnu++0x -Wall
+#-Weffc++

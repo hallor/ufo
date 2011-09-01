@@ -376,10 +376,38 @@ int main( int argc, char* argv[] )
       }
     }
 
+    sp.unuse();
+    int c = cb.buildingCount();
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    for (int i=0; i<c; ++i)
+    {
+        CityBuilding * x = cb.getBuilding(i);
+        struct {
+            int x; int y;
+        } p[4];
+        for (int i=0; i<3; ++i)
+        {
+            //Why they don't fit?
+        Utils::tile_to_screen(x->rec.x1, x->rec.y1, i, p[0].x, p[0].y);
+        Utils::tile_to_screen(x->rec.x2+1, x->rec.y1, i, p[1].x, p[1].y);
+        Utils::tile_to_screen(x->rec.x2+1, x->rec.y2+1, i, p[2].x, p[2].y);
+        Utils::tile_to_screen(x->rec.x1, x->rec.y2+1, i, p[3].x, p[3].y);
+
+        glBegin(GL_QUADS);
+        glColor3f( 1.0, 1.0, 0.0 ); glVertex3f(p[0].x - camera.x, p[0].y- camera.y, 0);
+        glColor3f( 1.0, 1.0, 0.0 ); glVertex3f(p[1].x- camera.x, p[1].y- camera.y, 0);
+        glColor3f( 1.0, 1.0, 0.0 ); glVertex3f(p[2].x- camera.x, p[2].y- camera.y, 0);
+        glColor3f( 1.0, 1.0, 0.0 ); glVertex3f(p[3].x- camera.x, p[3].y- camera.y, 0);
+        glEnd();
+        }
+    }
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
     s.x =0;
     s.y =0;
 
-    menu->renderAt(s, sp,11);
+    sp.use();
+    //menu->renderAt(s, sp,11);
     mouse->renderAt(s, sp,11);
 
     screen->flip();

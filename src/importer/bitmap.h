@@ -1,18 +1,12 @@
 #pragma once
-
-#include <stdint.h>
 #include <iostream>
-#include <string>
-
 #include "importer/palette.h"
 
 /** Class keeping 8-bit raw images - no palette information is attached!*/
 class c8bppBitmap
 {
 public:
-
   c8bppBitmap();
-
   ~c8bppBitmap();
 
   /** Returns _write'able_ pixel of bitmap, in case of invalid coordinates exception is thrown. */
@@ -30,14 +24,7 @@ public:
   bool create(int width, int height);
 
   /** Class takes ownership of pixel data */
-  bool createFrom(tPixel * data, int width, int height)
-  {
-    free();
-    m_PixelData = data;
-    m_Width = width;
-    m_Height = height;
-    return data && width > 0 && height > 0;
-  }
+  bool createFrom(tPixel * data, int width, int height);
 
   void clear(const tPixel clear_color = 0);
 
@@ -48,7 +35,11 @@ public:
 
   void free();
 
-protected:
+private:
+  /** Disable copying for now */
+  c8bppBitmap(const c8bppBitmap &);
+  c8bppBitmap & operator=(const c8bppBitmap &);
+
   int m_Width, m_Height;
   tPixel *m_PixelData;
 };
