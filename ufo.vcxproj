@@ -122,6 +122,7 @@
     <ClInclude Include="src\surface.h" />
     <ClInclude Include="src\timer.h" />
     <ClInclude Include="src\utils.h" />
+		<ClInclude Include="src\exceptions.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

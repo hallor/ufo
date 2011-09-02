@@ -9,7 +9,10 @@ class cPCXFile
 {
 public:
   /** Loads file from stream. Warning: will play with whole stream starting at current position. */
-  bool loadFrom(std::istream & file);
+	void loadFrom(std::istream & file) throw();
+
+	/** Makes rendering easier, returns _new_ object in RGBA format ready to display */
+	tRGBA * render() const;
 
   const c8bppBitmap & bitmap() const { return m_Bitmap; }
   const cPalette & palette() const { return m_Palette; }

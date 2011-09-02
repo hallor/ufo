@@ -3,13 +3,10 @@
 #include <cstring>
 
 #include "pckfile.h"
-
 #include "tabfile.h"
 #include "bitmap.h"
-
-
 #include "logger.h"
-
+#include "exceptions.h"
 
 static const int PckLookupTable[10] = {0, 0, 1, 1, 1, 2, 2, 3, 3, 3};
 
@@ -97,6 +94,7 @@ struct sPckLineHeader
   unsigned char m_Unknown2[2];
 } __attribute__((packed));
 #endif
+
 class cPckLine
 {
 public:
@@ -265,11 +263,16 @@ c8bppBitmap * cPckBitmap::generateBitmap() const
 {
   c8bppBitmap * bmp = new c8bppBitmap();
 
-  if (!bmp->create(m_Header.m_Width, m_Header.m_Height))
-  {
-    delete bmp;
-    return NULL;
-  }
+	try
+	{
+		bmp->create(m_Header.m_Width, m_Header.m_Height);
+	}
+	catch ( std::exception & e )
+	{
+		delete bmp;
+		throw;
+	}
+
   for (unsigned int l=0; l<m_Lines.size(); ++l)
   {
     cPckLine *line = m_Lines[l];
@@ -341,16 +344,13 @@ cPckFile::~cPckFile()
   delete p;
 }
 
-bool cPckFile::loadPck(const cTabFile & f, std::istream & file)
+void cPckFile::loadPck(const cTabFile & f, std::istream & file) throw()
 {
   if (isValid())
     p->clean();
 
-  if (!f.isValid())
-    return false;
-
-  if (!file.good())
-    return false;
+	if (!f.isValid() || !file.good())
+		throw exceptions::invalid_arguments();
 
   file.seekg(0, std::ios::end);
   int file_size = (int)file.tellg();
@@ -388,7 +388,7 @@ bool cPckFile::loadPck(const cTabFile & f, std::istream & file)
     file.read((char*)p->m_Buffer, data_size);
 
     if (!file.good() || file.gcount()!=data_size) // Failed reading
-      return false;
+			throw exceptions::load_resource();
 
     if (!p->m_Chunks[i].makeFrom(p->m_Buffer, data_size))
       LogError("Error loading chunk %i", i);
@@ -401,8 +401,6 @@ bool cPckFile::loadPck(const cTabFile & f, std::istream & file)
   p->m_Buffer = NULL;
 
   p->m_Valid = true;
-
-  return true;
 }
 
 
@@ -415,6 +413,14 @@ const c8bppBitmap *cPckFile::getBitmap(int no) const
     p->bitmaps[no] = p->m_Chunks[no].generateBitmap();
 
   return p->bitmaps[no];
+}
+
+void cPckFile::freeBitmap(unsigned int no)
+{
+	if (!isValid() || no >= p->bitmaps.size())
+		return;
+	delete p->bitmaps[no];
+	p->bitmaps[no] = NULL;
 }
 
 int cPckFile::bitmapCount() const

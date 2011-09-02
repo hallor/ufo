@@ -12,11 +12,10 @@ class cTabFile
 public:
   cTabFile();
 
-  //TODO: make this classess accept stream not filename
   /** Loads .tab file. Extension is added automatically.
       If file is not found, it's upper/lower case versions are searched before failing.
   */
-  bool loadFrom(std::istream &file);
+	void loadFrom(std::istream &file) throw();
 
   /** Returns number of indices loaded from .tab file.*/
   int getOffsetsCount() const { return m_Offsets.size(); }
@@ -35,7 +34,7 @@ public:
   void clear();
 
 private:
-  void performInternalCheck();
+	void performInternalCheck() throw();
 
   bool m_Valid;
   int m_maxPackedImageSize;

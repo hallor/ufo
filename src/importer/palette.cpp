@@ -6,6 +6,7 @@
 using namespace std;
 
 #include "logger.h"
+#include "exceptions.h"
 
 cPalette::cPalette() :  m_Valid(false)
 {
@@ -24,7 +25,7 @@ tRGBA cPalette::colorRGBA(uint8_t pos) const
     return m_Invalid;
 }
 
-bool cPalette::loadFrom(std::istream &file, int colorKey, int num_colors)
+void cPalette::loadFrom(std::istream &file, int colorKey, int num_colors) throw()
 {
   int rr = 0;
   clear();
@@ -44,7 +45,7 @@ bool cPalette::loadFrom(std::istream &file, int colorKey, int num_colors)
       ++rr;
     }
     else
-      break;
+			throw exceptions::load_resource();
 
     if (num_colors && rr == num_colors)
       break;
@@ -52,20 +53,19 @@ bool cPalette::loadFrom(std::istream &file, int colorKey, int num_colors)
 
   m_Valid = m_Data.size() == 256 || m_Data.size() == 16;
 
-
   if (m_Valid && colorKey >=0 && colorKey < (int)m_Data.size())
     m_Data[colorKey] = 0;
 
-
-  LogDebug("Loaded palette with %i colors.", m_Data.size());
-
-  return m_Valid;
+	if (!m_Valid)
+		throw exceptions::load_resource();
+	LogDebug("Loaded palette with %i colors.", m_Data.size());
 }
 
-bool cPalette::saveTo(std::ostream & file) const
+void cPalette::saveTo(std::ostream & file) const throw()
 {
   if (!isValid())
-    return false;
+		throw exceptions::invalid_resource();
+
   size_t s = m_Data.size();
   size_t i=0;
 
@@ -74,12 +74,10 @@ bool cPalette::saveTo(std::ostream & file) const
   {
     q = *((sRGBA*)&m_Data[i]);
 
-    if (file.good())
-      file.write((char*)&q, 3);
-    else break;
+		file.write((char*)&q, 3);
+		if (!file.good())
+			throw exceptions::io();
   }
-
-  return i == m_Data.size();
 }
 
 bool cPalette::isValid() const

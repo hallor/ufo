@@ -31,6 +31,7 @@ HEADERS += citybuilding.h \
            os/FileWin32.h \
     os/filelinux.h \
     importer/peoplepath.h \
+    exceptions.h
 
 SOURCES += citybuilding.cpp \
            cityitem.cpp \

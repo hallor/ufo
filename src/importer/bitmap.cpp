@@ -2,6 +2,7 @@
 #include <cstring>
 #include "bitmap.h"
 
+#include "exceptions.h"
 
 c8bppBitmap::c8bppBitmap() : m_Width(0), m_Height(0), m_PixelData(0)
 {
@@ -12,17 +13,19 @@ c8bppBitmap::~c8bppBitmap()
   free();
 }
 
-bool c8bppBitmap::createFrom(tPixel * data, int width, int height)
+void c8bppBitmap::createFrom(tPixel * data, int width, int height) throw()
 {
   free();
+	if (!data || width<=0 || height <=0)
+		throw exceptions::invalid_arguments();
+
   m_PixelData = data;
   m_Width = width;
   m_Height = height;
-  return data && width > 0 && height > 0;
 }
 
 
-tPixel & c8bppBitmap::pixel(int x, int y)
+tPixel & c8bppBitmap::pixel(int x, int y) throw()
 {
   if(x < 0 || x >= m_Width)
     throw std::out_of_range("Invalid width requested.");
@@ -44,11 +47,15 @@ tPixel c8bppBitmap::pixel(int x, int y) const
   return m_PixelData[x + m_Width * y];
 }
 
-tRGBA * c8bppBitmap::render(const cPalette & pal) const
+tRGBA * c8bppBitmap::render(const cPalette & pal) const throw()
 {
   int size = m_Width * m_Height;
+
   if (size < 1)
-    return NULL;
+		throw exceptions::invalid_resource();
+
+	if (!pal.isValid())
+		throw exceptions::invalid_arguments();
 
   tRGBA * x = new tRGBA[size];
 
@@ -58,20 +65,18 @@ tRGBA * c8bppBitmap::render(const cPalette & pal) const
 }
 
 
-bool c8bppBitmap::create(int width, int height)
+void c8bppBitmap::create(int width, int height) throw()
 {
   free();
 
   if(width <= 0 || height <= 0)
-    return false;
+		throw exceptions::invalid_arguments();
 
   m_PixelData = new tPixel[width * height];
   clear();
 
   m_Width = width;
   m_Height = height;
-
-  return m_PixelData != NULL;
 }
 
 void c8bppBitmap::clear(const tPixel clear_color)
@@ -80,15 +85,17 @@ void c8bppBitmap::clear(const tPixel clear_color)
     memset(m_PixelData, clear_color, m_Width*m_Height);
 }
 
-bool c8bppBitmap::saveTo(std::ostream &file)
+void c8bppBitmap::saveTo(std::ostream &file) throw()
 {
-  if (!m_PixelData)
-    return false;
+	if (!isValid())
+		throw exceptions::invalid_resource();
+	if (!file.good())
+		throw exceptions::invalid_arguments();
 
-  if (file.good())
-    file.write((char*)m_PixelData, m_Width * m_Height);
+	file.write((char*)m_PixelData, m_Width * m_Height);
 
-  return !file.bad();
+	if (file.bad())
+		throw exceptions::io();
 }
 
 void c8bppBitmap::free()

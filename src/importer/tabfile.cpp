@@ -1,41 +1,17 @@
 #include "tabfile.h"
 #include "logger.h"
-
+#include "exceptions.h"
 
 cTabFile::cTabFile() : m_Valid(false)
 {
 }
 
-bool cTabFile::loadFrom(std::istream &file)
-//bool cTabFile::loadFrom(const std::string &base_name)
+void cTabFile::loadFrom(std::istream &file)  throw()
 {
   clear();
 
-//  std::string fn(base_name+".tab");
-
-//  if (!filesystem::exists(fn))
-//    std::transform(fn.begin(), fn.end(), fn.begin(), (int(*)(int))std::toupper);
-//  if (!filesystem::exists(fn))
-//    std::transform(fn.begin(), fn.end(), fn.begin(), (int(*)(int))std::tolower);
-
-//  if (!filesystem::exists(fn) && !filesystem::is_regular_file(fn))
-//    return false;
-
-//  std::ifstream file(fn.c_str());
-
-
-  //Warning - code not safe (race conditions if file is deleted/written to).
-
-//  LogDebug("Opened file %s, size %i.", fn.c_str(), filesystem::file_size(fn));
-
   if (!file.good())
-    return false;
-
-  // Number of records in file
-//  int num_records = filesystem::file_size(fn) / sizeof(int);
-
-//  if (num_records < 1)
-//    return false;
+		throw exceptions::load_resource();
 
   m_Offsets.reserve(100);
 
@@ -51,8 +27,6 @@ bool cTabFile::loadFrom(std::istream &file)
   performInternalCheck();
 
   LogDebug("Loaded %i offsets.", getOffsetsCount());
-
-  return isValid();
 }
 
 int cTabFile::getImageOffset(int img) const
@@ -63,12 +37,12 @@ int cTabFile::getImageOffset(int img) const
   return m_Offsets[img];
 }
 
-void cTabFile::performInternalCheck()
+void cTabFile::performInternalCheck() throw()
 {
   if(!getOffsetsCount())
   {
     m_Valid = false;
-    return;
+		throw exceptions::invalid_resource();
   }
 
   int prev = -1;
@@ -80,7 +54,7 @@ void cTabFile::performInternalCheck()
     if(next <= prev)
     {
       clear();
-      return;
+			throw exceptions::invalid_resource();
     }
     if (i>0)
       m_maxPackedImageSize = std::max(m_maxPackedImageSize, next - prev);
