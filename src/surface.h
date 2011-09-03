@@ -1,24 +1,10 @@
 #ifndef SURFACE_H
 #define SURFACE_H
+#include <vector>
+
 #include "importer/palette.h"
 
-//typedef uint32_t tRGBA;
-
-//typedef struct {
-//  uint8_t r;
-//  uint8_t g;
-//  uint8_t b;
-//  uint8_t a;
-//} __attribute__((packed)) sRGBA;
-
-//typedef union {
-//  tRGBA t;
-//  sRGBA s;
-//} uRGBA;
-
-//typedef uint8_t tPixel;
-
-
+/** RGBA image */
 struct Surface
 {
   Surface() : pixels(0), w(0), h(0) {}
@@ -27,13 +13,13 @@ struct Surface
 
   bool set(tRGBA *p, int w, int h)
   {
-    clean();
+		clear();
     pixels = p;
     this->w = w; this->h = h;
     return isValid();
   }
 
-  void clean()
+	void clear()
   {
     delete [] pixels;
     pixels = 0;
@@ -42,6 +28,34 @@ struct Surface
 
   tRGBA * pixels;
   int w, h;
+};
+
+/** Collection of RGBA images */
+struct AnimatedSurface
+{
+	bool isValid() const { return frames.size() && frames[0].isValid(); }
+
+	void addFrame(Surface frame)
+	{
+		frames.push_back(frame);
+	}
+
+	bool set(std::vector<Surface> f, float fps = 1.0)
+	{
+		clear();
+		frames = f;
+		this->fps = fps;
+		return isValid();
+	}
+
+	void clear()
+	{
+		for (int i=0; i<frames.size(); ++i)
+			frames[i].clear();
+	}
+
+	float fps; // default frames per second
+	std::vector<Surface> frames;
 };
 
 #endif // SURFACE_H

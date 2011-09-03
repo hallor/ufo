@@ -4,6 +4,8 @@
 #include "importer/palette.h"
 #include "importer/bitmap.h"
 
+#include "surface.h"
+
 /** Loader for PCX files */
 class cPCXFile
 {
@@ -12,7 +14,7 @@ public:
 	void loadFrom(std::istream & file) throw();
 
 	/** Makes rendering easier, returns _new_ object in RGBA format ready to display */
-	tRGBA * render() const;
+	Surface render() const;
 
   const c8bppBitmap & bitmap() const { return m_Bitmap; }
   const cPalette & palette() const { return m_Palette; }

@@ -20,7 +20,7 @@ public:
 
     void clear()
     {
-      raster.clean();
+			raster.clear();
       raster_count = 0;
     }
 
@@ -60,9 +60,7 @@ public:
       if (!file.good())
         return false;
 
-      tRGBA * data = bmp.render(pal);
-
-      raster.set(data, 32, height);
+			raster = bmp.render(pal);
 
       LogInfo("Loaded %i mouse cursors.", raster_count);
 

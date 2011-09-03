@@ -51,7 +51,7 @@ public:
 
   void clear()
   {
-    for (int i=0; i<buildings.size(); ++i)
+		for (unsigned i=0; i<buildings.size(); ++i)
       delete buildings[i];
     buildings.clear();
   }
@@ -92,7 +92,7 @@ public:
     return true;
   }
 
-  CityBuilding * getBuilding(int no)
+	CityBuilding * getBuilding(unsigned no)
   {
       if (buildings.size() >= no)
           return buildings[no];

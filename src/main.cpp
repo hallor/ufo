@@ -23,6 +23,7 @@
 #include "importer/cursor.h"
 
 #include "citybuilding.h"
+#include "importmanager.h"
 
 using namespace std;
 
@@ -77,11 +78,15 @@ int main( int argc, char* argv[] )
 
   cb.load("XCOMA/UFODATA/CITYMAP1.BLD", names);
 
+	ImportManager * im = CreateImportManager("XCOMA");
   GfxManager gfx;
   srand(42);
   //Start
   if (!initAll())
     return -1;
+
+	if (!im)
+		return -1;
 
   Screen * screen = new Screen(WIDTH, HEIGHT, "X-Com 42");
 
@@ -110,18 +115,11 @@ int main( int argc, char* argv[] )
 
 
   Raster * menu = new Raster(); //gfx.getRaster("XCOMA/UFODATA/BUYBASE2.PCX");
+
   {
-    std::ifstream f("XCOMA/UFODATA/BUYBASE2.PCX", std::ios_base::binary);
-    LogInfo("Loading menu");
-
-    cPCXFile menu_raster;
-
-    menu_raster.loadFrom(f);
-
-    tRGBA * i = menu_raster.bitmap().render(menu_raster.palette());
-    Surface s;
-    s.set(i, menu_raster.bitmap().width(), menu_raster.bitmap().height());
-    menu->setSurface(s);
+		ResourceID x = im->getResourceID("UFODATA/BUYBASE2.PCX");
+		const Surface *s = im->getSurface(x);
+		menu->setSurface(*s); //TODO: refactor later somehow
   }
   menu->setZoom(2);
 
@@ -407,7 +405,7 @@ int main( int argc, char* argv[] )
     s.y =0;
 
     sp.use();
-    //menu->renderAt(s, sp,11);
+		menu->renderAt(s, sp,11);
     mouse->renderAt(s, sp,11);
 
     screen->flip();

@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "importer/palette.h"
+#include "surface.h"
 
 /** Class keeping 8-bit raw images - no palette information is attached!*/
 class c8bppBitmap
@@ -19,7 +20,7 @@ public:
     Image format - RGBA. Color-key is converted to alpha channel (controlled by palette).
     Resulting image is owned by caller.
     */
-	tRGBA * render(const cPalette & pal) const throw();
+	Surface render(const cPalette & pal) const throw();
 
   /** Creates empty bitmap with specified width/height */
 	void create(int width, int height) throw();

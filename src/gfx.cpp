@@ -102,9 +102,7 @@ SpritePack * GfxManager::getPack(const std::string & filename)
     const c8bppBitmap *bmp = pck.getBitmap(i);
     if (!bmp)
       return false;
-    tRGBA * img = bmp->render(pal); //MEMLEAK TODO!!!
-    Surface s;
-    s.set(img, bmp->width(), bmp->height());
+		Surface s = bmp->render(pal); //MEMLEAK TODO!!!
     co.push_back(s);
 
   }
@@ -197,7 +195,7 @@ bool loadSurfacetoVram(Surface & surface, GLuint & tex_id, Rect & tex_rect)
       }
       dst+=neww - surface.w;
     }
-    surface.clean();
+		surface.clear();
     surface = q;
   }
 

@@ -47,7 +47,7 @@ tPixel c8bppBitmap::pixel(int x, int y) const
   return m_PixelData[x + m_Width * y];
 }
 
-tRGBA * c8bppBitmap::render(const cPalette & pal) const throw()
+Surface c8bppBitmap::render(const cPalette & pal) const throw()
 {
   int size = m_Width * m_Height;
 
@@ -61,7 +61,9 @@ tRGBA * c8bppBitmap::render(const cPalette & pal) const throw()
 
   for (int i=0; i<size; ++i)
     x[i] = pal.colorRGBA(m_PixelData[i]);
-  return x;
+	Surface q;
+	q.set(x, m_Width, m_Height);
+	return q;
 }
 
 

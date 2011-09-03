@@ -27,7 +27,7 @@ public:
 
   ~Raster()
   {
-    surface.clean();
+		surface.clear();
     if (in_vram)
       unloadSurfacefromVram(tex_id);
   }
@@ -60,7 +60,7 @@ public:
 
   void setSurface(Surface surf)
   {
-    surface.clean();
+		surface.clear();
 
     if (in_vram)
     {

@@ -3,11 +3,11 @@
 
 #include "exceptions.h"
 
-tRGBA * cPCXFile::render() const
+Surface cPCXFile::render() const
 {
 	if (m_Bitmap.isValid() && m_Palette.isValid())
 		return m_Bitmap.render(m_Palette);
-	return NULL;
+	return Surface();
 }
 
 void cPCXFile::loadFrom(std::istream & file) throw()
