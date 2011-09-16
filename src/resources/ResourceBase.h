@@ -7,7 +7,7 @@ template <class T>
 class vResource
 {
 public:
-    vResource()
+    vResource(const T &res)
     {
         m_Resource = NULL;
         m_StorageIndex = -1;
@@ -15,6 +15,7 @@ public:
         m_ResourceID = "UNKNOWN RESOURCE";
         m_State = EResourceState::NotLoaded;
         m_Parent = NULL;
+        m_Resource = res;
     }
 
     virtual ~vResource(){};
@@ -27,12 +28,6 @@ public:
 
     iManagerBase<T>*     GetParent()       const { return m_Parent; }
     unsigned int         GetStorageIndex() const { return m_StorageIndex; }
-
-    static vResource<T>* Create() { return new (std::nothrow) vResource<T>; };
-
-    friend class iManagerBase<T>;
-
-protected:
 
     virtual void SetParent(iManagerBase<T> * parent)
     {
@@ -47,7 +42,10 @@ protected:
 
     virtual void SetID(const std::string &id) { m_ResourceID = id; };
     virtual void SetStorageIndex(unsigned int index) { m_StorageIndex = index; };
+    virtual void SetState(EResourceState::TYPE state) { m_State = state; };
+    virtual void SetResource(T res) { m_Resource = res; };
 
+protected:
     T m_Resource;
     EResourceState::TYPE m_State;
     EResourceType::TYPE m_Type;

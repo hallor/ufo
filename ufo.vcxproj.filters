@@ -96,10 +96,25 @@
     <ClCompile Include="src\importmanager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ResourceBase.cpp">
+    <ClCompile Include="src\resources\SoundBuffer.cpp">
       <Filter>Source Files\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="src\ManagerBase.cpp">
+    <ClCompile Include="src\resources\SoundSource.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resources\ManagerBase.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resources\ResourceBase.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resources\SoundBufferManager.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resources\SoundSourceManager.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resources\IDGenerator.cpp">
       <Filter>Source Files\Resources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -176,13 +191,28 @@
     <ClInclude Include="src\importmanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ResourceBase.h">
+    <ClInclude Include="src\resources\ManagerBase.h">
       <Filter>Header Files\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="src\ManagerBase.h">
+    <ClInclude Include="src\resources\ResourceBase.h">
       <Filter>Header Files\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="src\ResourceEnums.h">
+    <ClInclude Include="src\resources\ResourceEnums.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resources\SoundBuffer.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resources\SoundBufferManager.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resources\SoundSource.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resources\SoundSourceManager.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resources\IDGenerator.h">
       <Filter>Header Files\Resources</Filter>
     </ClInclude>
   </ItemGroup>

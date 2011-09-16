@@ -50,12 +50,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Projects\ufo\ufo\src\importer;E:\Projects\ufo\ufo\src\os;E:\Projects\ufo\ufo\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Projects\ufo\ufo\src\resources;E:\Projects\ufo\ufo\src\importer;E:\Projects\ufo\ufo\src\os;E:\Projects\ufo\ufo\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>E:\VS2010\VC\lib\SDL;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -90,13 +91,18 @@
     <ClCompile Include="src\importmanager.cpp" />
     <ClCompile Include="src\logger.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\ManagerBase.cpp" />
     <ClCompile Include="src\mouse.cpp" />
     <ClCompile Include="src\os\FileEnums.cpp" />
     <ClCompile Include="src\os\FileIO.cpp" />
     <ClCompile Include="src\os\filelinux.cpp" />
     <ClCompile Include="src\os\FileWin32.cpp" />
-    <ClCompile Include="src\ResourceBase.cpp" />
+    <ClCompile Include="src\resources\IDGenerator.cpp" />
+    <ClCompile Include="src\resources\ManagerBase.cpp" />
+    <ClCompile Include="src\resources\ResourceBase.cpp" />
+    <ClCompile Include="src\resources\SoundBuffer.cpp" />
+    <ClCompile Include="src\resources\SoundBufferManager.cpp" />
+    <ClCompile Include="src\resources\SoundSource.cpp" />
+    <ClCompile Include="src\resources\SoundSourceManager.cpp" />
     <ClCompile Include="src\screen.cpp" />
     <ClCompile Include="src\shaderprogram.cpp" />
     <ClCompile Include="src\timer.cpp" />
@@ -116,14 +122,19 @@
     <ClInclude Include="src\importer\tabfile.h" />
     <ClInclude Include="src\importmanager.h" />
     <ClInclude Include="src\logger.h" />
-    <ClInclude Include="src\ManagerBase.h" />
     <ClInclude Include="src\mouse.h" />
     <ClInclude Include="src\os\FileEnums.h" />
     <ClInclude Include="src\os\FileIO.h" />
     <ClInclude Include="src\os\filelinux.h" />
     <ClInclude Include="src\os\FileWin32.h" />
-    <ClInclude Include="src\ResourceBase.h" />
-    <ClInclude Include="src\ResourceEnums.h" />
+    <ClInclude Include="src\resources\IDGenerator.h" />
+    <ClInclude Include="src\resources\ManagerBase.h" />
+    <ClInclude Include="src\resources\ResourceBase.h" />
+    <ClInclude Include="src\resources\ResourceEnums.h" />
+    <ClInclude Include="src\resources\SoundBuffer.h" />
+    <ClInclude Include="src\resources\SoundBufferManager.h" />
+    <ClInclude Include="src\resources\SoundSource.h" />
+    <ClInclude Include="src\resources\SoundSourceManager.h" />
     <ClInclude Include="src\screen.h" />
     <ClInclude Include="src\shaderprogram.h" />
     <ClInclude Include="src\surface.h" />

@@ -1,6 +1,7 @@
 #include "SoundSource.h"
 
-vSoundSourceResource::vSoundSourceResource()
+vSoundSourceResource::vSoundSourceResource(const ALuint &res)
+: vResource(res)
 {
     m_Type = EResourceType::OalSoundSource;
 }

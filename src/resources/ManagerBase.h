@@ -18,11 +18,10 @@ public:
 
     virtual bool IsLoaded(const std::string &id) const = 0;
 
-    virtual void NotifyResourceParentChanged(vResource<T> *res) const = 0;
+    virtual void NotifyResourceParentChanged(vResource<T> *res) = 0;
 
 protected:
 
-    virtual unsigned int FindResource(const std::string& id) const = 0;
-    virtual bool AddResource(vResource<T> *res) = 0;
-    virtual void RemoveResource(const std::string &id) = 0;
+    virtual int FindResource(const std::string& id) const = 0;
+    virtual void RemoveResource(unsigned int storage_index) = 0;
 };

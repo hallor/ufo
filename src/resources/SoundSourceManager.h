@@ -22,7 +22,6 @@ class cSoundSourceManager : public iManagerBase<ALuint>
 
 protected:
 
-    virtual unsigned int FindResource(const std::string& id) const;
-    virtual bool AddResource(vResource<ALuint> *res);
+    virtual int FindResource(const std::string& id) const;
     virtual void RemoveResource(const std::string &id);
 };

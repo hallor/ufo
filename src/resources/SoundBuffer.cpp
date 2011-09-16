@@ -1,6 +1,7 @@
 #include "SoundBuffer.h"
 
-vSoundBufferResource::vSoundBufferResource()
+vSoundBufferResource::vSoundBufferResource(const ALuint &res)
+: vResource(res)
 {
     m_Type = EResourceType::OalSoundBuffer;
 }

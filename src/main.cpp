@@ -1,6 +1,7 @@
 #include <SDL/SDL.h>
 #include <GL/glew.h>
-
+#include <oal/al.h>
+#include <oal/alc.h>
 #include <iostream>
 #include <fstream>
 #include <algorithm>
@@ -24,6 +25,9 @@
 
 #include "citybuilding.h"
 #include "importmanager.h"
+#include "ResourceBase.h"
+#include "SoundBufferManager.h"
+#include "SoundBuffer.h"
 
 using namespace std;
 
@@ -52,6 +56,16 @@ bool initAll()
 
 int main( int argc, char* argv[] )
 {
+    ALCdevice *dev = alcOpenDevice(NULL);
+    ALCcontext *cnt = alcCreateContext(dev, NULL);
+    alcMakeContextCurrent(cnt);
+    cSoundBufferManager man;
+    cSoundBuffer *buf = man.Get();
+    buf->Release();
+    alcMakeContextCurrent(NULL);
+    alcDestroyContext(cnt);
+    alcCloseDevice(dev);
+
   iFile *file = CreateFileIO();
   if (file)
   {
@@ -61,7 +75,7 @@ int main( int argc, char* argv[] )
     file->Close();
     ReleaseFileIO(file);
   }
-
+  
   CityBuildings cb;
   ifstream bn("resources/building.nam");
   std::vector<std::string> names;

@@ -5,7 +5,7 @@
 class vSoundSourceResource : public vResource<ALuint>
 {
 public:
-    vSoundSourceResource();
+    vSoundSourceResource(const ALuint &res);
     ~vSoundSourceResource();
 };
 
@@ -16,6 +16,8 @@ public:
 
     ALuint Get() const;
     vSoundSourceResource* GetRawResource() const { return m_Resource; };
+
+    void Release() { delete this; };
 
 protected:
     vSoundSourceResource* m_Resource;
