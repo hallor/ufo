@@ -28,6 +28,7 @@
 #include "ResourceBase.h"
 #include "SoundBufferManager.h"
 #include "SoundBuffer.h"
+#include "OpenAL.h"
 
 using namespace std;
 
@@ -56,16 +57,12 @@ bool initAll()
 
 int main( int argc, char* argv[] )
 {
-    ALCdevice *dev = alcOpenDevice(NULL);
-    ALCcontext *cnt = alcCreateContext(dev, NULL);
-    alcMakeContextCurrent(cnt);
+    OpenAL::Get().Initialize();
     cSoundBufferManager man;
     cSoundBuffer *buf = man.Get();
     buf->Release();
-    alcMakeContextCurrent(NULL);
-    alcDestroyContext(cnt);
-    alcCloseDevice(dev);
-
+    OpenAL::Free();
+    
   iFile *file = CreateFileIO();
   if (file)
   {

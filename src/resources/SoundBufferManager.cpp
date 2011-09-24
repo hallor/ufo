@@ -1,10 +1,11 @@
 #include "SoundBufferManager.h"
 #include "IDGenerator.h"
 #include "SoundBuffer.h"
+#include "OpenAL.h"
 
 cSoundBufferManager::cSoundBufferManager()
 : m_IdGenerator("SoundBuffer") // All resources will be named "SoundBuffer@i"
-{
+{ 
 };
 
 cSoundBufferManager::~cSoundBufferManager()
@@ -18,7 +19,11 @@ cSoundBuffer* cSoundBufferManager::Get()
     // Create new resource
     vSoundBufferResource* res = CreateResource();
     // Claim it 
-    AddResource(res);
+    if(!AddResource(res))
+    {
+        delete res;
+        res = NULL;
+    }
     // Return proxy
     return new cSoundBuffer(res);
 };
@@ -40,6 +45,7 @@ bool cSoundBufferManager::ReloadAll()
     {
         succed &= ReloadResource(i);
     }
+
     return succed;
 };
 
@@ -61,15 +67,42 @@ void cSoundBufferManager::ReleaseResource(cSoundBuffer *res)
 
 // TODO: rename it to IsValid
 // resources loading will be performed by loaders to simplify code
-bool cSoundBufferManager::IsLoaded(const std::string &id) const
+bool cSoundBufferManager::IsValidResource(vResource<ALuint> *res) const
+{
+    if(!res)
+        return false;
+
+    if(res->GetParent() != this)
+        return false;
+
+    return res->IsValid();
+}
+
+bool cSoundBufferManager::IsValidResource(const std::string &id) const
 {
     // Most likely will not be used, given that sound buffers do not need to be distinguished
     int idx = FindResource(id);
 
     if(idx < 0)
         return false;
-    // TODO: Add IsValid() method to vResource
-    return m_Resources[idx]->GetState() == EResourceState::Ok;
+    
+    return m_Resources[idx]->IsValid();
+};
+
+bool cSoundBufferManager::IsValidResource(cSoundBuffer *res) const
+{
+    if(!res || !res->GetRawResource())
+        return false;
+
+    // Resource could be deleted at this point, therefore we cannot simply call IsValid()
+    vSoundBufferResource *raw = res->GetRawResource();
+    
+    int index = FindResource(raw);
+    
+    if(index < 0)
+        return false;
+
+    return m_Resources[index]->IsValid();
 };
 
 // Most likely will never be called, there is no need for multiple sound buffer managers
@@ -102,16 +135,30 @@ int cSoundBufferManager::FindResource(const std::string &id) const
     return -1;
 };
 
+int cSoundBufferManager::FindResource(vSoundBufferResource *res) const
+{
+    if(!res)
+        return -1;
+
+    for(unsigned int i = 0; i < GetResourcesCount(); ++i)
+    {
+        if(m_Resources[i] == res)
+            return i;
+    }
+
+    return -1;
+};
+
 bool cSoundBufferManager::AddResource(vSoundBufferResource *res)
 {
     // Check whether resource we're trying to claim is really sound buffer
     if(!res || res->GetType() != EResourceType::OalSoundBuffer)
         return false;
 
-    // If we've already claimed this resource we don't need to add it again
+    // If we've already claimed this resource we cannot add it again
     if(FindResource(res->GetID()) >= 0)
     {
-        return true;
+        return false;
     }
 
     // Claim resource
@@ -119,6 +166,8 @@ bool cSoundBufferManager::AddResource(vSoundBufferResource *res)
     m_Resources.push_back(res);
     // Set storage index for fast access
     res->SetStorageIndex(m_Resources.size() - 1);
+
+    return true;
 }
 
 void cSoundBufferManager::RemoveResource(unsigned int storage_index)
@@ -160,7 +209,7 @@ bool cSoundBufferManager::ReloadResource(unsigned int storage_index)
     // Reloading starts by releasing associated buffer
     UnloadResource(rs);
     // Recreate buffer and update resource state
-    buffer = CreateBuffer();
+    buffer = OpenAL::Get().CreateBuffer();
     if(alIsBuffer(buffer))
     {
         rs->SetState(EResourceState::Ok);
@@ -171,21 +220,10 @@ bool cSoundBufferManager::ReloadResource(unsigned int storage_index)
     return false;
 }
 
-ALuint cSoundBufferManager::CreateBuffer()
-{
-    ALuint res = 0;
-    // Remove any previous OAL errors
-    alGetError();
-    alGenBuffers(1, &res);
-    alGetError();
-    
-    return res;
-}
-
 vSoundBufferResource* cSoundBufferManager::CreateResource()
 {    
     // Create new resource
-    vSoundBufferResource *sb = new vSoundBufferResource(CreateBuffer());
+    vSoundBufferResource *sb = new vSoundBufferResource(OpenAL::Get().CreateBuffer());
 
     // Claim ownership
     sb->SetParent(this);
@@ -211,6 +249,7 @@ void cSoundBufferManager::UnloadResource(vSoundBufferResource *res)
     if(res->GetState() == EResourceState::Ok && alIsBuffer(buffer) == AL_TRUE)
     {
         res->SetState(EResourceState::Deleted);
-        alDeleteBuffers(1, &buffer);
+        OpenAL::Get().DeleteBuffer(buffer);
+        res->SetResource(0);
     }
 }

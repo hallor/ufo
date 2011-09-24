@@ -45,6 +45,8 @@ public:
     virtual void SetState(EResourceState::TYPE state) { m_State = state; };
     virtual void SetResource(T res) { m_Resource = res; };
 
+    virtual bool IsValid() const = 0;
+
 protected:
     T m_Resource;
     EResourceState::TYPE m_State;

@@ -8,6 +8,11 @@ class vSoundBufferResource : public vResource<ALuint>
 public:
     vSoundBufferResource(const ALuint &res);
     ~vSoundBufferResource();
+
+    /*
+    Returns true when resource can be used safely, false otherwise
+    */
+    virtual bool IsValid() const;
 protected:
 };
 

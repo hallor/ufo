@@ -16,7 +16,8 @@ public:
     virtual bool ReloadAll() = 0;
     virtual bool ReloadResource(const std::string &id) = 0;
 
-    virtual bool IsLoaded(const std::string &id) const = 0;
+    virtual bool IsValidResource(vResource<T> *res) const = 0;
+    virtual bool IsValidResource(const std::string &id) const = 0;
 
     virtual void NotifyResourceParentChanged(vResource<T> *res) = 0;
 

@@ -46,10 +46,12 @@ class cSoundBufferManager : public iManagerBase<ALuint>
     virtual void ReleaseResource(cSoundBuffer* res);
 
     /*
-    TODO: rename it to IsValid()
-    Checks whether resource with id == $id is valid for use
+    Checks whether given resource is valid
+    Returns false when specified resource doesn't exist in manager's scope
     */
-    virtual bool IsLoaded(const std::string &id) const;
+    virtual bool IsValidResource(vResource<ALuint> *res) const;
+    virtual bool IsValidResource(const std::string &id) const;
+    virtual bool IsValidResource(cSoundBuffer *res) const;
     
     /*
     Will be called when other manager takes ownership of resource, should not happen with sound buffers
@@ -65,15 +67,19 @@ class cSoundBufferManager : public iManagerBase<ALuint>
 protected:
     // returns storage index of specified resource, -1 if it doesn't exist
     virtual int FindResource(const std::string& id) const;
-    // Claims ownership over given resource
+    virtual int FindResource(vSoundBufferResource *res) const;
+
+    /* 
+    Claims ownership over given resource
+    Returns false when resource is alredy claimed
+    */
     virtual bool AddResource(vSoundBufferResource *res);
+    
     // Removes resource
     virtual void RemoveResource(unsigned int storage_index);
+    
     // Reloads resource
     virtual bool ReloadResource(unsigned int storage_index);
-    
-    // Helper method for creating oal buffer, creating OAL wrapper should be considered
-    ALuint CreateBuffer();
     
     /* 
     Returns pointer to new resource thats linked with oal buffer

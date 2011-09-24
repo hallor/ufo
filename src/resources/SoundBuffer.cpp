@@ -1,4 +1,5 @@
 #include "SoundBuffer.h"
+#include <oal/al.h>
 
 vSoundBufferResource::vSoundBufferResource(const ALuint &res)
 : vResource(res)
@@ -9,6 +10,11 @@ vSoundBufferResource::vSoundBufferResource(const ALuint &res)
 vSoundBufferResource::~vSoundBufferResource()
 {
     m_Type = EResourceType::None;
+}
+
+bool vSoundBufferResource::IsValid() const
+{
+    return GetState() == EResourceState::Ok && alIsBuffer(Get()) == AL_TRUE;
 }
 
 cSoundBuffer::cSoundBuffer(vSoundBufferResource *res)
