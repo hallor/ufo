@@ -50,7 +50,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Projects\ufo\ufo\src\resources;E:\Projects\ufo\ufo\src\importer;E:\Projects\ufo\ufo\src\os;E:\Projects\ufo\ufo\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Projects\ufo\ufo\src\HAL;E:\Projects\ufo\ufo\src\game;E:\Projects\ufo\ufo\src\resources;E:\Projects\ufo\ufo\src\importer;E:\Projects\ufo\ufo\src\os;E:\Projects\ufo\ufo\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -80,7 +80,9 @@
     <ClCompile Include="src\citybuilding.cpp" />
     <ClCompile Include="src\cityitem.cpp" />
     <ClCompile Include="src\citymap.cpp" />
+    <ClCompile Include="src\game\Factions.cpp" />
     <ClCompile Include="src\gfx.cpp" />
+    <ClCompile Include="src\HAL\OpenAL.cpp" />
     <ClCompile Include="src\importer\bitmap.cpp" />
     <ClCompile Include="src\importer\cpngfile.cpp" />
     <ClCompile Include="src\importer\cursor.cpp" />
@@ -112,7 +114,9 @@
     <ClInclude Include="src\citybuilding.h" />
     <ClInclude Include="src\cityitem.h" />
     <ClInclude Include="src\citymap.h" />
+    <ClInclude Include="src\game\Factions.h" />
     <ClInclude Include="src\gfx.h" />
+    <ClInclude Include="src\HAL\OpenAL.h" />
     <ClInclude Include="src\importer\bitmap.h" />
     <ClInclude Include="src\importer\cpngfile.h" />
     <ClInclude Include="src\importer\cursor.h" />
