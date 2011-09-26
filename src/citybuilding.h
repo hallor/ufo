@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <map>
 #include <stdint.h>
 
 #include "FileIO.h"
@@ -56,7 +57,7 @@ public:
     buildings.clear();
   }
 
-  bool load(const std::string & filename, std::vector<std::string> & names)
+	bool load(const std::string & filename, const std::map<unsigned short, std::string> & names)
   {
     clear();
 
@@ -82,8 +83,8 @@ public:
       CityBuilding * bld = new CityBuilding();
       f->Read(&bld->rec, sizeof(CityBuildingRecord));
 
-      if (names.size() > bld->rec.name_id)
-          bld->name = names[bld->rec.name_id];
+			if (names.count(bld->rec.name_id))
+					bld->name = names.at(bld->rec.name_id);
       buildings.push_back(bld);
       bld->print();
     }

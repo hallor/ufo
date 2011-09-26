@@ -98,6 +98,7 @@
     <ClCompile Include="src\shaderprogram.cpp" />
     <ClCompile Include="src\timer.cpp" />
     <ClCompile Include="src\utils.cpp" />
+		<ClInclude Include="src\importmanager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\citybuilding.h" />
@@ -123,6 +124,7 @@
     <ClInclude Include="src\timer.h" />
     <ClInclude Include="src\utils.h" />
 		<ClInclude Include="src\exceptions.h" />
+		<ClInclude Include="src\importmanager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

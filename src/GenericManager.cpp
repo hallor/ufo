@@ -1,0 +1,2 @@
+#include "GenericManager.h"
+

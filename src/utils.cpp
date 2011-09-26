@@ -1,3 +1,6 @@
+#include <iostream>
+#include <sstream>
+
 #include "utils.h"
 using namespace Utils;
 /** Assumes 32-bit integer rounded down */
@@ -24,3 +27,10 @@ unsigned int Utils::normalizeResolution(unsigned int resolution)
     return size;
 }
 
+std::string Utils::stringify(int x)
+{
+	std::ostringstream o;
+	if (!(o << x))
+		return std::string();
+		return o.str();
+}

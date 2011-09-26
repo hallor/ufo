@@ -25,79 +25,23 @@
 #include "citybuilding.h"
 #include "importmanager.h"
 
+#include "Application.h"
+
 using namespace std;
-
-bool initAll()
-{
-  if (SDL_Init( SDL_INIT_EVERYTHING ) < 0)
-    return false;
-
-  SDL_GL_SetAttribute(SDL_GL_RED_SIZE,    	    8);
-  SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE,  	    8);
-  SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,   	    8);
-  SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE,  	    8);
-
-//  SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,  	    16);
-  SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE,		    32);
-
-  SDL_GL_SetAttribute(SDL_GL_ACCUM_RED_SIZE,	    8);
-  SDL_GL_SetAttribute(SDL_GL_ACCUM_GREEN_SIZE,	8);
-  SDL_GL_SetAttribute(SDL_GL_ACCUM_BLUE_SIZE,	    8);
-  SDL_GL_SetAttribute(SDL_GL_ACCUM_ALPHA_SIZE,	8);
-  //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS,  1);
-  //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES,  2);
-
-  return true;
-}
 
 int main( int argc, char* argv[] )
 {
-  iFile *file = CreateFileIO();
-  if (file)
-  {
-    file->Open("duapa.txt", FFileOpenFlags::OpenExisting | FFileOpenFlags::Read);
-    char str[18] = {0};
-    file->Read(str, sizeof(str));
-    file->Close();
-    ReleaseFileIO(file);
-  }
+	Application * app = new Application();
 
-  CityBuildings cb;
-  ifstream bn("resources/building.nam");
-  std::vector<std::string> names;
-  names.reserve(150);
-  while (bn.good())
-  {
-      std::string x;
-      getline(bn, x);
-      //bn >> x;
-      names.push_back(x);
-      LogInfo("Loaded name %s", x.c_str());
-  }
-
-
-  cb.load("XCOMA/UFODATA/CITYMAP1.BLD", names);
+	return app->execute(argc, argv);
 
 	ImportManager * im = CreateImportManager("XCOMA");
   GfxManager gfx;
   srand(42);
   //Start
-  if (!initAll())
-    return -1;
 
 	if (!im)
 		return -1;
-
-  Screen * screen = new Screen(WIDTH, HEIGHT, "X-Com 42");
-
-  {
-    int ret;
-    if ( (ret = glewInit())!= GLEW_OK)
-    {
-      cout << "Error initializing glew: " << glewGetErrorString(ret) << endl;
-      return false;
-    }
-  }
 
   ShaderProgram sp("shaders/city.vert", "shaders/city.frag");
 
@@ -206,8 +150,6 @@ int main( int argc, char* argv[] )
   items.push_back(mouse);
 
   FpsTimer timer(60);
-  GLint t;
-  glGetIntegerv(GL_MAX_TEXTURE_SIZE, &t);
 
   int my_sampler_uniform_location = glGetUniformLocation(sp.get_sp(), "tex");
   glActiveTexture(GL_TEXTURE0);
@@ -545,9 +487,5 @@ int main( int argc, char* argv[] )
 
     timer.endOfFrame();
   }
-
-  //Quit
-  SDL_Quit();
-
   return 0;
 }

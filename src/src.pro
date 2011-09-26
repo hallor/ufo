@@ -32,7 +32,14 @@ HEADERS += citybuilding.h \
     os/filelinux.h \
     importer/peoplepath.h \
     exceptions.h \
-    importmanager.h
+    importmanager.h \
+    Application.h \
+    SceneManager.h \
+    LogicManager.h \
+    InputManager.h \
+    GenericManager.h \
+    GameModel.h \
+    City.h
 
 SOURCES += citybuilding.cpp \
            cityitem.cpp \
@@ -57,7 +64,18 @@ SOURCES += citybuilding.cpp \
            os/FileWin32.cpp \
     os/filelinux.cpp \
     importer/peoplepath.cpp \
-    importmanager.cpp
+    importmanager.cpp \
+    Application.cpp \
+    SceneManager.cpp \
+    LogicManager.cpp \
+    InputManager.cpp \
+    GenericManager.cpp \
+    Application_render.cpp \
+    Application_init.cpp \
+    Application_update.cpp \
+    Application_event.cpp \
+    GameModel.cpp \
+    City.cpp
 
 LIBS += -lSDL -lGL -lGLEW
 QMAKE_CXXFLAGS += -pedantic -std=gnu++0x -Wall

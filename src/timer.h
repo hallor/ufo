@@ -3,6 +3,25 @@
 
 #include <SDL/SDL.h>
 
+/** Global timer */
+class RealTimer
+{
+public:
+	RealTimer() : started(SDL_GetTicks()) {}
+
+	unsigned int delta()
+	{
+		unsigned int t = started - SDL_GetTicks();
+		started = SDL_GetTicks();
+		return t;
+	}
+
+	void restart() { started = SDL_GetTicks(); }
+
+private:
+	unsigned int started;
+};
+
 class FpsTimer
 {
 public:
@@ -24,6 +43,7 @@ public:
       if (1000/req_fps > (end - ticks))
         SDL_Delay( (1000/req_fps) - (end - ticks));
     }
+
 private:
   unsigned int ticks;
   unsigned int req_fps;
