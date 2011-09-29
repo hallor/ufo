@@ -1,6 +1,7 @@
 #include <SDL/SDL.h>
 #include <GL/glew.h>
-
+#include <oal/al.h>
+#include <oal/alc.h>
 #include <iostream>
 #include <fstream>
 #include <algorithm>
@@ -24,6 +25,10 @@
 
 #include "citybuilding.h"
 #include "importmanager.h"
+#include "ResourceBase.h"
+#include "SoundBufferManager.h"
+#include "SoundBuffer.h"
+#include "OpenAL.h"
 
 #include "Application.h"
 
@@ -31,10 +36,15 @@ using namespace std;
 
 int main( int argc, char* argv[] )
 {
-	Application * app = new Application();
+//	Application * app = new Application();
 
-	return app->execute(argc, argv);
-
+//	return app->execute(argc, argv);
+    OpenAL::Get().Initialize();
+    cSoundBufferManager man;
+    cSoundBuffer *buf = man.Get();
+    buf->Release();
+    OpenAL::Free();
+    
 	ImportManager * im = CreateImportManager("XCOMA");
   GfxManager gfx;
   srand(42);
