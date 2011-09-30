@@ -29,6 +29,8 @@
 #include "SoundBufferManager.h"
 #include "SoundBuffer.h"
 #include "OpenAL.h"
+#include "Property.h"
+#include "AppSettings.h"
 
 using namespace std;
 
@@ -62,7 +64,6 @@ int main( int argc, char* argv[] )
     cSoundBuffer *buf = man.Get();
     buf->Release();
     OpenAL::Free();
-    
   iFile *file = CreateFileIO();
   if (file)
   {
@@ -99,7 +100,7 @@ int main( int argc, char* argv[] )
 	if (!im)
 		return -1;
 
-  Screen * screen = new Screen(WIDTH, HEIGHT, "X-Com 42");
+    Screen * screen = new Screen(AppSettings::GetWindowWidth(), AppSettings::GetWindowHeight(), "X-Com 42");
 
   {
     int ret;
@@ -158,7 +159,6 @@ int main( int argc, char* argv[] )
   }
 
   Raster * mouse_img = new Raster();
-
   mouse_img->setSurface(*mouse_cursors.getSurface());
 
   CityMap cm(100,100,10);
@@ -180,8 +180,8 @@ int main( int argc, char* argv[] )
   s.x = s.y = 0;
   camera.x = 0;
   camera.y = 0;
-  camera.w = WIDTH;
-  camera.h = (Uint16)(HEIGHT * 0.76f);
+  camera.w = AppSettings::GetWindowWidth();
+  camera.h = (Uint16)(AppSettings::GetWindowHeight() * 0.76f);
 
   bool quit = false;
 
@@ -527,10 +527,22 @@ int main( int argc, char* argv[] )
     }
 
     Uint8 *keystates = SDL_GetKeyState(NULL);
-    int speed = 5;
-
+    
     if (keystates[SDLK_LSHIFT])
-      speed = speed * 5;
+    {
+        AppSettings::SetScrollSpeed(AppSettings::GetScrollSpeed() + 1.0f);
+    }
+    else
+    if(keystates[SDLK_LCTRL])
+    {
+        AppSettings::SetScrollSpeed(AppSettings::GetScrollSpeed() - 1.0f);
+    }
+
+    if(keystates[SDLK_0])
+        AppSettings::DefaultScrollSpeed();
+
+    float speed = AppSettings::GetScrollSpeed();
+
     if (keystates[SDLK_UP])
       camera.y-=speed;
     if (keystates[SDLK_DOWN])
@@ -543,13 +555,13 @@ int main( int argc, char* argv[] )
     {
       int cx, cy;
       Utils::tile_to_screen(ufo->tx, ufo->ty, ufo->tz, cx, cy);
-      camera.x = cx - WIDTH/2;
-      camera.y = cy - HEIGHT/2;
+      camera.x = cx - AppSettings::GetWindowWidth()/2;
+      camera.y = cy - AppSettings::GetWindowHeight()/2;
     }
     if (keystates[SDLK_LALT])
     {
       SDL_EventState(SDL_MOUSEMOTION, SDL_IGNORE);
-      SDL_WarpMouse(WIDTH/2, HEIGHT/2);
+      SDL_WarpMouse(AppSettings::GetWindowWidth()/2, AppSettings::GetWindowHeight()/2);
       SDL_EventState(SDL_MOUSEMOTION, SDL_ENABLE);
     }
     mouse->camera = camera;
@@ -559,6 +571,7 @@ int main( int argc, char* argv[] )
 
   //Quit
   SDL_Quit();
+  AppSettings::Free();
 
   return 0;
 }
