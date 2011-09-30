@@ -13,12 +13,10 @@ HEADERS += Application.h \
            citybuilding.h \
            cityitem.h \
            citymap.h \
+					 GameModel.h \
            exceptions.h \
-           GameModel.h \
-           GenericManager.h \
            gfx.h \
            importmanager.h \
-           InputManager.h \
            logger.h \
            LogicManager.h \
            mouse.h \
@@ -62,14 +60,12 @@ SOURCES += Application.cpp \
            Application_render.cpp \
            Application_update.cpp \
            City.cpp \
+					 GameModel.cpp \
            citybuilding.cpp \
            cityitem.cpp \
            citymap.cpp \
-           GameModel.cpp \
-           GenericManager.cpp \
            gfx.cpp \
            importmanager.cpp \
-           InputManager.cpp \
            logger.cpp \
            LogicManager.cpp \
            main.cpp \

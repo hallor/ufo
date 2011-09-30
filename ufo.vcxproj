@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -115,6 +115,7 @@
 		<ClInclude Include="src\importmanager.cpp" />
     <ClCompile Include="src\util\AppSettings.cpp" />
 		<ClInclude Include="src\Application.cpp" />
+		<ClInclude Include="src\GameModel.cpp" />
 		<ClInclude Include="src\Application_event.cpp" />
 		<ClInclude Include="src\Application_init.cpp" />
 		<ClInclude Include="src\Application_render.cpp" />
@@ -160,6 +161,7 @@
 		<ClInclude Include="src\importmanager.h" />
     <ClInclude Include="src\exceptions.h" />
 		<ClInclude Include="src\Application.h" />
+		<ClInclude Include="src\GameModel.h" />
     <ClInclude Include="src\util\AppSettings.h" />
     <ClInclude Include="src\util\Property.h" />
   </ItemGroup>
