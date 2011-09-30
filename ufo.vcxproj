@@ -114,6 +114,11 @@
     <ClCompile Include="src\utils.cpp" />
 		<ClInclude Include="src\importmanager.cpp" />
     <ClCompile Include="src\util\AppSettings.cpp" />
+		<ClInclude Include="src\Application.cpp" />
+		<ClInclude Include="src\Application_event.cpp" />
+		<ClInclude Include="src\Application_init.cpp" />
+		<ClInclude Include="src\Application_render.cpp" />
+		<ClInclude Include="src\Application_update.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\citybuilding.h" />
@@ -154,6 +159,7 @@
     <ClInclude Include="src\utils.h" />
 		<ClInclude Include="src\importmanager.h" />
     <ClInclude Include="src\exceptions.h" />
+		<ClInclude Include="src\Application.h" />
     <ClInclude Include="src\util\AppSettings.h" />
     <ClInclude Include="src\util\Property.h" />
   </ItemGroup>
