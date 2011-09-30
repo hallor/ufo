@@ -15,7 +15,7 @@ public:
 	~City() { clear(); }
 
 	/** Clears old city, and generates new one on appropriate game difficulty */
-	bool generate(GameDifficulty difficulty);
+    bool generate(EGameDifficulty::TYPE difficulty);
 	void clear();
 
 // Megalopolis

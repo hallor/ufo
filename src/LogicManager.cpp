@@ -14,5 +14,5 @@ LogicManager::~LogicManager()
 
 void LogicManager::init()
 {
-	m_city->generate(GameDifficulty::Novice);
+	m_city->generate(EGameDifficulty::Novice);
 }

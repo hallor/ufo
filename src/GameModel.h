@@ -1,13 +1,16 @@
 #ifndef GAMEMODEL_H
 #define GAMEMODEL_H
 
-enum class GameDifficulty
+namespace EGameDifficulty
 {
-	Novice = 1,
-	Easy,
-	Medium,
-	Hard,
-	Superhuman
+    enum TYPE
+    {
+	    Novice = 1,
+	    Easy,
+	    Medium,
+	    Hard,
+	    Superhuman
+    };
 };
 
 /** Root for whole game model*/

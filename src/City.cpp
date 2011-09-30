@@ -20,7 +20,7 @@ City::City()
 }
 
 
-bool City::generate(GameDifficulty difficulty)
+bool City::generate(EGameDifficulty::TYPE difficulty)
 {
 	clear();
 

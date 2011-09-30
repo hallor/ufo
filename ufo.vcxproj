@@ -77,6 +77,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\City.cpp" />
     <ClCompile Include="src\citybuilding.cpp" />
     <ClCompile Include="src\cityitem.cpp" />
     <ClCompile Include="src\citymap.cpp" />
@@ -92,6 +94,7 @@
     <ClCompile Include="src\importer\tabfile.cpp" />
     <ClCompile Include="src\importmanager.cpp" />
     <ClCompile Include="src\logger.cpp" />
+    <ClCompile Include="src\LogicManager.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\mouse.cpp" />
     <ClCompile Include="src\os\FileEnums.cpp" />
@@ -108,19 +111,20 @@
     <ClCompile Include="src\resources\SoundBufferManager.cpp" />
     <ClCompile Include="src\resources\SoundSource.cpp" />
     <ClCompile Include="src\resources\SoundSourceManager.cpp" />
+    <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\screen.cpp" />
     <ClCompile Include="src\shaderprogram.cpp" />
     <ClCompile Include="src\timer.cpp" />
     <ClCompile Include="src\utils.cpp" />
     <ClCompile Include="src\util\AppSettings.cpp" />
-    <ClInclude Include="src\Application.cpp" />
-    <ClInclude Include="src\GameModel.cpp" />
-    <ClInclude Include="src\Application_event.cpp" />
-    <ClInclude Include="src\Application_init.cpp" />
-    <ClInclude Include="src\Application_render.cpp" />
-    <ClInclude Include="src\Application_update.cpp" />
+    <ClCompile Include="src\GameModel.cpp" />
+    <ClCompile Include="src\Application_event.cpp" />
+    <ClCompile Include="src\Application_init.cpp" />
+    <ClCompile Include="src\Application_render.cpp" />
+    <ClCompile Include="src\Application_update.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\City.h" />
     <ClInclude Include="src\citybuilding.h" />
     <ClInclude Include="src\cityitem.h" />
     <ClInclude Include="src\citymap.h" />
@@ -135,6 +139,7 @@
     <ClInclude Include="src\importer\pcxfile.h" />
     <ClInclude Include="src\importer\tabfile.h" />
     <ClInclude Include="src\logger.h" />
+    <ClInclude Include="src\LogicManager.h" />
     <ClInclude Include="src\mouse.h" />
     <ClInclude Include="src\os\FileEnums.h" />
     <ClInclude Include="src\os\FileIO.h" />
@@ -151,6 +156,7 @@
     <ClInclude Include="src\resources\SoundBufferManager.h" />
     <ClInclude Include="src\resources\SoundSource.h" />
     <ClInclude Include="src\resources\SoundSourceManager.h" />
+    <ClInclude Include="src\SceneManager.h" />
     <ClInclude Include="src\screen.h" />
     <ClInclude Include="src\shaderprogram.h" />
     <ClInclude Include="src\surface.h" />

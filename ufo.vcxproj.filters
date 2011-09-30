@@ -159,6 +159,33 @@
     <ClCompile Include="src\util\AppSettings.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="src\Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application_event.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application_init.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application_render.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application_update.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LogicManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\City.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SceneManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\citybuilding.h">
@@ -278,28 +305,19 @@
     <ClInclude Include="src\util\AppSettings.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="src\Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Application_event.cpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Application_init.cpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Application_render.cpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Application_update.cpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\GameModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\City.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LogicManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SceneManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
