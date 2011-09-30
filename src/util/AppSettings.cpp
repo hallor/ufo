@@ -3,6 +3,7 @@
 #ifdef _WIN32
 #include <Windows.h>
 #endif
+#include <cstring>
 #include "logger.h"
 
 AppSettings *m_Instance = NULL;
@@ -32,6 +33,7 @@ void AppSettings::DefaultAll()
     DefaultWindowWidth();
     DefaultWindowHeight();
     DefaultScrollSpeed();
+		DefaultFPSLimit();
 }
 
 AppSettings::AppSettings()

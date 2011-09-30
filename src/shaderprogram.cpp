@@ -3,6 +3,7 @@
 #include <SDL/SDL.h>
 #include <GL/glew.h>
 #include "shaderprogram.h"
+#include "logger.h"
 
 using namespace std;
 
@@ -17,7 +18,7 @@ void printLog(GLuint obj)
 		glGetProgramInfoLog(obj, 1024, &infologLength, infoLog);
 
 	if (infologLength > 0)
-		cout << infoLog << endl;
+		LogError("%s", infoLog);
 }
 
 char *file2string(const char *path)
@@ -29,20 +30,18 @@ char *file2string(const char *path)
 
 	if (!(fd = fopen(path, "r")))
 	{
-		cerr << "Can't open file '" << path << "' for reading." << endl;
+		LogError("Can't open file %s for reading.", path);
 		return NULL;
 	}
 
 	fseek(fd, 0, SEEK_END);
 	len = ftell(fd);
 
-	cout << "File '" << path << "' is " << len << " long" << endl;
-
 	fseek(fd, 0, SEEK_SET);
 
 	if (!(str = new char[len]))
 	{
-		cerr << "Can't malloc space for '" << path << "'." << endl;
+		LogError("Can't alloc space for %s.", path);
 		return NULL;
 	}
 
@@ -62,15 +61,15 @@ ShaderProgram::ShaderProgram(const char * vertex, const char * fragment)
 	if (fragment)
 		fsource = file2string(fragment);
 
-	cout << "Loading shader programs..." << endl;
+	LogInfo("Loading shader programs...");
 	vs = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vs, 1, (const GLchar**)&vsource, NULL);
 
 	fs = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fs, 1, (const GLchar**)&fsource, NULL);
 	is_loaded = true;
-    is_built = false;
-    is_attached = false;
+	is_built = false;
+	is_attached = false;
 }
 
 ShaderProgram::~ShaderProgram()

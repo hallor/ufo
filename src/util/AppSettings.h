@@ -10,6 +10,7 @@ public:
 
     STATIC_PROPERTY(unsigned int, WindowWidth, 1280);
     STATIC_PROPERTY(unsigned int, WindowHeight, 960);
+		STATIC_PROPERTY(unsigned int, FPSLimit, 60);
     STATIC_PROPERTY(float, ScrollSpeed, 5.0f);
 
     void DefaultAll();

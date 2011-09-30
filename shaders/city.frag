@@ -15,7 +15,7 @@ void main()
 //  return;
 
   vec2 mp = vec2(mousePos.x, -mousePos.y);
-  float d = 1;//distance(mousePos, gl_FragCoord.xy) / 100.0;
+	float d = 1.0;//distance(mousePos, gl_FragCoord.xy) / 100.0;
 
   d = clamp(d, 0.0, 1.0);
   if (zd > 9.0/20.0)

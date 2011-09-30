@@ -1,5 +1,9 @@
 #pragma once
-#include <oal\al.h>
+#ifdef _WIN32
+#include <oal/al.h>
+#else
+#include <AL/al.h>
+#endif
 #include "ResourceBase.h"
 
 

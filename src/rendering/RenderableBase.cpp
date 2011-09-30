@@ -1,4 +1,5 @@
 #include "RenderableBase.h"
+#include <cstring>
 
 vRenderable::vRenderable()
 {

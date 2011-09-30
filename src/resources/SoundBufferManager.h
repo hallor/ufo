@@ -1,7 +1,12 @@
 #pragma once
 #include "ManagerBase.h"
 #include "IDGenerator.h"
+#ifdef _WIN32
 #include <oal/al.h>
+#else
+#include <AL/al.h>
+#endif
+
 #include <vector>
 
 class cIdGenerator;

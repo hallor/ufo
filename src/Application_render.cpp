@@ -1,6 +1,5 @@
 #include "Application.h"
-
+#include "screen.h"
 void Application::render()
 {
-	m_do_quit = true;
 }

@@ -1,7 +1,11 @@
 #pragma once
 #include "ManagerBase.h"
 #include "SoundSource.h"
+#ifdef _WIN32
 #include <oal/al.h>
+#else
+#include <AL/al.h>
+#endif
 
 class cSoundSourceManager : public iManagerBase<ALuint>
 {

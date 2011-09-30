@@ -10,7 +10,7 @@ namespace EResourceState
         Deleted,
         _COUNT
     };
-};
+}
 
 namespace EResourceType
 {
@@ -22,4 +22,4 @@ namespace EResourceType
         OalSoundSource,
         TextureAtlas
     };
-};
+}

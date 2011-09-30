@@ -6,6 +6,7 @@
 #include "shaderprogram.h"
 #include "utils.h"
 #include "logger.h"
+#include "AppSettings.h"
 
 /** Class responsible for visualisation */
 class SceneManager
@@ -14,6 +15,7 @@ public:
 	SceneManager()
 	{
 		m_screen = NULL;
+		m_shader = NULL;
 	}
 
 	~SceneManager()
@@ -24,7 +26,7 @@ public:
 	void clear()
 	{
 		delete m_screen;
-		m_screen = 0;
+		m_screen = NULL;
 		delete m_shader;
 		m_shader = NULL;
 	}
@@ -34,7 +36,7 @@ public:
 		clear();
 
 		//TODO: maybe OGL/OAL/SDL initialization here as well?
-		m_screen = new Screen(WIDTH, HEIGHT, "X-Com 42");
+		m_screen = new Screen(AppSettings::GetWindowWidth(), AppSettings::GetWindowHeight(), "X-Com 42");
 		if (!m_screen)
 			return false;
 

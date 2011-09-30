@@ -1,7 +1,12 @@
 #pragma once
 
-#include <oal\al.h>
-#include <oal\alc.h>
+#ifdef _WIN32
+#include <oal/al.h>
+#include <oal/alc.h>
+#else
+#include <AL/al.h>
+#include <AL/alc.h>
+#endif
 #include "IDGenerator.h"
 
 class OpenAL

@@ -4,6 +4,11 @@
 
 #include "LogicManager.h"
 #include "SceneManager.h"
+#include "SoundBufferManager.h"
+#include "SoundBuffer.h"
+#include "OpenAL.h"
+#include "AppSettings.h"
+
 
 Application::Application()
 {
@@ -22,10 +27,15 @@ Application::~Application()
 
 int Application::execute(int argc, char* argv[])
 {
-	FpsTimer fps(59);
+	FpsTimer fps(AppSettings::GetFPSLimit());
 
 	if (!init(argc, argv))
 		return -1;
+
+	cSoundBufferManager man;
+	cSoundBuffer *buf = man.Get();
+	buf->Release();
+
 
 	while (!shouldQuit())
 	{
@@ -51,5 +61,8 @@ bool Application::shouldQuit() const
 void Application::exit()
 {
 	SDL_Quit();
+	OpenAL::Free();
+
+	AppSettings::Free();
 }
 

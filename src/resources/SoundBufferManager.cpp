@@ -92,7 +92,7 @@ bool cSoundBufferManager::IsValidResource(const std::string &id) const
 bool cSoundBufferManager::IsValidResource(cSoundBuffer *res) const
 {
     if(!res || !res->GetRawResource())
-        return false;
+				return false;
 
     // Resource could be deleted at this point, therefore we cannot simply call IsValid()
     vSoundBufferResource *raw = res->GetRawResource();

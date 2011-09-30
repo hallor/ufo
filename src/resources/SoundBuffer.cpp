@@ -1,5 +1,9 @@
 #include "SoundBuffer.h"
+#ifdef _WIN32
 #include <oal/al.h>
+#else
+#include <AL/al.h>
+#endif
 
 vSoundBufferResource::vSoundBufferResource(const ALuint &res)
 : vResource(res)

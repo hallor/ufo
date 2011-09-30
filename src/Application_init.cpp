@@ -2,12 +2,15 @@
 #include <GL/glew.h>
 
 #include "Application.h"
+#include "OpenAL.h"
 
 #include "screen.h"
 #include "utils.h"
 
 #include "SceneManager.h"
 #include "LogicManager.h"
+#include "AppSettings.h"
+#include "logger.h"
 
 bool Application::init(int argc, char* argv[])
 {
@@ -26,6 +29,8 @@ bool Application::init(int argc, char* argv[])
 	SDL_GL_SetAttribute(SDL_GL_ACCUM_GREEN_SIZE,	8);
 	SDL_GL_SetAttribute(SDL_GL_ACCUM_BLUE_SIZE,	    8);
 	SDL_GL_SetAttribute(SDL_GL_ACCUM_ALPHA_SIZE,	8);
+
+	OpenAL::Get().Initialize();
 
 	m_logic->init();
 	m_scene->init();

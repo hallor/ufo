@@ -3,7 +3,6 @@
 
 #include "timer.h"
 
-class Screen;
 class LogicManager;
 class SceneManager;
 
@@ -30,7 +29,5 @@ private:
 	bool m_do_quit;
 	LogicManager * m_logic;
 	SceneManager * m_scene;
-
-	// Below junk to port
 };
 #endif // APPLICATION_H

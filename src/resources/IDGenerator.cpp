@@ -8,6 +8,6 @@ cIdGenerator::cIdGenerator(const std::string &base)
 
 std::string cIdGenerator::Next()
 {
-    sprintf_s(m_Buffer, sizeof(m_Buffer), "@%i", m_Counter);
+		snprintf(m_Buffer, sizeof(m_Buffer), "@%i", m_Counter);
     return (m_Base + m_Buffer);
 };
