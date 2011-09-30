@@ -1,7 +1,5 @@
 #include <SDL/SDL.h>
 #include <GL/glew.h>
-#include <oal/al.h>
-#include <oal/alc.h>
 #include <iostream>
 #include <fstream>
 #include <algorithm>
@@ -29,6 +27,8 @@
 #include "SoundBufferManager.h"
 #include "SoundBuffer.h"
 #include "OpenAL.h"
+#include "Property.h"
+#include "AppSettings.h"
 
 #include "Application.h"
 
@@ -44,7 +44,33 @@ int main( int argc, char* argv[] )
     cSoundBuffer *buf = man.Get();
     buf->Release();
     OpenAL::Free();
-    
+
+  iFile *file = CreateFileIO();
+  if (file)
+  {
+    file->Open("duapa.txt", FFileOpenFlags::OpenExisting | FFileOpenFlags::Read);
+    char str[18] = {0};
+    file->Read(str, sizeof(str));
+    file->Close();
+    ReleaseFileIO(file);
+  }
+  
+  CityBuildings cb;
+  ifstream bn("resources/building.nam");
+  std::vector<std::string> names;
+  names.reserve(150);
+  while (bn.good())
+  {
+      std::string x;
+      getline(bn, x);
+      //bn >> x;
+      names.push_back(x);
+      LogInfo("Loaded name %s", x.c_str());
+  }
+
+
+  cb.load("XCOMA/UFODATA/CITYMAP1.BLD", names);
+
 	ImportManager * im = CreateImportManager("XCOMA");
   GfxManager gfx;
   srand(42);
@@ -52,6 +78,17 @@ int main( int argc, char* argv[] )
 
 	if (!im)
 		return -1;
+
+    Screen * screen = new Screen(AppSettings::GetWindowWidth(), AppSettings::GetWindowHeight(), "X-Com 42");
+
+  {
+    int ret;
+    if ( (ret = glewInit())!= GLEW_OK)
+    {
+      cout << "Error initializing glew: " << glewGetErrorString(ret) << endl;
+      return false;
+    }
+  }
 
   ShaderProgram sp("shaders/city.vert", "shaders/city.frag");
 
@@ -101,7 +138,6 @@ int main( int argc, char* argv[] )
   }
 
   Raster * mouse_img = new Raster();
-
   mouse_img->setSurface(*mouse_cursors.getSurface());
 
   CityMap cm(100,100,10);
@@ -123,8 +159,8 @@ int main( int argc, char* argv[] )
   s.x = s.y = 0;
   camera.x = 0;
   camera.y = 0;
-  camera.w = WIDTH;
-  camera.h = (Uint16)(HEIGHT * 0.76f);
+  camera.w = AppSettings::GetWindowWidth();
+  camera.h = (Uint16)(AppSettings::GetWindowHeight() * 0.76f);
 
   bool quit = false;
 
@@ -468,10 +504,22 @@ int main( int argc, char* argv[] )
     }
 
     Uint8 *keystates = SDL_GetKeyState(NULL);
-    int speed = 5;
-
+    
     if (keystates[SDLK_LSHIFT])
-      speed = speed * 5;
+    {
+        AppSettings::SetScrollSpeed(AppSettings::GetScrollSpeed() + 1.0f);
+    }
+    else
+    if(keystates[SDLK_LCTRL])
+    {
+        AppSettings::SetScrollSpeed(AppSettings::GetScrollSpeed() - 1.0f);
+    }
+
+    if(keystates[SDLK_0])
+        AppSettings::DefaultScrollSpeed();
+
+    float speed = AppSettings::GetScrollSpeed();
+
     if (keystates[SDLK_UP])
       camera.y-=speed;
     if (keystates[SDLK_DOWN])
@@ -484,18 +532,22 @@ int main( int argc, char* argv[] )
     {
       int cx, cy;
       Utils::tile_to_screen(ufo->tx, ufo->ty, ufo->tz, cx, cy);
-      camera.x = cx - WIDTH/2;
-      camera.y = cy - HEIGHT/2;
+      camera.x = cx - AppSettings::GetWindowWidth()/2;
+      camera.y = cy - AppSettings::GetWindowHeight()/2;
     }
     if (keystates[SDLK_LALT])
     {
       SDL_EventState(SDL_MOUSEMOTION, SDL_IGNORE);
-      SDL_WarpMouse(WIDTH/2, HEIGHT/2);
+      SDL_WarpMouse(AppSettings::GetWindowWidth()/2, AppSettings::GetWindowHeight()/2);
       SDL_EventState(SDL_MOUSEMOTION, SDL_ENABLE);
     }
     mouse->camera = camera;
 
     timer.endOfFrame();
   }
+
+  //Quit
+  SDL_Quit();
+  AppSettings::Free();
   return 0;
 }

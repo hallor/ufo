@@ -43,6 +43,12 @@
     <Filter Include="Header Files\Rendering">
       <UniqueIdentifier>{b0f2a420-367c-423c-bb7f-5fb49481945e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Utils">
+      <UniqueIdentifier>{0e991e70-5ddc-4019-821f-43f36fd63dd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{67fb9a92-c976-4a2f-bb40-8509d34ce80b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\citybuilding.cpp">
@@ -149,6 +155,9 @@
     </ClCompile>
     <ClCompile Include="src\rendering\RendererBase.cpp">
       <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\AppSettings.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -262,6 +271,12 @@
     </ClInclude>
     <ClInclude Include="src\rendering\RenderableBase.h">
       <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\Property.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\AppSettings.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

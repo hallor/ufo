@@ -50,7 +50,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Projects\ufo\ufo\src\rendering;E:\Projects\ufo\ufo\src\HAL;E:\Projects\ufo\ufo\src\game;E:\Projects\ufo\ufo\src\resources;E:\Projects\ufo\ufo\src\importer;E:\Projects\ufo\ufo\src\os;E:\Projects\ufo\ufo\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Projects\ufo\ufo\src\util;E:\Projects\ufo\ufo\src\rendering;E:\Projects\ufo\ufo\src\HAL;E:\Projects\ufo\ufo\src\game;E:\Projects\ufo\ufo\src\resources;E:\Projects\ufo\ufo\src\importer;E:\Projects\ufo\ufo\src\os;E:\Projects\ufo\ufo\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -113,6 +113,7 @@
     <ClCompile Include="src\timer.cpp" />
     <ClCompile Include="src\utils.cpp" />
 		<ClInclude Include="src\importmanager.cpp" />
+    <ClCompile Include="src\util\AppSettings.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\citybuilding.h" />
@@ -151,8 +152,10 @@
     <ClInclude Include="src\surface.h" />
     <ClInclude Include="src\timer.h" />
     <ClInclude Include="src\utils.h" />
-		<ClInclude Include="src\exceptions.h" />
 		<ClInclude Include="src\importmanager.h" />
+    <ClInclude Include="src\exceptions.h" />
+    <ClInclude Include="src\util\AppSettings.h" />
+    <ClInclude Include="src\util\Property.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
