@@ -1,3 +1,4 @@
+#include <cstdio>
 #include "IDGenerator.h"
 
 cIdGenerator::cIdGenerator(const std::string &base)
