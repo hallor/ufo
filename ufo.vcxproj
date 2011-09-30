@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -56,7 +56,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>E:\VS2010\VC\lib\SDL;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OpenAL32.lib;sdl.lib;sdlmain.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -112,14 +112,13 @@
     <ClCompile Include="src\shaderprogram.cpp" />
     <ClCompile Include="src\timer.cpp" />
     <ClCompile Include="src\utils.cpp" />
-		<ClInclude Include="src\importmanager.cpp" />
     <ClCompile Include="src\util\AppSettings.cpp" />
-		<ClInclude Include="src\Application.cpp" />
-		<ClInclude Include="src\GameModel.cpp" />
-		<ClInclude Include="src\Application_event.cpp" />
-		<ClInclude Include="src\Application_init.cpp" />
-		<ClInclude Include="src\Application_render.cpp" />
-		<ClInclude Include="src\Application_update.cpp" />
+    <ClInclude Include="src\Application.cpp" />
+    <ClInclude Include="src\GameModel.cpp" />
+    <ClInclude Include="src\Application_event.cpp" />
+    <ClInclude Include="src\Application_init.cpp" />
+    <ClInclude Include="src\Application_render.cpp" />
+    <ClInclude Include="src\Application_update.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\citybuilding.h" />
@@ -135,7 +134,6 @@
     <ClInclude Include="src\importer\pckfile.h" />
     <ClInclude Include="src\importer\pcxfile.h" />
     <ClInclude Include="src\importer\tabfile.h" />
-    <ClInclude Include="src\importmanager.h" />
     <ClInclude Include="src\logger.h" />
     <ClInclude Include="src\mouse.h" />
     <ClInclude Include="src\os\FileEnums.h" />
@@ -158,10 +156,10 @@
     <ClInclude Include="src\surface.h" />
     <ClInclude Include="src\timer.h" />
     <ClInclude Include="src\utils.h" />
-		<ClInclude Include="src\importmanager.h" />
+    <ClInclude Include="src\importmanager.h" />
     <ClInclude Include="src\exceptions.h" />
-		<ClInclude Include="src\Application.h" />
-		<ClInclude Include="src\GameModel.h" />
+    <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\GameModel.h" />
     <ClInclude Include="src\util\AppSettings.h" />
     <ClInclude Include="src\util\Property.h" />
   </ItemGroup>

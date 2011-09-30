@@ -9,7 +9,6 @@ class vResource
 public:
     vResource(const T &res)
     {
-        m_Resource = NULL;
         m_StorageIndex = -1;
         m_Type = EResourceType::None;
         m_ResourceID = "UNKNOWN RESOURCE";

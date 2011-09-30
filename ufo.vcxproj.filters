@@ -278,5 +278,29 @@
     <ClInclude Include="src\util\AppSettings.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="src\Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application_event.cpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application_init.cpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application_render.cpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application_update.cpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

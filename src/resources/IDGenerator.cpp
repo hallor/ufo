@@ -9,6 +9,10 @@ cIdGenerator::cIdGenerator(const std::string &base)
 
 std::string cIdGenerator::Next()
 {
-		snprintf(m_Buffer, sizeof(m_Buffer), "@%i", m_Counter);
+#ifdef _WIN32
+    sprintf_s(m_Buffer, sizeof(m_Buffer), "@%i", m_Counter);
+#else
+    snprintf(m_Buffer, sizeof(m_Buffer), "@%i", m_Counter);
+#endif
     return (m_Base + m_Buffer);
 };
