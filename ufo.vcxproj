@@ -92,6 +92,8 @@
     <ClCompile Include="src\importer\pckfile.cpp" />
     <ClCompile Include="src\importer\pcxfile.cpp" />
     <ClCompile Include="src\importer\tabfile.cpp" />
+		<ClCompile Include="src\model\Unit.cpp" />
+		<ClCompile Include="src\model\Vehicle.cpp" />
     <ClCompile Include="src\importmanager.cpp" />
     <ClCompile Include="src\logger.cpp" />
     <ClCompile Include="src\LogicManager.cpp" />
@@ -138,6 +140,11 @@
     <ClInclude Include="src\importer\pckfile.h" />
     <ClInclude Include="src\importer\pcxfile.h" />
     <ClInclude Include="src\importer\tabfile.h" />
+		<ClInclude Include="src\model\CityCoord.h" />
+		<ClInclude Include="src\model\CityObject.h" />
+		<ClInclude Include="src\model\DimensionGate.h" />
+		<ClInclude Include="src\model\Unit.h" />
+		<ClInclude Include="src\model\Vehicle.h" />
     <ClInclude Include="src\logger.h" />
     <ClInclude Include="src\LogicManager.h" />
     <ClInclude Include="src\mouse.h" />

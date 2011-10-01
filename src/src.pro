@@ -52,7 +52,12 @@ HEADERS += Application.h \
            resources/SoundSource.h \
            resources/SoundSourceManager.h \
            util/AppSettings.h \
-           util/Property.h
+           util/Property.h \
+    model/Unit.h \
+    model/Vehicle.h \
+    model/CityObject.h \
+    model/CityCoord.h \
+    model/DimensionGate.h
 
 SOURCES += Application.cpp \
            Application_event.cpp \
@@ -99,7 +104,9 @@ SOURCES += Application.cpp \
            resources/SoundBufferManager.cpp \
            resources/SoundSource.cpp \
            resources/SoundSourceManager.cpp \
-           util/AppSettings.cpp
+           util/AppSettings.cpp \
+    model/Unit.cpp \
+    model/Vehicle.cpp
 
 LIBS += -lSDL -lGL -lGLEW -lopenal
 QMAKE_CXXFLAGS += -pedantic -std=gnu++0x -Wall

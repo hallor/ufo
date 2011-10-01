@@ -25,7 +25,9 @@ Screen::Screen(int width, int height, const char * window_title)
   glLoadIdentity();
 
   glEnable(GL_TEXTURE_2D);
-  glClearColor(0,0,0,0);
+
+	clear();
+	flip();
 }
 
 void Screen::flip()

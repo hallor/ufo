@@ -15,16 +15,16 @@ public:
 	~City() { clear(); }
 
 	/** Clears old city, and generates new one on appropriate game difficulty */
-    bool generate(EGameDifficulty::TYPE difficulty);
+	bool generate(EGameDifficulty::TYPE difficulty);
 	void clear();
 
-// Megalopolis
-CityBuildings * m_buildings;
-CityMap * m_city;
+	// Megalopolis
+	CityBuildings * m_buildings;
+	CityMap * m_city;
 
-// Alien Dimension
-CityBuildings * m_abuildings;
-CityMap * m_acity;
+	// Alien Dimension
+	CityBuildings * m_abuildings;
+	CityMap * m_acity;
 };
 
 #endif // CITY_H

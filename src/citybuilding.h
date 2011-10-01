@@ -30,10 +30,9 @@ public:
     {
         int x = rec.x2 - rec.x1;
         int y = rec.y2 - rec.y1;
-        float z = 216.0/(x*y);
-      LogInfo("Building '%s' (%i), x(%i,%i), y(%i,%i) dim=%ix%ix%g",
+			LogInfo("Building '%s' (%i), x(%i,%i), y(%i,%i) dim=%ix%i",
               name.c_str(), rec.name_id, rec.x1, rec.x2, rec.y1, rec.y2,
-              x,y,z);
+							x,y);
     }
 
     std::string name;

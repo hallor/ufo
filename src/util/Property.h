@@ -9,7 +9,7 @@
     { m_##name = new_val; } \
     void Default##name() { Set##name(GetDefault##name()); } \
     protected: \
-    type m_##name;
+		type m_##name
 #endif
 
 #ifndef STATIC_PROPERTY
@@ -21,5 +21,23 @@
     { Get().m_##name = new_val; } \
     static void Default##name() { Get().Set##name(GetDefault##name()); } \
     protected: \
-    type m_##name;
+		type m_##name
+#endif
+
+#ifndef MEMBER
+#define MEMBER(type, name) \
+		public: \
+		const type & get##name() const	{ return m_##name; } \
+		void set##name(const type &new_val) { m_##name = new_val; } \
+		protected: \
+		type m_##name
+#endif
+
+#ifndef CONST_MEMBER
+#define CONST_MEMBER(type, name) \
+		public: \
+		const type & get##name() const	{ return m_##name; } \
+		void set##name(const type &new_val) { m_##name = new_val; } \
+		protected: \
+		const type m_##name
 #endif
