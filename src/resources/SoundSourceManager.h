@@ -1,31 +1,54 @@
 #pragma once
-#include "ManagerBase.h"
-#include "SoundSource.h"
-#ifdef _WIN32
-#include <oal/al.h>
-#else
-#include <AL/al.h>
-#endif
+#include "SoundResourceManagerBase.h"
+#include "IDGenerator.h"
 
-class cSoundSourceManager : public iManagerBase<ALuint>
+class vSoundSourceResource;
+class cSoundSource;
+
+class cSoundSourceManager : public cSoundResourceManagerBase
 {
-    public:
-    ~cSoundSourceManager() {};
+public:
+    cSoundSourceManager();
 
+    /* 
+    Creates new resource and returns pointer to new cSoundSource associated with it
+    Releasing cSoundSource doesn't free it's associated resource, use ReleaseResource to do that
+    It's callers responsibility to call Release() on cSoundSource that was acquired using this method, failing to do so will cause memory leaks
+    cSoundSources will NOT be invalidated when their resource is internally deleted, therefore no calls to any methods touching inner resource should be made afterwards
+    */
     cSoundSource *Get();
 
-    virtual void Update(float dt);
-    virtual unsigned int GetResourcesCount() const;
+    /*
+    Destroys and removes associated resource
+    $res and every other cSoundSource associated with this resource is now considered invalid and unsafe to use
+    */
+    virtual void ReleaseResource(cSoundSource* res);
 
-    virtual bool ReloadAll();
-    virtual bool ReloadResource(const std::string &id);
-
-    virtual bool IsLoaded(const std::string &id) const;
-
-    virtual void NotifyResourceParentChanged(vResource<ALuint> *res) const;
+    /*
+    Checks whether given sound source is valid
+    Returns false when specified resource doesn't exist in manager's scope
+    */
+    virtual bool IsValidResource(cSoundSource *res) const;
 
 protected:
 
-    virtual int FindResource(const std::string& id) const;
-    virtual void RemoveResource(const std::string &id);
+    // Reloads resource
+    virtual bool ReloadResource(unsigned int storage_index);
+    
+    /* 
+    Returns pointer to new resource thats linked with oal source
+    Returned resource is not claimed yet
+    */
+    vSoundSourceResource *CreateResource();
+
+    virtual bool IsResourceTypeValid(vResource<ALuint> *res);
+
+    /*
+    Deletes associated oal source
+    vSoundBufferResource is now in Deleted state
+    */
+    void UnloadResource(vResource<ALuint> * res);
+
+    // ID generator, all resources must have unique names within resource manager instance
+    cIdGenerator m_IdGenerator;
 };

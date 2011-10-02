@@ -64,6 +64,9 @@ public:
 			return false;
 		}
 
+        m_screen->clear();
+        m_screen->flip();
+
 		return true;
 	}
 

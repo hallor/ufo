@@ -11,6 +11,11 @@ vSoundSourceResource::~vSoundSourceResource()
     m_Type = EResourceType::None;
 }
 
+bool vSoundSourceResource::IsValid() const
+{
+    return GetState() == EResourceState::Ok && alIsSource(Get()) == AL_TRUE;
+}
+
 cSoundSource::cSoundSource(vSoundSourceResource *res)
 {
     m_Resource = res;

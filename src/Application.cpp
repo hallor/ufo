@@ -6,6 +6,8 @@
 #include "SceneManager.h"
 #include "SoundBufferManager.h"
 #include "SoundBuffer.h"
+#include "SoundSourceManager.h"
+#include "SoundSource.h"
 #include "OpenAL.h"
 #include "AppSettings.h"
 
@@ -34,7 +36,13 @@ int Application::execute(int argc, char* argv[])
 
 	cSoundBufferManager man;
 	cSoundBuffer *buf = man.Get();
+    man.ReleaseResource(buf);
 	buf->Release();
+
+    cSoundSourceManager srcman;
+    cSoundSource *src = srcman.Get();
+    srcman.ReleaseResource(src);
+    src->Release();
 
 
 	while (!shouldQuit())

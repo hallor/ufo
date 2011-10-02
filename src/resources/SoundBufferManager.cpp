@@ -8,12 +8,6 @@ cSoundBufferManager::cSoundBufferManager()
 { 
 };
 
-cSoundBufferManager::~cSoundBufferManager()
-{
-    // Release all remainig resources
-    Release(); 
-};
-
 cSoundBuffer* cSoundBufferManager::Get()
 {
     // Create new resource
@@ -28,32 +22,6 @@ cSoundBuffer* cSoundBufferManager::Get()
     return new cSoundBuffer(res);
 };
 
-void cSoundBufferManager::Update(float dt)
-{
-    // No updates needed here
-};
-
-unsigned int cSoundBufferManager::GetResourcesCount() const
-{
-    return m_Resources.size();
-};
-
-bool cSoundBufferManager::ReloadAll()
-{
-    bool succed = true;
-    for(unsigned int i = 0; i < m_Resources.size(); ++i)
-    {
-        succed &= ReloadResource(i);
-    }
-
-    return succed;
-};
-
-bool cSoundBufferManager::ReloadResource(const std::string &id)
-{
-    return ReloadResource(FindResource(id));
-};
-
 void cSoundBufferManager::ReleaseResource(cSoundBuffer *res)
 {
     if(!res)
@@ -64,30 +32,6 @@ void cSoundBufferManager::ReleaseResource(cSoundBuffer *res)
     if(base && base->GetParent() == this)
         RemoveResource(base->GetStorageIndex());
 }
-
-// TODO: rename it to IsValid
-// resources loading will be performed by loaders to simplify code
-bool cSoundBufferManager::IsValidResource(vResource<ALuint> *res) const
-{
-    if(!res)
-        return false;
-
-    if(res->GetParent() != this)
-        return false;
-
-    return res->IsValid();
-}
-
-bool cSoundBufferManager::IsValidResource(const std::string &id) const
-{
-    // Most likely will not be used, given that sound buffers do not need to be distinguished
-    int idx = FindResource(id);
-
-    if(idx < 0)
-        return false;
-    
-    return m_Resources[idx]->IsValid();
-};
 
 bool cSoundBufferManager::IsValidResource(cSoundBuffer *res) const
 {
@@ -105,103 +49,12 @@ bool cSoundBufferManager::IsValidResource(cSoundBuffer *res) const
     return m_Resources[index]->IsValid();
 };
 
-// Most likely will never be called, there is no need for multiple sound buffer managers
-void cSoundBufferManager::NotifyResourceParentChanged(vResource<ALuint> *res)
-{
-    if(!res)
-        return;
-
-    RemoveResource(res->GetStorageIndex());
-};
-
-void cSoundBufferManager::Release()
-{
-    // Remove all resources
-    // Note: if there are any valid cSoundBuffer's, they'll crash when their associated resource is dereferenced using cSoundBuffer::Get()  
-    while(GetResourcesCount())
-        RemoveResource(GetResourcesCount() - 1);
-};
-
-int cSoundBufferManager::FindResource(const std::string &id) const
-{
-    // TODO: check whether this line shows up as hotspot during profiling,
-    // optimize if so
-    for(unsigned int i = 0; i < m_Resources.size(); ++i)
-    {
-        if(m_Resources[i]->GetID() == id)
-            return i;
-    }
-
-    return -1;
-};
-
-int cSoundBufferManager::FindResource(vSoundBufferResource *res) const
-{
-    if(!res)
-        return -1;
-
-    for(unsigned int i = 0; i < GetResourcesCount(); ++i)
-    {
-        if(m_Resources[i] == res)
-            return i;
-    }
-
-    return -1;
-};
-
-bool cSoundBufferManager::AddResource(vSoundBufferResource *res)
-{
-    // Check whether resource we're trying to claim is really sound buffer
-    if(!res || res->GetType() != EResourceType::OalSoundBuffer)
-        return false;
-
-    // If we've already claimed this resource we cannot add it again
-    if(FindResource(res->GetID()) >= 0)
-    {
-        return false;
-    }
-
-    // Claim resource
-    res->SetParent(this);
-    m_Resources.push_back(res);
-    // Set storage index for fast access
-    res->SetStorageIndex(m_Resources.size() - 1);
-
-    return true;
-}
-
-void cSoundBufferManager::RemoveResource(unsigned int storage_index)
-{
-    if(storage_index >= GetResourcesCount())
-        return;
-
-    vSoundBufferResource *res = m_Resources[storage_index];
-
-    // Simple non-stable O(1) removal of array element 
-    if(storage_index == GetResourcesCount() - 1)
-    {
-        m_Resources.pop_back();
-    }
-    else
-    {
-        m_Resources[storage_index] = m_Resources.back();
-        // Update storage index
-        m_Resources[storage_index]->SetStorageIndex(storage_index);
-    }
-
-    // Remove all traces of resource ever existing
-    UnloadResource(res);
-
-    if(res)
-        delete res;
-}
-
 bool cSoundBufferManager::ReloadResource(unsigned int storage_index)
 {
     if(storage_index >= GetResourcesCount())
         return false;
 
-    vSoundBufferResource *rs = m_Resources[storage_index];
+    vSoundBufferResource *rs = (vSoundBufferResource*)m_Resources[storage_index];
     if(!rs)
         return false;
 
@@ -237,7 +90,15 @@ vSoundBufferResource* cSoundBufferManager::CreateResource()
     return sb;
 }
 
-void cSoundBufferManager::UnloadResource(vSoundBufferResource *res)
+bool cSoundBufferManager::IsResourceTypeValid(vResource<ALuint> *res)
+{
+    if(!res || res->GetType() != EResourceType::OalSoundBuffer)
+        return false;
+
+    return true;
+}
+
+void cSoundBufferManager::UnloadResource(vResource<ALuint> *res)
 {
     // Check ownership etc.
     if(!res || res->GetParent() != this)

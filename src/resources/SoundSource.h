@@ -11,6 +11,8 @@ class vSoundSourceResource : public vResource<ALuint>
 public:
     vSoundSourceResource(const ALuint &res);
     ~vSoundSourceResource();
+
+    virtual bool IsValid() const;
 };
 
 class cSoundSource
