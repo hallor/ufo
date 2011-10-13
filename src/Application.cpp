@@ -10,6 +10,7 @@
 #include "SoundSource.h"
 #include "OpenAL.h"
 #include "AppSettings.h"
+#include "FileIO.h"
 
 
 Application::Application()
@@ -32,19 +33,28 @@ int Application::execute(int argc, char* argv[])
 	FpsTimer fps(AppSettings::GetFPSLimit());
 
 	if (!init(argc, argv))
-		return -1;
+        return -1;
 
 	cSoundBufferManager man;
 	cSoundBuffer *buf = man.Get();
-    man.ReleaseResource(buf);
-	buf->Release();
 
     cSoundSourceManager srcman;
     cSoundSource *src = srcman.Get();
-    srcman.ReleaseResource(src);
-    src->Release();
+        iFile *file = CreateFileIO();
+    file->Open("xcoma\\rawsound\\tactical\\explosns\\explosn1.raw", FFileOpenFlags::OpenExisting | FFileOpenFlags::Read);
+    int length = file->GetSize();
 
+    char *data = new char[length];
+    file->Read(data, length);
 
+    alBufferData(buf->Get(), AL_FORMAT_MONO8, data, length, 22050);
+    
+    delete data;
+    file->Close();
+    ReleaseFileIO(file);
+
+    alSourcei(src->Get(), AL_BUFFER, buf->Get());
+        alSourcePlay(src->Get());
 	while (!shouldQuit())
 	{
 		fps.startOfFrame();
@@ -55,6 +65,12 @@ int Application::execute(int argc, char* argv[])
 
 		fps.endOfFrame();
 	}
+
+    srcman.ReleaseResource(src);
+    man.ReleaseResource(buf);
+
+	buf->Release();
+    src->Release();
 
 	exit();
 	return 0;

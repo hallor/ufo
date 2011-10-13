@@ -49,6 +49,18 @@
     <Filter Include="Source Files\Utils">
       <UniqueIdentifier>{67fb9a92-c976-4a2f-bb40-8509d34ce80b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Sound">
+      <UniqueIdentifier>{e5afd650-2636-4c31-86f5-48040b5e8d74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Rendering\Sound">
+      <UniqueIdentifier>{22d52a64-1804-4828-b98b-2a8b5e0e25c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rendering\Sound">
+      <UniqueIdentifier>{0b3a1c7e-7e0e-4e3d-a7e8-b321483fcfe0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sound">
+      <UniqueIdentifier>{1f1923a7-c21e-47ef-9c02-c658e64c6e05}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\citybuilding.cpp">
@@ -194,6 +206,15 @@
     </ClCompile>
     <ClCompile Include="src\resources\SoundResourceManagerBase.cpp">
       <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sound\MusicPlayer.cpp">
+      <Filter>Source Files\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sound\SoundRenderer.cpp">
+      <Filter>Source Files\Rendering\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sound\SoundStream.cpp">
+      <Filter>Source Files\Sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -346,6 +367,15 @@
     </ClInclude>
     <ClInclude Include="src\resources\SoundResourceManagerBase.h">
       <Filter>Source Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sound\MusicPlayer.h">
+      <Filter>Header Files\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sound\SoundStream.h">
+      <Filter>Header Files\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sound\SoundRenderer.h">
+      <Filter>Header Files\Rendering\Sound</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

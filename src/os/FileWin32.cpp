@@ -44,6 +44,8 @@ bool cFileWin32::Open(const std::string &file, DWORD flags)
     return false;
   }
 
+  m_Size = GetFileSize(m_Handle, NULL);
+
   LogDebug("File [%s] has been opened with flags [%s]", file.c_str(), FFileOpenFlags::ToString(flags).c_str());
 
   return true;

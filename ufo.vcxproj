@@ -117,6 +117,9 @@
     <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\screen.cpp" />
     <ClCompile Include="src\shaderprogram.cpp" />
+    <ClCompile Include="src\sound\MusicPlayer.cpp" />
+    <ClCompile Include="src\sound\SoundRenderer.cpp" />
+    <ClCompile Include="src\sound\SoundStream.cpp" />
     <ClCompile Include="src\timer.cpp" />
     <ClCompile Include="src\utils.cpp" />
     <ClCompile Include="src\util\AppSettings.cpp" />
@@ -168,6 +171,9 @@
     <ClInclude Include="src\SceneManager.h" />
     <ClInclude Include="src\screen.h" />
     <ClInclude Include="src\shaderprogram.h" />
+    <ClInclude Include="src\sound\MusicPlayer.h" />
+    <ClInclude Include="src\sound\SoundRenderer.h" />
+    <ClInclude Include="src\sound\SoundStream.h" />
     <ClInclude Include="src\surface.h" />
     <ClInclude Include="src\timer.h" />
     <ClInclude Include="src\utils.h" />
