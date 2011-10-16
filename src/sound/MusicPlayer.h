@@ -1,8 +1,11 @@
 #pragma once
 #include <vector>
 #include <string>
+<<<<<<< HEAD
 #include "Property.h"
 #include "IDGenerator.h"
+=======
+>>>>>>> 6a55e75632d88d9088590a9a469ab83da6e434c0
 
 class vRenderable;
 class cSoundStream;

@@ -4,8 +4,12 @@
 
 cSoundStream::cSoundStream(const std::string &id)
 {
+<<<<<<< HEAD
     __super::m_RenderableType = ERenderableType::Sound;
     m_Id = id;
+=======
+		super::m_RenderableType = ERenderableType::Sound;
+>>>>>>> 6a55e75632d88d9088590a9a469ab83da6e434c0
     DefaultAllProperties();
 };
 
@@ -15,10 +19,14 @@ cSoundStream::~cSoundStream()
 
 void cSoundStream::BindFile(const std::string &path)
 {
+<<<<<<< HEAD
     if(!IsValid())
         return;
 
     OpenStream(path);
+=======
+		return super::Initialize();
+>>>>>>> 6a55e75632d88d9088590a9a469ab83da6e434c0
 };
 
 void cSoundStream::PrepareForRendering()
@@ -98,13 +106,14 @@ bool cSoundStream::CreateRenderingProperties()
 
     vSoundStreamProperties *tmp = new (std::nothrow) vSoundStreamProperties;
     
-    __super::m_RenderingProperties = tmp;
+		super::m_RenderingProperties = tmp;
 
     return GetProperties() != NULL;
 };
 
 vSoundStreamProperties *cSoundStream::GetProperties()
 {
+<<<<<<< HEAD
     return dynamic_cast<vSoundStreamProperties*>(__super::m_RenderingProperties);
 };
 
@@ -145,3 +154,7 @@ void vSoundStreamProperties::Clear()
     DefaultFrequency();
     DefaultLooping();
 }
+=======
+		return dynamic_cast<vSoundStreamProperties*>(super::m_RenderingProperties);
+};
+>>>>>>> 6a55e75632d88d9088590a9a469ab83da6e434c0

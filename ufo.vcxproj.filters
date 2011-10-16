@@ -216,6 +216,12 @@
     <ClCompile Include="src\sound\SoundStream.cpp">
       <Filter>Source Files\Sound</Filter>
     </ClCompile>
+    <ClCompile Include="src\util\EngineSettings.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\RawFile.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\citybuilding.h">
@@ -376,6 +382,15 @@
     </ClInclude>
     <ClInclude Include="src\sound\SoundRenderer.h">
       <Filter>Header Files\Rendering\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resources\FixedArray.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\EngineSettings.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\RawFile.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
