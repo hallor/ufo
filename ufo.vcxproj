@@ -128,6 +128,8 @@
     <ClCompile Include="src\Application_init.cpp" />
     <ClCompile Include="src\Application_render.cpp" />
     <ClCompile Include="src\Application_update.cpp" />
+    <ClCompile Include="src\util\EngineSettings.cpp" />
+    <ClCompile Include="src\util\RawFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\City.h" />
@@ -159,6 +161,7 @@
     <ClInclude Include="src\rendering\RenderableBase.h" />
     <ClInclude Include="src\rendering\RendererBase.h" />
     <ClInclude Include="src\rendering\RendererEnums.h" />
+    <ClInclude Include="src\resources\FixedArray.h" />
     <ClInclude Include="src\resources\IDGenerator.h" />
     <ClInclude Include="src\resources\ManagerBase.h" />
     <ClInclude Include="src\resources\ResourceBase.h" />
@@ -182,7 +185,9 @@
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\GameModel.h" />
     <ClInclude Include="src\util\AppSettings.h" />
+    <ClInclude Include="src\util\EngineSettings.h" />
     <ClInclude Include="src\util\Property.h" />
+    <ClInclude Include="src\util\RawFile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

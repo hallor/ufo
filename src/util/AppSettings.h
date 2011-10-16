@@ -12,6 +12,9 @@ public:
     STATIC_PROPERTY(unsigned int, WindowHeight, 960);
     STATIC_PROPERTY(unsigned int, FPSLimit, 60);
     STATIC_PROPERTY(float, ScrollSpeed, 5.0f);
+    STATIC_PROPERTY(float, MusicVolume, 1.0f);
+    STATIC_PROPERTY(float, MasterVolume, 1.0f);
+    STATIC_PROPERTY(float, SoundVolume, 1.0f);
 
     void DefaultAll();
 

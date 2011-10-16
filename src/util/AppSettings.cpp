@@ -33,7 +33,10 @@ void AppSettings::DefaultAll()
     DefaultWindowWidth();
     DefaultWindowHeight();
     DefaultScrollSpeed();
-		DefaultFPSLimit();
+    DefaultFPSLimit();
+    DefaultMusicVolume();
+    DefaultMasterVolume();
+    DefaultSoundVolume();
 }
 
 AppSettings::AppSettings()

@@ -10,11 +10,16 @@ public:
 	cFileWin32(int index);
 	~cFileWin32();
 
-	virtual bool Open(const std::string &file, DWORD flags);
+    virtual bool Open(const std::string &file, DWORD flags);
+
+    std::string GetPath() const;
+
 	virtual int Write(void *data, DWORD length);
 	virtual int Read(void *dest, int length);
 
 	virtual bool Seek(int offset, EFileSeekMethod::TYPE t);
+
+    virtual int GetCurrentPos() const;
 
 	virtual DWORD GetSize() const;
 	virtual DWORD GetOpenFlags() const;
