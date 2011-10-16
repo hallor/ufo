@@ -35,7 +35,7 @@ bool cFileWin32::Open(const std::string &file, DWORD flags)
 
   m_Flags = flags;
 
-  m_Handle = CreateFileA(m_Path.c_str(), FFileOpenFlags::ToDesiredAccess(flags), FILE_SHARE_READ, NULL, FFileOpenFlags::ToDisposition(flags), FILE_ATTRIBUTE_NORMAL, NULL);
+  m_Handle = CreateFileA(file.c_str(), FFileOpenFlags::ToDesiredAccess(flags), FILE_SHARE_READ, NULL, FFileOpenFlags::ToDisposition(flags), FILE_ATTRIBUTE_NORMAL, NULL);
 
   if(m_Handle == INVALID_HANDLE_VALUE)
   {
