@@ -33,6 +33,7 @@ void EngineSettings::DefaultAll()
     DefaultMaxSoundBuffers();
     DefaultMaxSoundSources();
     DefaultMaxQueuedSoundStreamBuffers();
+    DefaultMaxSoundStreamChunks();
 }
 
 EngineSettings::EngineSettings()

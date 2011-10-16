@@ -1,6 +1,9 @@
 #include <cstring>
+#include <algorithm>
 #include "RawFile.h"
 #include "FileIO.h"
+
+using namespace std;
 
 cRawFile::cRawFile()
 {
@@ -22,7 +25,7 @@ bool cRawFile::Open(const std::string &path)
         if(m_File->GetPath() == path)
             return m_File->Seek(0, EFileSeekMethod::FromBegin);
         
-        return m_File->Open(path, FFileOpenFlags::OpenExisting);
+        return m_File->Open(path, FFileOpenFlags::OpenExisting | FFileOpenFlags::Read);
     }
 
     return false;
@@ -39,11 +42,11 @@ bool cRawFile::Read(cFixedArray<char> *data, bool loop /* = false */)
     int data_size = data->GetSize();
     int file_size = m_File->GetSize();
     int cur_pos = m_File->GetCurrentPos();
-		int size_to_read = loop ? data_size : std::min(file_size - cur_pos, data_size);
+		int size_to_read = loop ? data_size : min(file_size - cur_pos, data_size);
 
-    if(data_size <= size_to_read)
+    if(data_size <= file_size - cur_pos)
     {
-        m_File->Read(data->GetDataPointer(), size_to_read);
+        m_File->Read(data->GetDataPointer(), file_size - cur_pos);
     }
     else
     {        
@@ -52,7 +55,7 @@ bool cRawFile::Read(cFixedArray<char> *data, bool loop /* = false */)
             int count_read = 0;
             while(count_read < data_size)
             {
-                if(m_File->GetCurrentPos() == m_File->GetSize())
+                if(m_File->AtEnd())
                     m_File->Seek(0, EFileSeekMethod::FromBegin);
 
                 int tmp = m_File->Read(data->GetDataPointer() + count_read, data_size - count_read);

@@ -43,6 +43,8 @@ protected:
 
     void DeleteStreams();
 
+    bool m_Initialized;
+
     cIdGenerator m_IdGenerator;
 
     cSoundStream *m_CurrentMusic;

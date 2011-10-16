@@ -11,6 +11,7 @@
 #include "OpenAL.h"
 #include "AppSettings.h"
 #include "FileIO.h"
+#include "MusicPlayer.h"
 
 
 Application::Application()
@@ -40,7 +41,7 @@ int Application::execute(int argc, char* argv[])
 
     cSoundSourceManager srcman;
     cSoundSource *src = srcman.Get();
-        iFile *file = CreateFileIO();
+       iFile *file = CreateFileIO();
 		file->Open("xcoma/rawsound/tactical/explosns/explosn1.raw", FFileOpenFlags::OpenExisting | FFileOpenFlags::Read);
     int length = file->GetSize();
 
@@ -49,12 +50,16 @@ int Application::execute(int argc, char* argv[])
 
     alBufferData(buf->Get(), AL_FORMAT_MONO8, data, length, 22050);
     
-    delete data;
+    delete [] data;
     file->Close();
     ReleaseFileIO(file);
 
     alSourcei(src->Get(), AL_BUFFER, buf->Get());
         alSourcePlay(src->Get());
+
+    cMusicPlayer playa;
+    playa.PlayMusic("xcoma/rawsound/tactical/explosns/explosn1.raw");
+
 	while (!shouldQuit())
 	{
 		fps.startOfFrame();
@@ -62,6 +67,8 @@ int Application::execute(int argc, char* argv[])
 		processEvents();
 		update();
 		render();
+
+        playa.Update(0.0f);
 
 		fps.endOfFrame();
 	}

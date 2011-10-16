@@ -9,7 +9,11 @@ public:
         m_Array = new T[size];
         m_Size = size;
     }
-    ~cFixedArray();
+    ~cFixedArray()
+    {
+        if(m_Array)
+            delete [] m_Array;
+    };
 
     int GetSize() const { return m_Size; }
 

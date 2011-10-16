@@ -6,6 +6,7 @@ cFileWin32::cFileWin32(int index)
 {
   Clear();
   m_Index = index;
+  m_AtEnd = false;
 };
 
 cFileWin32::~cFileWin32()
@@ -98,6 +99,8 @@ int cFileWin32::Read(void *dest, int length)
 
     BOOL success = ReadFile(m_Handle, (char*)dest + total_done, length - total_done, &done, NULL);
 
+    m_AtEnd = (done == 0 && success == TRUE);
+
     if(success != TRUE || !done)
     {
       LogError("Couldn't read file [%s]!", m_Path.c_str());
@@ -116,6 +119,8 @@ bool cFileWin32::Seek(int offset, EFileSeekMethod::TYPE method)
     return false;
 
   DWORD rv = SetFilePointer(m_Handle, offset, NULL, EFileSeekMethod::ToMoveMethod(method));
+
+  m_AtEnd = false;
 
   return rv != INVALID_SET_FILE_POINTER;
 };
@@ -162,6 +167,8 @@ bool cFileWin32::IsOpenForWrite() const
 
 void cFileWin32::Close()
 {
+    m_AtEnd = false;
+
     if(IsOpen())
     {
         CloseHandle(m_Handle);

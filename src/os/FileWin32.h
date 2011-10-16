@@ -20,6 +20,8 @@ public:
 	virtual bool Seek(int offset, EFileSeekMethod::TYPE t);
 
     virtual int GetCurrentPos() const;
+    
+    virtual bool AtEnd() const { return m_AtEnd; };
 
 	virtual DWORD GetSize() const;
 	virtual DWORD GetOpenFlags() const;
@@ -39,6 +41,8 @@ protected:
 	HANDLE m_Handle;
 	DWORD m_Size;
 	DWORD m_Flags;
+
+    bool m_AtEnd;
 
 	int m_Index;
 };

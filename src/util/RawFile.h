@@ -8,7 +8,7 @@ class cRawFile
 {
 public:
     cRawFile();
-    ~cRawFile();
+    virtual ~cRawFile();
 
     bool Open(const std::string &path);
 

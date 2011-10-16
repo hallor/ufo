@@ -11,7 +11,8 @@ public:
     STATIC_PROPERTY(int, MaxSoundBuffers, 256);
     STATIC_PROPERTY(int, MaxSoundSources, 32);
     STATIC_PROPERTY(int, MaxQueuedSoundStreamBuffers, 3);
-   
+    STATIC_PROPERTY(unsigned int, MaxSoundStreamChunks, 5);
+
     void DefaultAll();
 
 protected:

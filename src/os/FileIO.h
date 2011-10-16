@@ -17,6 +17,9 @@
 class iFile
 {
 public:
+
+    virtual ~iFile(){};
+
 	/* Opens file $file using passed flags
 
 		Return value:
@@ -68,6 +71,8 @@ public:
 	virtual bool Seek(int offset, EFileSeekMethod::TYPE t) = 0;
 
     virtual int GetCurrentPos() const = 0;
+
+    virtual bool AtEnd() const = 0;
 
 	/* Retrieves file size
 		

@@ -50,7 +50,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Projects\ufo\ufo\src\util;E:\Projects\ufo\ufo\src\rendering;E:\Projects\ufo\ufo\src\HAL;E:\Projects\ufo\ufo\src\game;E:\Projects\ufo\ufo\src\resources;E:\Projects\ufo\ufo\src\importer;E:\Projects\ufo\ufo\src\os;E:\Projects\ufo\ufo\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Projects\ufo\ufo\src\util;E:\Projects\ufo\ufo\src\sound;E:\Projects\ufo\ufo\src\rendering;E:\Projects\ufo\ufo\src\HAL;E:\Projects\ufo\ufo\src\game;E:\Projects\ufo\ufo\src\resources;E:\Projects\ufo\ufo\src\importer;E:\Projects\ufo\ufo\src\os;E:\Projects\ufo\ufo\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,7 +128,9 @@
     <ClCompile Include="src\Application_init.cpp" />
     <ClCompile Include="src\Application_render.cpp" />
     <ClCompile Include="src\Application_update.cpp" />
-    <ClCompile Include="src\util\EngineSettings.cpp" />
+    <ClCompile Include="src\util\EngineSettings.cpp">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">E:\Projects\ufo\ufo\src\sound;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="src\util\RawFile.cpp" />
   </ItemGroup>
   <ItemGroup>

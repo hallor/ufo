@@ -6,6 +6,7 @@ cMusicPlayer::cMusicPlayer()
 : m_IdGenerator("MusicStream")
 {
     m_CurrentMusic = NULL;
+    m_Initialized = false;
 };
 
 cMusicPlayer::~cMusicPlayer()
@@ -15,7 +16,9 @@ cMusicPlayer::~cMusicPlayer()
 
 bool cMusicPlayer::Initialize()
 {
-    return true;
+    DefaultMusicVolume();
+    m_Initialized = true;
+    return m_Initialized;
 };
 
 bool cMusicPlayer::PlayMusic(const std::string &path)
@@ -44,11 +47,14 @@ bool cMusicPlayer::PlayMusic(const std::string &path)
     else
     {
         stream = GetStream(CreateStream());
+        stream->BindFile(path, AL_FORMAT_STEREO16);
+        stream->SetFrequency(44100);
+        stream->SetLooping(true);
         stream->SetWantedState(ESoundState::Playing);
         m_CurrentMusic = stream;
     }
 
-    return false;
+    return true;
 };
 
 void cMusicPlayer::StopMusic()
@@ -73,7 +79,7 @@ void cMusicPlayer::Update(float dt)
 
 bool cMusicPlayer::IsValid() const
 {
-    return true;
+    return m_Initialized;
 };
 
 void cMusicPlayer::Release()
@@ -113,6 +119,7 @@ void cMusicPlayer::UpdateStream(cSoundStream *stream, float dt)
     }
 
     stream->Update();
+    stream->PrepareForRendering();
 };
 
 int cMusicPlayer::FindStream(const std::string &name) const
