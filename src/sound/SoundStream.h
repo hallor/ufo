@@ -28,14 +28,21 @@ class cSoundStream : public vRenderable
 #ifndef _WIN32
 	typedef vRenderable __super;
 #endif
+    
+    typedef std::list<cFixedArray<char>*> TArrayList;
+
 public:
     cSoundStream(const std::string &id);
     virtual ~cSoundStream();
 
+    /* Binds file specified by $path for streaming purposes
+       creates chunks for data transport    */
     virtual void BindFile(const std::string &path, ALenum format);
 
+    /* Synchronizes rendering data for renderer  */
     virtual void PrepareForRendering();
 
+    /* Fills stream data chunks */
     virtual void Update();
 
     // Sets all properties to initial value
@@ -45,47 +52,72 @@ public:
        passing NULL is legal NOP */
     virtual void Synchronize(const vRenderingPropertiesBase *props);
 
+    // Retrieves stream UID
     std::string GetId() const { return m_Id; };
 
+    // Releases all internal data, object ends up in initial state
     virtual void Release();
-
+    
+    // Retrieves format used when bindig file with BindFile() call
     ALenum GetFormat() const { return m_Format; }
 
-    // Properties synchronized with vSoundStreamProperties
+    const TArrayList &GetDataQueue() const { return m_BoundChunks; }
+
+    ////////////////////////////////////////////////////////
+    // Properties synchronized with vSoundStreamProperties//
+    ////////////////////////////////////////////////////////
+    // Current state of the stream, updated and synchronized by renderer
     PROPERTY(ESoundState::TYPE, State, ESoundState::Stopped);
 
-    // Properties not synchronized with vSoundStreamProperties
+    ////////////////////////////////////////////////////////////
+    // Properties not synchronized with vSoundStreamProperties//
+    ////////////////////////////////////////////////////////////
+    // Linear volume of sound
     PROPERTY(float, Volume, 1.0f);
+    // Disabled sounds wont be updated or played
     PROPERTY(bool, Enabled, true);
+    // When looping is set to true stream will start from the beginning as soon as it ends
     PROPERTY(bool, Looping, false);
+    // Frequency of the sound, used to calculate initial size of chunks
     PROPERTY(ALsizei, Frequency, 22050);
+    // Wanted stream state, will be taken into account by renderer
     PROPERTY(ESoundState::TYPE, WantedState, ESoundState::Stopped);
 
 protected:
     
+    /* Opens file stream
+       returns false when specified file doesn't exist */
     virtual bool OpenStream(const std::string &path);
+    // Closes previously opened file stream
     virtual void CloseStream();
 
+    // Properties factory
     virtual bool CreateRenderingProperties();
 
+    // Creates chunks
     virtual void CreateChunks();
+    // Deletes chunks
     virtual void DeleteChunks();
+    // Fills all free chunks with stream data
     virtual void FillChunks();
 
+    // Checks whether given $chunk belongs to us
     virtual bool IsValidChunk(cFixedArray<char>* chunk) const;
 
+    // Invalidates all chunks in bound queue
     virtual void ClearBoundQueue();
 
+    // Calculates chunks size for given frequency and format
     unsigned int CalculateChunkSize();
 
+    // Returns renderingproperties
     vSoundStreamProperties *GetProperties();
     
     std::string m_Id;
 
-    cRawFile m_BoundFile;
     ALenum m_Format;
-
-    typedef std::list<cFixedArray<char>*> TArrayList;
+    
+    cRawFile m_BoundFile;
     
     std::list<cFixedArray<char>*> m_BoundChunks;
     std::list<cFixedArray<char>*> m_FreeChunks;

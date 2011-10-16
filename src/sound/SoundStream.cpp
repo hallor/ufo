@@ -3,15 +3,15 @@
 
 cSoundStream::cSoundStream(const std::string &id)
 {
-    __super::m_RenderableType = ERenderableType::Sound;
-    m_Id = id;
-    m_Format = AL_FORMAT_MONO8;
-    DefaultAllProperties();
+    __super::m_RenderableType = ERenderableType::Sound; // Set proper type   
+    m_Id = id; // this should be unique for all sounds
+    m_Format = AL_FORMAT_MONO8; // Initial format is 8bit unsigned mono
+    DefaultAllProperties(); // Set all properties to initial state
 };
 
 cSoundStream::~cSoundStream()
 {
-    Release();
+    Release(); // Release all internal data
 };
 
 void cSoundStream::BindFile(const std::string &path, ALenum format)
@@ -36,6 +36,7 @@ void cSoundStream::PrepareForRendering()
     if(!props)
         return;
 
+    // synchronize properties
     props->Synchronize(this);
 }
 
@@ -77,8 +78,10 @@ void cSoundStream::Synchronize(const vRenderingPropertiesBase *props)
     if(!stream_props)
         return;
 
+    // rewrite state given by the renderer
     SetState(stream_props->GetState());
 
+    // Update chunks sent to rendering
     ClearBoundQueue();
     for(TArrayList::const_iterator it = stream_props->GetQueue().begin(); it != stream_props->GetQueue().end(); ++it)
     {
@@ -92,6 +95,8 @@ void cSoundStream::Release()
 {
     CloseStream();
     DeleteChunks();
+    DefaultAllProperties();
+    m_Format = AL_FORMAT_MONO8;
 };
 
 bool cSoundStream::OpenStream(const std::string &path)
@@ -217,12 +222,20 @@ void vSoundStreamProperties::Synchronize(const vRenderable *object)
     if(!stream)
         return;
 
+    // Update properties
     SetVolume(stream->GetVolume());
     SetEnabled(stream->GetEnabled());
     SetLooping(stream->GetLooping());
     SetWantedState(stream->GetWantedState());
     SetFrequency(stream->GetFrequency());
     SetFormat(stream->GetFormat());
+    
+    // Rewrite chunks queue
+    ClearQueue();
+    for(std::list<cFixedArray<char>*>::const_iterator it = stream->GetDataQueue().begin(); it != stream->GetDataQueue().end(); ++it)
+    {
+        PushQueue(*it);
+    }
 };
 
 void vSoundStreamProperties::PushQueue(cFixedArray<char> *chunk)
