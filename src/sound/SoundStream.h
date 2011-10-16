@@ -6,11 +6,11 @@
 #include "RenderableBase.h"
 #include "Property.h"
 #include "FixedArray.h"
+#include "RawFile.h"
 
 class cSoundBuffer;
 class cSoundSource;
 class vSoundStreamProperties;
-class cRawFile;
 
 namespace ESoundState
 {
@@ -88,23 +88,23 @@ public:
     virtual void Synchronize(const vRenderable *stream);
 
     // Pops chunk from free chunks queue
-    cFixedArray<char>* PopFreeChunk();
+    cFixedArray<char>* PopFreeChunk() { return NULL; };
     // Pushes chunk to free chunks queue
-    void AddFreeChunk(cFixedArray<char>* chunk);
+    void AddFreeChunk(cFixedArray<char>* chunk) {};
 
     /* Pushes chunk with stream data to the end of the queue
        passing null as a parameter is legal NOP */
-    void PushQueue(cFixedArray<char>* chunk);
+    void PushQueue(cFixedArray<char>* chunk) {};
 
     /* Peeks the next chunk of data in queue
        returns pointer to chunk or NULL when queue is empty  */
-    cFixedArray<char>* PeekQueue() const;
+    cFixedArray<char>* PeekQueue() const { return NULL; };
     
     /* Pops next chunk from data queue
        return pointer to chunk or NULL when queue is empty   */
-    cFixedArray<char>* PopQueue();
+    cFixedArray<char>* PopQueue() { return NULL; };
     /* Moves chunks from data queue to free elements queue   */
-    void ClearQueue();
+    void ClearQueue() {};
 
     // Returns count of queued data chunks
     unsigned int GetQueuedChunksCount() const { return m_ChunksInQueue.size(); }

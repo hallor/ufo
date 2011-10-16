@@ -1,5 +1,4 @@
 #include "SoundStream.h"
-#include "RawFile.h"
 #include "EngineSettings.h"
 
 cSoundStream::cSoundStream(const std::string &id)
@@ -45,10 +44,7 @@ void cSoundStream::Update()
     {
         GetProperties()->ClearQueue();
         return;
-    }
-
-    cFixedArray<char> array(2 * 8 * 22050);
-    
+    }   
 }
 
 void cSoundStream::DefaultAllProperties()
@@ -107,6 +103,11 @@ vSoundStreamProperties *cSoundStream::GetProperties()
 {
     return dynamic_cast<vSoundStreamProperties*>(__super::m_RenderingProperties);
 };
+
+cFixedArray<char> *cSoundStream::GetFreeChunk()
+{
+    return NULL;
+}
 
 vSoundStreamProperties::vSoundStreamProperties()
 {
