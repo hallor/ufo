@@ -2,7 +2,7 @@
 
 cSoundStream::cSoundStream()
 {
-    __super::m_RenderableType = ERenderableType::Sound;
+		super::m_RenderableType = ERenderableType::Sound;
     DefaultAllProperties();
 };
 
@@ -12,7 +12,7 @@ cSoundStream::~cSoundStream()
 
 bool cSoundStream::Initialize()
 {
-    return __super::Initialize();
+		return super::Initialize();
 };
 
 void cSoundStream::PrepareForRendering()
@@ -42,12 +42,12 @@ bool cSoundStream::CreateRenderingProperties()
 
     vSoundStreamProperties *tmp = new (std::nothrow) vSoundStreamProperties;
     
-    __super::m_RenderingProperties = tmp;
+		super::m_RenderingProperties = tmp;
 
     return GetProperties() != NULL;
 };
 
 vSoundStreamProperties *cSoundStream::GetProperties()
 {
-    return dynamic_cast<vSoundStreamProperties*>(__super::m_RenderingProperties);
+		return dynamic_cast<vSoundStreamProperties*>(super::m_RenderingProperties);
 };

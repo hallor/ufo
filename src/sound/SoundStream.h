@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 #include "RendererBase.h"
 #include "RenderableBase.h"
 #include "Property.h"
@@ -11,6 +12,7 @@ class vSoundStreamProperties;
 
 class cSoundStream : public vRenderable
 {
+	typedef vRenderable super;
 public:
     cSoundStream();
     ~cSoundStream();
