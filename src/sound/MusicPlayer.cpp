@@ -47,6 +47,9 @@ bool cMusicPlayer::PlayMusic(const std::string &path)
     else
     {
         stream = GetStream(CreateStream());
+        if(!stream)
+            return false;
+
         stream->BindFile(path, AL_FORMAT_STEREO16);
         stream->SetFrequency(44100);
         stream->SetLooping(true);

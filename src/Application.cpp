@@ -12,7 +12,7 @@
 #include "AppSettings.h"
 #include "FileIO.h"
 #include "MusicPlayer.h"
-
+#include "EngineSettings.h"
 
 Application::Application()
 {
@@ -58,6 +58,7 @@ int Application::execute(int argc, char* argv[])
         alSourcePlay(src->Get());
 
     cMusicPlayer playa;
+    playa.Initialize();
     playa.PlayMusic("xcoma/rawsound/tactical/explosns/explosn1.raw");
 
 	while (!shouldQuit())
@@ -95,5 +96,6 @@ void Application::exit()
 	OpenAL::Free();
 
 	AppSettings::Free();
+    EngineSettings::Free();
 }
 

@@ -83,7 +83,8 @@ void cSoundStream::Synchronize(const vRenderingPropertiesBase *props)
     for(TArrayList::const_iterator it = stream_props->GetQueue().begin(); it != stream_props->GetQueue().end(); ++it)
     {
         m_FreeChunks.remove(*it);
-        m_BoundChunks.push_back(*it);
+        if(IsValidChunk(*it))
+            m_BoundChunks.push_back(*it);
     }
 };
 
@@ -158,6 +159,17 @@ void cSoundStream::FillChunks()
     }
 };
 
+bool cSoundStream::IsValidChunk(cFixedArray<char> *chunk) const
+{
+    for(TArrayList::const_iterator it = m_Chunks.begin(); it != m_Chunks.end(); ++it)
+    {
+        if(*it == chunk)
+            return true;
+    }
+
+    return false;
+}
+
 void cSoundStream::ClearBoundQueue()
 {
     m_BoundChunks.clear();
@@ -188,6 +200,7 @@ vSoundStreamProperties *cSoundStream::GetProperties()
 
 vSoundStreamProperties::vSoundStreamProperties()
 {
+    Clear();
 };
 
 vSoundStreamProperties::~vSoundStreamProperties()

@@ -30,7 +30,7 @@ class cSoundStream : public vRenderable
 #endif
 public:
     cSoundStream(const std::string &id);
-    ~cSoundStream();
+    virtual ~cSoundStream();
 
     virtual void BindFile(const std::string &path, ALenum format);
 
@@ -71,6 +71,8 @@ protected:
     virtual void CreateChunks();
     virtual void DeleteChunks();
     virtual void FillChunks();
+
+    virtual bool IsValidChunk(cFixedArray<char>* chunk) const;
 
     virtual void ClearBoundQueue();
 
