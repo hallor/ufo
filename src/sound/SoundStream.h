@@ -1,12 +1,7 @@
 #pragma once
 
-<<<<<<< HEAD
 #include <list>
 #include "OpenAL.h"
-=======
-#include <vector>
-#include <string>
->>>>>>> 6a55e75632d88d9088590a9a469ab83da6e434c0
 #include "RendererBase.h"
 #include "RenderableBase.h"
 #include "Property.h"
@@ -129,12 +124,8 @@ public:
     PROPERTY(ALsizei, Frequency, 22050);
     
 protected:
-<<<<<<< HEAD
 
     std::list<cFixedArray<char>*> m_ChunksInQueue;
     std::list<cFixedArray<char>*> m_FreeChunks;
 
 };
-=======
-};
->>>>>>> 6a55e75632d88d9088590a9a469ab83da6e434c0
