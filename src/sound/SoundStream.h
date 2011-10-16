@@ -25,7 +25,9 @@ namespace ESoundState
 
 class cSoundStream : public vRenderable
 {
-	typedef vRenderable super;
+#ifndef _WIN32
+	typedef vRenderable __super;
+#endif
 public:
     cSoundStream(const std::string &id);
     ~cSoundStream();
