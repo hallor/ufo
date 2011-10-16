@@ -5,13 +5,18 @@
 #endif
 #include "RendererEnums.h"
 
+class vRenderable;
+
 /*  Base class for all rendering properties
-    Visualisation data for renderers is to be put in specialised classes derived from this one   */
+    Visualisation data for renderers is to be put in specialised classes derived from this one 
+    This class can also be used to synchronize state data between logic and renderig modules   */
 class vRenderingPropertiesBase
 {
 public:
     virtual ~vRenderingPropertiesBase() {};
 
+    /* Used to synchronize data before rendering  */
+    virtual void Synchronize(const vRenderable *object) {};
 };
 
 class vRenderable
@@ -29,11 +34,15 @@ public:
         Use it to synchronize data between logic and visualisation   */
     virtual void PrepareForRendering();
 
+    /* Used to synchronize data with rendering properties
+       called after given object has been rendered */
+    virtual void Synchronize(const vRenderingPropertiesBase *props) {};
+
     //  Checks whether object is valid for use
     virtual bool IsValid() const;
 
     //  Retrieves rendering properties
-    virtual const vRenderingPropertiesBase *GetRenderingProperties() const { return m_RenderingProperties; }
+    virtual vRenderingPropertiesBase *GetRenderingProperties() const { return m_RenderingProperties; }
 
     //  Retrieves type of renderable object
     ERenderableType::TYPE GetRenderableType() const { return m_RenderableType; }

@@ -33,7 +33,6 @@ bool cFileWin32::Open(const std::string &file, DWORD flags)
     return false;
   }
 
-  m_Path = file;
   m_Flags = flags;
 
   m_Handle = CreateFileA(m_Path.c_str(), FFileOpenFlags::ToDesiredAccess(flags), FILE_SHARE_READ, NULL, FFileOpenFlags::ToDisposition(flags), FILE_ATTRIBUTE_NORMAL, NULL);
@@ -45,10 +44,16 @@ bool cFileWin32::Open(const std::string &file, DWORD flags)
   }
 
   m_Size = GetFileSize(m_Handle, NULL);
+  m_Path = file;
 
   LogDebug("File [%s] has been opened with flags [%s]", file.c_str(), FFileOpenFlags::ToString(flags).c_str());
 
   return true;
+};
+
+std::string cFileWin32::GetPath() const
+{
+    return m_Path;
 };
 
 int cFileWin32::Write(void *data, DWORD length)
@@ -115,6 +120,18 @@ bool cFileWin32::Seek(int offset, EFileSeekMethod::TYPE method)
   return rv != INVALID_SET_FILE_POINTER;
 };
 
+int cFileWin32::GetCurrentPos() const
+{
+    if(!IsOpen())
+        return false;
+
+    long dist = 0;
+
+    DWORD rv = SetFilePointer(m_Handle, 0, &dist, EFileSeekMethod::ToMoveMethod(EFileSeekMethod::Current));
+
+    return rv != INVALID_SET_FILE_POINTER ? dist : 0;
+}
+
 DWORD cFileWin32::GetSize() const
 {
   if(!IsOpen())
@@ -145,11 +162,13 @@ bool cFileWin32::IsOpenForWrite() const
 
 void cFileWin32::Close()
 {
-  if(IsOpen())
-  {
-    CloseHandle(m_Handle);
-    Clear();
-  }
+    if(IsOpen())
+    {
+        CloseHandle(m_Handle);
+        Clear();
+    }
+
+    m_Path = "";
 }
 
 int cFileWin32::GetIndex() const

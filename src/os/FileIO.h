@@ -35,6 +35,13 @@ public:
 			Change return value so that exact error type can be returned */
 	virtual bool Open(const std::string &file, DWORD flags) = 0;
 
+    /* Retrieves $file argument passed to last Open() call
+        
+        Return value:
+        empty string    last call to Open() failed
+    */
+    virtual std::string GetPath() const = 0; 
+
 	/* Writes $length bytes from $data to previously Open'ed file
 	
 		Return value:
@@ -59,6 +66,8 @@ public:
 		true	cursor was succesfully moved to requested position
 		false	cursor couldn't be moved because file isn't open, or range was exceeded */
 	virtual bool Seek(int offset, EFileSeekMethod::TYPE t) = 0;
+
+    virtual int GetCurrentPos() const = 0;
 
 	/* Retrieves file size
 		
