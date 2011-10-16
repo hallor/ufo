@@ -20,6 +20,8 @@ public:
     virtual bool IsOpenForRead() const;
     virtual void Close();
     virtual int GetIndex() const;
+		virtual int GetCurrentPos() const  { return 0; } //TODO;
+		virtual std::string GetPath() const { return 0; } // TODO
 private:
     FileLinux(const FileLinux & other);
     int fd;

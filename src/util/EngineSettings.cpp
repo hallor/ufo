@@ -6,7 +6,7 @@
 #include <cstring>
 #include "logger.h"
 
-EngineSettings *m_Instance = NULL;
+static EngineSettings *m_Instance = NULL;
 
 EngineSettings &EngineSettings::Get()
 {

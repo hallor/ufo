@@ -6,7 +6,7 @@
 #include <cstring>
 #include "logger.h"
 
-AppSettings *m_Instance = NULL;
+static AppSettings *m_Instance = NULL;
 
 AppSettings &AppSettings::Get()
 {

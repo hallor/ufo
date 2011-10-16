@@ -1,3 +1,4 @@
+#include <cstring>
 #include "RawFile.h"
 #include "FileIO.h"
 
@@ -38,7 +39,7 @@ bool cRawFile::Read(cFixedArray<char> *data, bool loop /* = false */)
     int data_size = data->GetSize();
     int file_size = m_File->GetSize();
     int cur_pos = m_File->GetCurrentPos();
-    int size_to_read = loop ? data_size : min(file_size - cur_pos, data_size);
+		int size_to_read = loop ? data_size : std::min(file_size - cur_pos, data_size);
 
     if(data_size <= size_to_read)
     {

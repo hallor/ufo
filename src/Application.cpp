@@ -41,7 +41,7 @@ int Application::execute(int argc, char* argv[])
     cSoundSourceManager srcman;
     cSoundSource *src = srcman.Get();
         iFile *file = CreateFileIO();
-    file->Open("xcoma\\rawsound\\tactical\\explosns\\explosn1.raw", FFileOpenFlags::OpenExisting | FFileOpenFlags::Read);
+		file->Open("xcoma/rawsound/tactical/explosns/explosn1.raw", FFileOpenFlags::OpenExisting | FFileOpenFlags::Read);
     int length = file->GetSize();
 
     char *data = new char[length];
