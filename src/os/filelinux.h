@@ -21,7 +21,8 @@ public:
     virtual void Close();
     virtual int GetIndex() const;
 		virtual int GetCurrentPos() const  { return 0; } //TODO;
-		virtual std::string GetPath() const { return 0; } // TODO
+		virtual std::string GetPath() const { return std::string(""); } // TODO
+		virtual bool AtEnd() const { return false; } //todo
 private:
     FileLinux(const FileLinux & other);
     int fd;
