@@ -83,6 +83,7 @@
     <ClCompile Include="src\cityitem.cpp" />
     <ClCompile Include="src\citymap.cpp" />
     <ClCompile Include="src\game\Factions.cpp" />
+    <ClCompile Include="src\game\LogicTimer.cpp" />
     <ClCompile Include="src\gfx.cpp" />
     <ClCompile Include="src\HAL\OpenAL.cpp" />
     <ClCompile Include="src\importer\bitmap.cpp" />
@@ -92,6 +93,8 @@
     <ClCompile Include="src\importer\pckfile.cpp" />
     <ClCompile Include="src\importer\pcxfile.cpp" />
     <ClCompile Include="src\importer\tabfile.cpp" />
+    <ClCompile Include="src\model\Facility.cpp" />
+    <ClCompile Include="src\model\SkilledUnit.cpp" />
     <ClCompile Include="src\model\Unit.cpp" />
     <ClCompile Include="src\model\Vehicle.cpp" />
     <ClCompile Include="src\importmanager.cpp" />
@@ -106,6 +109,7 @@
     <ClCompile Include="src\rendering\RenderableBase.cpp" />
     <ClCompile Include="src\rendering\RendererBase.cpp" />
     <ClCompile Include="src\rendering\RendererEnums.cpp" />
+    <ClCompile Include="src\rendering\SoundStreamRenderer.cpp" />
     <ClCompile Include="src\resources\IDGenerator.cpp" />
     <ClCompile Include="src\resources\ManagerBase.cpp" />
     <ClCompile Include="src\resources\ResourceBase.cpp" />
@@ -139,6 +143,7 @@
     <ClInclude Include="src\cityitem.h" />
     <ClInclude Include="src\citymap.h" />
     <ClInclude Include="src\game\Factions.h" />
+    <ClInclude Include="src\game\LogicTimer.h" />
     <ClInclude Include="src\gfx.h" />
     <ClInclude Include="src\HAL\OpenAL.h" />
     <ClInclude Include="src\importer\bitmap.h" />
@@ -151,6 +156,8 @@
     <ClInclude Include="src\model\CityCoord.h" />
     <ClInclude Include="src\model\CityObject.h" />
     <ClInclude Include="src\model\DimensionGate.h" />
+    <ClInclude Include="src\model\Facility.h" />
+    <ClInclude Include="src\model\SkilledUnit.h" />
     <ClInclude Include="src\model\Unit.h" />
     <ClInclude Include="src\model\Vehicle.h" />
     <ClInclude Include="src\logger.h" />
@@ -163,6 +170,7 @@
     <ClInclude Include="src\rendering\RenderableBase.h" />
     <ClInclude Include="src\rendering\RendererBase.h" />
     <ClInclude Include="src\rendering\RendererEnums.h" />
+    <ClInclude Include="src\rendering\SoundStreamRenderer.h" />
     <ClInclude Include="src\resources\FixedArray.h" />
     <ClInclude Include="src\resources\IDGenerator.h" />
     <ClInclude Include="src\resources\ManagerBase.h" />
@@ -188,6 +196,7 @@
     <ClInclude Include="src\GameModel.h" />
     <ClInclude Include="src\util\AppSettings.h" />
     <ClInclude Include="src\util\EngineSettings.h" />
+    <ClInclude Include="src\util\ObjectPool.h" />
     <ClInclude Include="src\util\Property.h" />
     <ClInclude Include="src\util\RawFile.h" />
   </ItemGroup>

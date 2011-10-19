@@ -50,10 +50,10 @@ public:
 	bool isEngineer() const;
 
 	// Will be called (for example) during training
-	virtual void train(AttributeType type);
+    virtual void train(AttributeType type){};
 
 	// Will be called when unit will be using this attribute (training on the job)
-	virtual void use(AttributeType type);
+    virtual void use(AttributeType type){};
 };
 
 #endif // SKILLEDUNIT_H

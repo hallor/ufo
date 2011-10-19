@@ -20,7 +20,7 @@ public:
 static std::string attr_names[SkilledUnit::A_END] =
 {
 
-}
+};
 
 SkilledUnit::SkilledUnit()
 {

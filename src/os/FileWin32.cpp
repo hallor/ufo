@@ -103,7 +103,6 @@ int cFileWin32::Read(void *dest, int length)
 
     if(success != TRUE || !done)
     {
-      LogError("Couldn't read file [%s]!", m_Path.c_str());
       return total_done;
     }
 

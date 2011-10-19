@@ -13,6 +13,7 @@
 #include "FileIO.h"
 #include "MusicPlayer.h"
 #include "EngineSettings.h"
+#include "LogicTimer.h"
 
 Application::Application()
 {
@@ -31,6 +32,7 @@ Application::~Application()
 
 int Application::execute(int argc, char* argv[])
 {
+    LogicTimer ti;
 	FpsTimer fps(AppSettings::GetFPSLimit());
 
 	if (!init(argc, argv))

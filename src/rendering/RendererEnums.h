@@ -7,6 +7,7 @@ namespace ERenderableType
         Unknown = 0,
         Object,
         Sound,
+        SoundStream,
         _COUNT
     };
 

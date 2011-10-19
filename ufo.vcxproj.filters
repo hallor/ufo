@@ -222,6 +222,18 @@
     <ClCompile Include="src\util\RawFile.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="src\rendering\SoundStreamRenderer.cpp">
+      <Filter>Source Files\Rendering\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\LogicTimer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\model\Facility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\model\SkilledUnit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\citybuilding.h">
@@ -390,6 +402,21 @@
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\util\RawFile.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rendering\SoundStreamRenderer.h">
+      <Filter>Header Files\Rendering\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\LogicTimer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\Facility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\SkilledUnit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\ObjectPool.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>

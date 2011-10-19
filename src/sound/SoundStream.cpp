@@ -3,7 +3,7 @@
 
 cSoundStream::cSoundStream(const std::string &id)
 {
-    __super::m_RenderableType = ERenderableType::Sound; // Set proper type   
+    __super::m_RenderableType = ERenderableType::SoundStream; // Set proper type   
     m_Id = id; // this should be unique for all sounds
     m_Format = AL_FORMAT_MONO8; // Initial format is 8bit unsigned mono
     DefaultAllProperties(); // Set all properties to initial state
