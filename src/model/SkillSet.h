@@ -1,5 +1,4 @@
-#ifndef SKILLEDUNIT_H
-#define SKILLEDUNIT_H
+#pragma once
 #include <string>
 #include <vector>
 #include "Unit.h"
@@ -94,5 +93,3 @@ private:
     class Private;
     Private * p;
 };
-
-#endif // SKILLEDUNIT_H

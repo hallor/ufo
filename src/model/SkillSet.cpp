@@ -1,7 +1,7 @@
 #include <vector>
 #include <algorithm>
 #include <stdexcept>
-#include "SkilledUnit.h"
+#include "SkillSet.h"
 #include "Rand.h"
 
 using std::string;
