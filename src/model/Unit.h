@@ -13,7 +13,7 @@ public:
 		T_ANDROID,
 		T_HYBRID,
 		T_ALIEN,
-		T_NPC, // placeholder for various NPC's like sectoids, robots and soon
+    T_NPC // placeholder for various NPC's like sectoids, robots and soon
 	};
     Unit();
 
