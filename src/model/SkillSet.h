@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "Unit.h"
 
 /**
   Skill set for all humanoid(ish) units used mostly for tactical game.
@@ -89,7 +88,7 @@ public:
     void generateInfiltrator(const Rand & r);
 
 private:
-
+    // TODO: copy constructors for pimpls
     class Private;
     Private * p;
 };
