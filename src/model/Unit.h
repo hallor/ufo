@@ -18,7 +18,7 @@ public:
     Unit();
 
 		std::string name; // name of unit, may be "Anthropod" or normal name from gen.
-        EFactionName::TYPE affinity; // corporation this unit belongs to
+		EFactionName::TYPE affinity; // corporation this unit belongs to
 };
 
 #endif // UNIT_H
