@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\FileIO">
-      
-    </Filter>
-    <Filter Include="Source Files\FileIO">
-      <UniqueIdentifier>{e0ef5013-fd67-4d08-80e6-1c91be284730}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Resources">
       <UniqueIdentifier>{f4ce3ce0-39f5-42bc-9f7a-36da5deea988}</UniqueIdentifier>
     </Filter>
@@ -52,85 +46,38 @@
     <Filter Include="Header Files\Sound">
       <UniqueIdentifier>{e5afd650-2636-4c31-86f5-48040b5e8d74}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Rendering\Sound">
-      <UniqueIdentifier>{22d52a64-1804-4828-b98b-2a8b5e0e25c7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Rendering\Sound">
-      <UniqueIdentifier>{0b3a1c7e-7e0e-4e3d-a7e8-b321483fcfe0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Sound">
       <UniqueIdentifier>{1f1923a7-c21e-47ef-9c02-c658e64c6e05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\model">
+      <UniqueIdentifier>{1678731a-d9f3-4563-8bda-f30f469cd4c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\importer">
+      <UniqueIdentifier>{a1ecef6d-7d37-42e3-8250-1862269549e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\os" />
+    <Filter Include="Source Files\importer">
+      <UniqueIdentifier>{0ff97f5e-efc9-4bc7-ae44-9c00573c7046}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\model">
+      <UniqueIdentifier>{bac88b9c-c593-4aa2-b61c-fe1aa3bd51b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\os">
+      <UniqueIdentifier>{e0ef5013-fd67-4d08-80e6-1c91be284730}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\citybuilding.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\cityitem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\citymap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\gfx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\importer\bitmap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\importer\cpngfile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\importer\cursor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\importer\palette.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\importer\pckfile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\importer\pcxfile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\importer\tabfile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\logger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mouse.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\screen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shaderprogram.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\timer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\utils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\os\FileEnums.cpp">
-      <Filter>Source Files\FileIO</Filter>
+      <Filter>Source Files\os</Filter>
     </ClCompile>
     <ClCompile Include="src\os\FileWin32.cpp">
-      <Filter>Source Files\FileIO</Filter>
+      <Filter>Source Files\os</Filter>
     </ClCompile>
     <ClCompile Include="src\os\FileIO.cpp">
-      <Filter>Source Files\FileIO</Filter>
+      <Filter>Source Files\os</Filter>
     </ClCompile>
     <ClCompile Include="src\os\filelinux.cpp">
-      <Filter>Source Files\FileIO</Filter>
-    </ClCompile>
-    <ClCompile Include="src\importmanager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\os</Filter>
     </ClCompile>
     <ClCompile Include="src\resources\SoundBuffer.cpp">
       <Filter>Source Files\Resources</Filter>
@@ -171,10 +118,76 @@
     <ClCompile Include="src\util\AppSettings.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\Application.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\resources\SoundResourceManagerBase.cpp">
+      <Filter>Source Files\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="src\GameModel.cpp">
+    <ClCompile Include="src\sound\MusicPlayer.cpp">
+      <Filter>Source Files\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sound\SoundStream.cpp">
+      <Filter>Source Files\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\EngineSettings.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\RawFile.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\Rand.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\LogicTimer.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\importer\bitmap.cpp">
+      <Filter>Source Files\importer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\importer\cpngfile.cpp">
+      <Filter>Source Files\importer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\importer\cursor.cpp">
+      <Filter>Source Files\importer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\importer\palette.cpp">
+      <Filter>Source Files\importer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\importer\pckfile.cpp">
+      <Filter>Source Files\importer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\importer\pcxfile.cpp">
+      <Filter>Source Files\importer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\importer\peoplepath.cpp">
+      <Filter>Source Files\importer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\importer\tabfile.cpp">
+      <Filter>Source Files\importer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\model\Building.cpp">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\model\CityCoord.cpp">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\model\Facility.cpp">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\model\SkillSet.cpp">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\model\Unit.cpp">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\model\Vehicle.cpp">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rendering\SoundRenderer.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rendering\SoundStreamRenderer.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Application_event.cpp">
@@ -189,124 +202,67 @@
     <ClCompile Include="src\Application_update.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\City.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\citybuilding.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cityitem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\citymap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gfx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\importmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\LogicManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\City.cpp">
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mouse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\SceneManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\model\Unit.cpp">
+    <ClCompile Include="src\screen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\model\Vehicle.cpp">
+    <ClCompile Include="src\shaderprogram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\resources\SoundResourceManagerBase.cpp">
-      <Filter>Source Files\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sound\MusicPlayer.cpp">
-      <Filter>Source Files\Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sound\SoundRenderer.cpp">
-      <Filter>Source Files\Rendering\Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sound\SoundStream.cpp">
-      <Filter>Source Files\Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\EngineSettings.cpp">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\RawFile.cpp">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="src\rendering\SoundStreamRenderer.cpp">
-      <Filter>Source Files\Rendering\Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\LogicTimer.cpp">
+    <ClCompile Include="src\timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\model\Facility.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\model\SkilledUnit.cpp">
+    <ClCompile Include="src\utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\citybuilding.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\cityitem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\citymap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gfx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\importer\bitmap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\importer\cpngfile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\importer\cursor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\importer\palette.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\importer\pckfile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\importer\pcxfile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\importer\tabfile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\logger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mouse.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\screen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shaderprogram.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\surface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\os\FileIO.h">
-      <Filter>Header Files\FileIO</Filter>
+      <Filter>Header Files\os</Filter>
     </ClInclude>
     <ClInclude Include="src\os\FileEnums.h">
-      <Filter>Header Files\FileIO</Filter>
+      <Filter>Header Files\os</Filter>
     </ClInclude>
     <ClInclude Include="src\os\FileWin32.h">
-      <Filter>Header Files\FileIO</Filter>
+      <Filter>Header Files\os</Filter>
     </ClInclude>
     <ClInclude Include="src\os\filelinux.h">
-      <Filter>Header Files\FileIO</Filter>
-    </ClInclude>
-    <ClInclude Include="src\exceptions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\importmanager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\os</Filter>
     </ClInclude>
     <ClInclude Include="src\resources\ManagerBase.h">
       <Filter>Header Files\Resources</Filter>
@@ -338,62 +294,14 @@
     <ClInclude Include="src\HAL\OpenAL.h">
       <Filter>Header Files\HAL</Filter>
     </ClInclude>
-    <ClInclude Include="src\rendering\RendererBase.h">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="src\rendering\RendererEnums.h">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="src\rendering\RenderableBase.h">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\Property.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\util\AppSettings.h">
       <Filter>Header Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameModel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\City.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LogicManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SceneManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\model\CityCoord.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\model\CityObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\model\DimensionGate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\model\Unit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\model\Vehicle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\resources\SoundResourceManagerBase.h">
-      <Filter>Source Files\Resources</Filter>
     </ClInclude>
     <ClInclude Include="src\sound\MusicPlayer.h">
       <Filter>Header Files\Sound</Filter>
     </ClInclude>
     <ClInclude Include="src\sound\SoundStream.h">
       <Filter>Header Files\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sound\SoundRenderer.h">
-      <Filter>Header Files\Rendering\Sound</Filter>
     </ClInclude>
     <ClInclude Include="src\resources\FixedArray.h">
       <Filter>Header Files\Resources</Filter>
@@ -404,20 +312,134 @@
     <ClInclude Include="src\util\RawFile.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="src\rendering\SoundStreamRenderer.h">
-      <Filter>Header Files\Rendering\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\LogicTimer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\model\Facility.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\model\SkilledUnit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\util\ObjectPool.h">
       <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\LogicTimer.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\Rand.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\SkillSet.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\Building.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\CityCoord.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\DimensionGate.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\Facility.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\Unit.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\model\Vehicle.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\importer\bitmap.h">
+      <Filter>Header Files\importer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\importer\cpngfile.h">
+      <Filter>Header Files\importer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\importer\cursor.h">
+      <Filter>Header Files\importer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\importer\palette.h">
+      <Filter>Header Files\importer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\importer\pckfile.h">
+      <Filter>Header Files\importer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\importer\pcxfile.h">
+      <Filter>Header Files\importer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\importer\peoplepath.h">
+      <Filter>Header Files\importer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\importer\tabfile.h">
+      <Filter>Header Files\importer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rendering\RenderableBase.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rendering\RendererBase.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rendering\RendererEnums.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rendering\SoundStreamRenderer.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sound\SoundRenderer.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\Property.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\City.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\citybuilding.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cityitem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\citymap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\exceptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gfx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\importmanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LogicManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mouse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SceneManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\screen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaderprogram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\surface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resources\SoundResourceManagerBase.h">
+      <Filter>Header Files\Resources</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

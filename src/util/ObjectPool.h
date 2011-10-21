@@ -33,7 +33,7 @@ public:
 
     void FreeAll()
     {
-        for(unsigned int i = 0; i < m_Used.size(); ++i)       
+        for(unsigned int i = 0; i < m_Used.size(); ++i)
             m_Free.push_back(m_Used[i]);
         
         m_Used.clear();
@@ -61,7 +61,7 @@ public:
         return false;
     }
 
-    void Return(const T &object)
+	void Return(const T &object)
     {
         typename std::vector<T>::iterator it = std::find(m_Used.begin(), m_Used.end(), object);
         if(it != m_Used.end())

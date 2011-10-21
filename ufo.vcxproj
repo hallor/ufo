@@ -78,12 +78,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\Application_event.cpp" />
+    <ClCompile Include="src\Application_init.cpp" />
+    <ClCompile Include="src\Application_render.cpp" />
+    <ClCompile Include="src\Application_update.cpp" />
     <ClCompile Include="src\City.cpp" />
     <ClCompile Include="src\citybuilding.cpp" />
     <ClCompile Include="src\cityitem.cpp" />
     <ClCompile Include="src\citymap.cpp" />
+    <ClCompile Include="src\GameModel.cpp" />
     <ClCompile Include="src\game\Factions.cpp" />
     <ClCompile Include="src\game\LogicTimer.cpp" />
+    <ClCompile Include="src\game\Rand.cpp" />
     <ClCompile Include="src\gfx.cpp" />
     <ClCompile Include="src\HAL\OpenAL.cpp" />
     <ClCompile Include="src\importer\bitmap.cpp" />
@@ -92,15 +98,18 @@
     <ClCompile Include="src\importer\palette.cpp" />
     <ClCompile Include="src\importer\pckfile.cpp" />
     <ClCompile Include="src\importer\pcxfile.cpp" />
+    <ClCompile Include="src\importer\peoplepath.cpp" />
     <ClCompile Include="src\importer\tabfile.cpp" />
-    <ClCompile Include="src\model\Facility.cpp" />
-    <ClCompile Include="src\model\SkilledUnit.cpp" />
-    <ClCompile Include="src\model\Unit.cpp" />
-    <ClCompile Include="src\model\Vehicle.cpp" />
     <ClCompile Include="src\importmanager.cpp" />
     <ClCompile Include="src\logger.cpp" />
     <ClCompile Include="src\LogicManager.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\model\Building.cpp" />
+    <ClCompile Include="src\model\CityCoord.cpp" />
+    <ClCompile Include="src\model\Facility.cpp" />
+    <ClCompile Include="src\model\SkillSet.cpp" />
+    <ClCompile Include="src\model\Unit.cpp" />
+    <ClCompile Include="src\model\Vehicle.cpp" />
     <ClCompile Include="src\mouse.cpp" />
     <ClCompile Include="src\os\FileEnums.cpp" />
     <ClCompile Include="src\os\FileIO.cpp" />
@@ -109,6 +118,7 @@
     <ClCompile Include="src\rendering\RenderableBase.cpp" />
     <ClCompile Include="src\rendering\RendererBase.cpp" />
     <ClCompile Include="src\rendering\RendererEnums.cpp" />
+    <ClCompile Include="src\rendering\SoundRenderer.cpp" />
     <ClCompile Include="src\rendering\SoundStreamRenderer.cpp" />
     <ClCompile Include="src\resources\IDGenerator.cpp" />
     <ClCompile Include="src\resources\ManagerBase.cpp" />
@@ -122,28 +132,26 @@
     <ClCompile Include="src\screen.cpp" />
     <ClCompile Include="src\shaderprogram.cpp" />
     <ClCompile Include="src\sound\MusicPlayer.cpp" />
-    <ClCompile Include="src\sound\SoundRenderer.cpp" />
     <ClCompile Include="src\sound\SoundStream.cpp" />
     <ClCompile Include="src\timer.cpp" />
     <ClCompile Include="src\utils.cpp" />
     <ClCompile Include="src\util\AppSettings.cpp" />
-    <ClCompile Include="src\GameModel.cpp" />
-    <ClCompile Include="src\Application_event.cpp" />
-    <ClCompile Include="src\Application_init.cpp" />
-    <ClCompile Include="src\Application_render.cpp" />
-    <ClCompile Include="src\Application_update.cpp" />
     <ClCompile Include="src\util\EngineSettings.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">E:\Projects\ufo\ufo\src\sound;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="src\util\RawFile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\City.h" />
     <ClInclude Include="src\citybuilding.h" />
     <ClInclude Include="src\cityitem.h" />
     <ClInclude Include="src\citymap.h" />
+    <ClInclude Include="src\exceptions.h" />
+    <ClInclude Include="src\GameModel.h" />
     <ClInclude Include="src\game\Factions.h" />
     <ClInclude Include="src\game\LogicTimer.h" />
+    <ClInclude Include="src\game\Rand.h" />
     <ClInclude Include="src\gfx.h" />
     <ClInclude Include="src\HAL\OpenAL.h" />
     <ClInclude Include="src\importer\bitmap.h" />
@@ -152,16 +160,18 @@
     <ClInclude Include="src\importer\palette.h" />
     <ClInclude Include="src\importer\pckfile.h" />
     <ClInclude Include="src\importer\pcxfile.h" />
+    <ClInclude Include="src\importer\peoplepath.h" />
     <ClInclude Include="src\importer\tabfile.h" />
-    <ClInclude Include="src\model\CityCoord.h" />
-    <ClInclude Include="src\model\CityObject.h" />
-    <ClInclude Include="src\model\DimensionGate.h" />
-    <ClInclude Include="src\model\Facility.h" />
-    <ClInclude Include="src\model\SkilledUnit.h" />
-    <ClInclude Include="src\model\Unit.h" />
-    <ClInclude Include="src\model\Vehicle.h" />
+    <ClInclude Include="src\importmanager.h" />
     <ClInclude Include="src\logger.h" />
     <ClInclude Include="src\LogicManager.h" />
+    <ClInclude Include="src\model\Building.h" />
+    <ClInclude Include="src\model\CityCoord.h" />
+    <ClInclude Include="src\model\DimensionGate.h" />
+    <ClInclude Include="src\model\Facility.h" />
+    <ClInclude Include="src\model\SkillSet.h" />
+    <ClInclude Include="src\model\Unit.h" />
+    <ClInclude Include="src\model\Vehicle.h" />
     <ClInclude Include="src\mouse.h" />
     <ClInclude Include="src\os\FileEnums.h" />
     <ClInclude Include="src\os\FileIO.h" />
@@ -190,10 +200,6 @@
     <ClInclude Include="src\surface.h" />
     <ClInclude Include="src\timer.h" />
     <ClInclude Include="src\utils.h" />
-    <ClInclude Include="src\importmanager.h" />
-    <ClInclude Include="src\exceptions.h" />
-    <ClInclude Include="src\Application.h" />
-    <ClInclude Include="src\GameModel.h" />
     <ClInclude Include="src\util\AppSettings.h" />
     <ClInclude Include="src\util\EngineSettings.h" />
     <ClInclude Include="src\util\ObjectPool.h" />
