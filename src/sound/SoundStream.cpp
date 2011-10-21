@@ -48,7 +48,7 @@ void cSoundStream::Update()
     if(!GetEnabled())
         return;
 
-    if(GetWantedState() != ESoundState::Playing)
+    if(GetWantedState() != ESourceState::Playing)
     {
         GetProperties()->ClearQueue();
         ClearBoundQueue();

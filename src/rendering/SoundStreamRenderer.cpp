@@ -6,8 +6,10 @@
 #include "SoundStream.h"
 #include "OpenAL.h"
 #include "EngineSettings.h"
+#include "FixedArray.h"
 
-sStreamBinding::sStreamBinding(vRenderable *data, cSoundSource *source)
+
+sStreamBinding::sStreamBinding(const vRenderable *data, cSoundSource *source)
 {
     m_Stream = data;
     m_Source = source;
@@ -23,7 +25,6 @@ sStreamBinding::sStreamBinding()
 
 cSoundStreamRenderer::cSoundStreamRenderer()
 {
-    ClearAll();
 };
 
 cSoundStreamRenderer::~cSoundStreamRenderer()
@@ -59,31 +60,151 @@ bool cSoundStreamRenderer::IsValid() const
 void cSoundStreamRenderer::OnFrame(float dt)
 {
     if(!IsValid())
-        ClearAll();
+        return;
+
+    UpdateStreams();
+
+    UnmarkAllBindings();
 };
 
 void cSoundStreamRenderer::Render(const vRenderable &object)
 {
     if(!IsValid())
         return;
+
+    if(!object.IsValid())
+        return;
+
+    if(object.GetRenderableType() != ERenderableType::SoundStream)
+        return;
+
+    if(!object.GetRenderingProperties())
+        return;
+
+    int binding = FindStreamBinding(object);
+    if(binding < 0)
+        binding = CreateBinding(object);   
+    
+    if(binding >= 0)
+        m_DataBindings[binding].m_Marked = true;
 };
 
 void cSoundStreamRenderer::Release()
 {
+    ClearDataBindings();
+
     ReleaseSources();
     ReleaseBuffers();
-
-    ClearAll();
-
+    
     m_BufferManager = NULL;
     m_SourceManager = NULL;
 };
 
-void cSoundStreamRenderer::ClearAll()
+void cSoundStreamRenderer::UpdateStreams()
 {
-    ClearDataBindings();
-    m_Sources.Clear();
-    m_Buffers.Clear();
+    RemoveUnmarkedBindings();
+
+    for(unsigned int i = 0; i < m_DataBindings.size(); ++i)
+    {
+        sStreamBinding &str = m_DataBindings[i];
+
+        if(!str.m_Source || !str.m_Stream)
+        {
+            ClearBinding(str);
+            continue;
+        }
+
+        vSoundStreamProperties *props = dynamic_cast<vSoundStreamProperties*>(str.m_Stream->GetRenderingProperties());
+        if(!props)
+            continue;
+    
+        switch(props->GetWantedState())
+        {
+        case ESourceState::Playing: PlayStream(str); break;
+        case ESourceState::Stopped: StopStream(str); break;
+        case ESourceState::Paused:  PauseStream(str); break;
+        }
+    }
+
+
+    for(unsigned int i = 0; i < m_DataBindings.size(); ++i)
+    {
+        sStreamBinding &str = m_DataBindings[i];
+        vSoundStreamProperties *props = dynamic_cast<vSoundStreamProperties*>(str.m_Stream->GetRenderingProperties());
+
+        props->SetState(OpenAL::Get().GetSourceState(str.m_Source->Get()));
+    }
+};
+
+int cSoundStreamRenderer::FindStreamBinding(const vRenderable &stream)
+{
+    for(unsigned int i = 0; i < m_DataBindings.size(); ++i)
+    {
+        if(m_DataBindings[i].m_Stream == &stream)
+            return i;
+    }
+
+    return -1;
+};
+
+void cSoundStreamRenderer::StopStream(sStreamBinding &binding)
+{
+    if(!binding.m_Source)
+        return;
+
+    alSourceStop(binding.m_Source->Get());
+
+    int queued = OpenAL::Get().GetProcessedBuffersCount(binding.m_Source->Get());
+    
+    for(int i = 0; i < queued; ++i)
+        OpenAL::Get().PopBufferQueue(binding.m_Source->Get());
+       
+    binding.m_Buffers.FreeAll();
+};
+
+void cSoundStreamRenderer::PauseStream(sStreamBinding &binding)
+{
+    if(!binding.m_Source)
+        return;
+
+    alSourcePause(binding.m_Source->Get());
+};
+
+void cSoundStreamRenderer::PlayStream(sStreamBinding &binding)
+{
+    if(!binding.m_Source || !binding.m_Stream)
+        return;
+
+    vSoundStreamProperties *props = dynamic_cast<vSoundStreamProperties*>(binding.m_Stream->GetRenderingProperties());
+    if(!props)
+        return;
+
+    sSourceProperties source_props;
+    source_props.m_Volume = props->GetVolume();
+
+    ALuint sid = binding.m_Source->Get();
+
+    OpenAL::Get().SetSourceProperties(sid, source_props);
+
+    for(unsigned int i = 0; i < props->GetQueuedChunksCount();)
+    {
+        cSoundBuffer *buf = NULL;
+        m_Buffers.Get(buf);
+        if(!buf)
+            break;
+
+        cFixedArray<char> *array = props->PopQueue();
+        if(!array)
+            continue;
+
+        OpenAL::Get().FillBufferData(buf->Get(), array, props->GetFormat(), props->GetFrequency());
+        OpenAL::Get().PushBufferQueue(sid, buf->Get());
+
+        ++i;
+    }
+
+    if(OpenAL::Get().GetSourceState(sid) != ESourceState::Playing)
+        alSourcePlay(sid);
 };
 
 void cSoundStreamRenderer::ClearDataBindings()
@@ -94,9 +215,27 @@ void cSoundStreamRenderer::ClearDataBindings()
     m_DataBindings.clear();
 };
 
+void cSoundStreamRenderer::RemoveUnmarkedBindings()
+{
+    for(unsigned int i = 0; i < m_DataBindings.size();)
+    {
+        if(!m_DataBindings[i].m_Marked)
+        {
+            ClearBinding(m_DataBindings[i]);
+            m_DataBindings[i] = m_DataBindings.back();
+            m_DataBindings.pop_back();
+        }
+        else
+            ++i;
+    }
+};
+
 void cSoundStreamRenderer::ClearBinding(sStreamBinding &bnd)
 {
+    StopStream(bnd);
+
     m_Sources.Return(bnd.m_Source);
+
     bnd.m_Source = NULL;
 
     bnd.m_Stream = NULL;
@@ -111,6 +250,12 @@ void cSoundStreamRenderer::ClearBinding(sStreamBinding &bnd)
     bnd.m_Buffers.Clear();
 
     bnd.m_Marked = false;
+}
+
+void cSoundStreamRenderer::UnmarkAllBindings()
+{
+    for(unsigned int i = 0; i < m_DataBindings.size(); ++i)
+        m_DataBindings[i].m_Marked = false;
 }
 
 void cSoundStreamRenderer::ReleaseSources()
@@ -128,7 +273,7 @@ void cSoundStreamRenderer::ReleaseSources()
             src->Release();
     }
 
-    m_Buffers.Clear();
+    m_Sources.Clear();
 };
 
 void cSoundStreamRenderer::ReleaseBuffers()

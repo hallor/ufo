@@ -12,16 +12,6 @@ class cSoundBuffer;
 class cSoundSource;
 class vSoundStreamProperties;
 
-namespace ESoundState
-{
-    enum TYPE
-    {
-        Playing = 0,
-        Paused,
-        Stopped,
-        _COUNT
-    };
-};
 
 class cSoundStream : public vRenderable
 {
@@ -67,7 +57,7 @@ public:
     // Properties synchronized with vSoundStreamProperties//
     ////////////////////////////////////////////////////////
     // Current state of the stream, updated and synchronized by renderer
-    PROPERTY(ESoundState::TYPE, State, ESoundState::Stopped);
+    PROPERTY(ESourceState::TYPE, State, ESourceState::Stopped);
 
     ////////////////////////////////////////////////////////////
     // Properties not synchronized with vSoundStreamProperties//
@@ -81,7 +71,7 @@ public:
     // Frequency of the sound, used to calculate initial size of chunks
     PROPERTY(ALsizei, Frequency, 22050);
     // Wanted stream state, will be taken into account by renderer
-    PROPERTY(ESoundState::TYPE, WantedState, ESoundState::Stopped);
+    PROPERTY(ESourceState::TYPE, WantedState, ESourceState::Stopped);
 
 protected:
     
@@ -160,10 +150,10 @@ public:
     PROPERTY(float, Volume, 1.0f);
     PROPERTY(bool, Enabled, true);
     PROPERTY(bool, Looping, false);    
-    PROPERTY(ESoundState::TYPE, WantedState, ESoundState::Stopped);
+    PROPERTY(ESourceState::TYPE, WantedState, ESourceState::Stopped);
 
     // Properties not synchronized with cSoundStream
-    PROPERTY(ESoundState::TYPE, State, ESoundState::Stopped);
+    PROPERTY(ESourceState::TYPE, State, ESourceState::Stopped);
     PROPERTY(ALenum, Format, AL_FORMAT_MONO8);
     PROPERTY(ALsizei, Frequency, 22050);
     

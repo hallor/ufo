@@ -14,7 +14,7 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Header Files\FileIO">
-      <UniqueIdentifier>{52b5c227-9e21-414b-969b-75f0b63a8051}</UniqueIdentifier>
+      
     </Filter>
     <Filter Include="Source Files\FileIO">
       <UniqueIdentifier>{e0ef5013-fd67-4d08-80e6-1c91be284730}</UniqueIdentifier>

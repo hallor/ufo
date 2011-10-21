@@ -4,6 +4,12 @@
 #include <Windows.h>
 #endif
 
+sSourceProperties::sSourceProperties()
+{
+    m_Volume = 1.0f;
+    m_Pitch = 1.0f;
+}
+
 OpenAL *Instance = NULL;
 
 OpenAL &OpenAL::Get()
@@ -44,11 +50,11 @@ ALuint OpenAL::CreateBuffer()
         return 0;
     
     ALuint temp;
-    alGetError();
+    GetLastError();
 
     alGenBuffers(1, &temp);
     
-    if(alGetError() == AL_NO_ERROR)
+    if(GetLastError() == AL_NO_ERROR)
     {
         ++m_ActiveBuffers;
         LogInfo("Created OAL buffer, %i active buffers", m_ActiveBuffers);
@@ -64,11 +70,11 @@ ALuint OpenAL::CreateSource()
         return 0;
     
     ALuint temp;
-    alGetError();
+    GetLastError();
 
     alGenSources(1, &temp);
 
-    if(alGetError() == AL_NO_ERROR)
+    if(GetLastError() == AL_NO_ERROR)
     {
         ++m_ActiveSources;
         LogInfo("Created OAL source, %i active sources", m_ActiveSources);
@@ -104,6 +110,133 @@ void OpenAL::DeleteSource(ALuint source)
     --m_ActiveSources;
 
     LogInfo("Deleted OAL source, %i active sources left", m_ActiveSources);
+}
+
+bool OpenAL::IsBuffer(ALuint buffer)
+{
+    if(!IsInitialized())
+        return false;
+
+    return alIsBuffer(buffer) == AL_TRUE;
+}
+
+bool OpenAL::IsSource(ALuint source)
+{
+    if(!IsInitialized())
+        return false;
+
+    return alIsSource(source) == AL_TRUE;
+}
+
+bool OpenAL::FillBufferData(ALuint buffer, cFixedArray<char> *data, ALenum format, ALsizei frequency)
+{
+    if(!IsInitialized())
+        return false;
+
+    if(IsBuffer(buffer) != AL_TRUE)
+        return false;
+
+    if(!data)
+        return false;
+
+    GetLastError();
+
+    alBufferData(buffer, format, data->GetDataPointer(), data->GetSize(), frequency);
+
+    return GetLastError() == AL_NO_ERROR;
+};
+
+bool OpenAL::SetSourceProperties(ALuint source, const sSourceProperties &props)
+{
+    if(!IsInitialized())
+        return false;
+
+    if(IsSource(source) != AL_TRUE)
+        return false;
+
+    GetLastError();
+
+    alSourcef(source, AL_GAIN, props.m_Volume);
+    alSourcef(source, AL_PITCH, props.m_Pitch);
+
+    return GetLastError() == AL_NO_ERROR;
+};
+
+int OpenAL::GetProcessedBuffersCount(ALuint source)
+{
+    if(!IsInitialized())
+        return 0;
+
+    if(IsSource(source) != AL_TRUE)
+        return 0;
+
+    GetLastError();
+
+    ALint processed = 0;
+
+    alGetSourcei(source, AL_BUFFERS_PROCESSED, &processed);
+
+    return GetLastError() == AL_NO_ERROR ? processed : 0;
+};
+
+ALuint OpenAL::PopBufferQueue(ALuint source)
+{
+    if(!GetProcessedBuffersCount(source))
+        return 0;
+    
+    GetLastError();
+
+    ALuint buffer = 0;
+
+    alSourceUnqueueBuffers(source, 1, &buffer);
+
+    return GetLastError() == AL_NO_ERROR ? buffer : 0;
+};
+
+bool OpenAL::PushBufferQueue(ALuint source, ALuint buffer)
+{
+    if(!IsInitialized())
+        return false;
+
+    if(!IsSource(source) || !IsBuffer(buffer))
+        return false;
+
+    GetLastError();
+    
+    alSourceQueueBuffers(source, 1, &buffer);
+
+    return GetLastError() == AL_TRUE;
+};
+
+ESourceState::TYPE OpenAL::GetSourceState(ALuint source)
+{
+    if(!IsInitialized())
+        return ESourceState::_COUNT;
+
+    if(!IsSource(source))
+        return ESourceState::_COUNT;
+
+    GetLastError();
+
+    ALint state = 0;
+
+    alGetSourcei(source, AL_SOURCE_STATE, &state);
+
+    if(GetLastError() != AL_NO_ERROR)
+        return ESourceState::_COUNT;
+
+    switch(state)
+    {
+    case AL_PLAYING: return ESourceState::Playing;
+    case AL_PAUSED: return ESourceState::Paused;
+    case AL_STOPPED: return ESourceState::Stopped;
+    default:    return ESourceState::_COUNT;
+    }
+}
+
+ALenum OpenAL::GetLastError()
+{
+    return alGetError();
 }
 
 bool OpenAL::IsInitialized() const

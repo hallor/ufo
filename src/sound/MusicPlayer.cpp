@@ -31,7 +31,7 @@ bool cMusicPlayer::PlayMusic(const std::string &path)
     {
         if(stream == m_CurrentMusic)
         {
-            stream->SetWantedState(ESoundState::Playing);
+            stream->SetWantedState(ESourceState::Playing);
         }
         else
         {
@@ -40,7 +40,7 @@ bool cMusicPlayer::PlayMusic(const std::string &path)
             for(unsigned int i = 0; i < m_Streams.size(); ++i)
             {
                 if(m_Streams[i] != stream)
-                    stream->SetWantedState(ESoundState::Stopped);
+                    stream->SetWantedState(ESourceState::Stopped);
             }
         }
     }
@@ -53,7 +53,7 @@ bool cMusicPlayer::PlayMusic(const std::string &path)
         stream->BindFile(path, AL_FORMAT_STEREO16);
         stream->SetFrequency(44100);
         stream->SetLooping(true);
-        stream->SetWantedState(ESoundState::Playing);
+        stream->SetWantedState(ESourceState::Playing);
         m_CurrentMusic = stream;
     }
 
@@ -67,7 +67,7 @@ void cMusicPlayer::StopMusic()
 
     if(m_CurrentMusic)
     {
-        m_CurrentMusic->SetWantedState(ESoundState::Stopped);
+        m_CurrentMusic->SetWantedState(ESourceState::Stopped);
         m_CurrentMusic = NULL;
     }
 };
@@ -118,7 +118,7 @@ void cMusicPlayer::UpdateStream(cSoundStream *stream, float dt)
     else
     {
         stream->SetVolume(0.0f);
-        stream->SetWantedState(ESoundState::Stopped);
+        stream->SetWantedState(ESourceState::Stopped);
     }
 
     stream->Update();

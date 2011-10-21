@@ -8,6 +8,25 @@
 #include <AL/alc.h>
 #endif
 #include "IDGenerator.h"
+#include "FixedArray.h"
+
+struct sSourceProperties
+{
+    sSourceProperties();
+    float m_Volume;
+    float m_Pitch;
+};
+
+namespace ESourceState
+{
+    enum TYPE
+    {
+        Playing = 0,
+        Paused,
+        Stopped,
+        _COUNT
+    };
+};
 
 class OpenAL
 {
@@ -22,6 +41,20 @@ public:
 
     void DeleteBuffer(ALuint buffer);
     void DeleteSource(ALuint source);
+
+    bool IsBuffer(ALuint buffer);
+    bool IsSource(ALuint source);
+
+    bool FillBufferData(ALuint buffer, cFixedArray<char> *data, ALenum format, ALsizei frequency);
+    bool SetSourceProperties(ALuint source, const sSourceProperties &props);
+
+    int GetProcessedBuffersCount(ALuint source);
+    ALuint PopBufferQueue(ALuint source);
+    bool PushBufferQueue(ALuint source, ALuint buffer);
+
+    ESourceState::TYPE GetSourceState(ALuint source);
+
+    ALenum GetLastError();
 
     bool IsInitialized() const;
 

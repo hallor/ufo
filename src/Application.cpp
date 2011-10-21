@@ -14,6 +14,8 @@
 #include "MusicPlayer.h"
 #include "EngineSettings.h"
 #include "LogicTimer.h"
+#include "SoundStreamRenderer.h"
+#include "ObjectPool.h"
 
 Application::Application()
 {
@@ -34,6 +36,8 @@ int Application::execute(int argc, char* argv[])
 {
     LogicTimer ti;
 	FpsTimer fps(AppSettings::GetFPSLimit());
+    cSoundStreamRenderer ren;
+    ObjectPool<char> asd;
 
 	if (!init(argc, argv))
         return -1;

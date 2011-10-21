@@ -14,10 +14,10 @@ class cSoundSourceManager;
 
 struct sStreamBinding
 {
-    sStreamBinding(vRenderable *data, cSoundSource *source);
+    sStreamBinding(const vRenderable *data, cSoundSource *source);
     sStreamBinding();
 
-    vRenderable *m_Stream;
+    const vRenderable *m_Stream;
     cSoundSource *m_Source;
     ObjectPool<cSoundBuffer*> m_Buffers;
     bool m_Marked;
@@ -40,11 +40,21 @@ public:
     virtual void Release();
 
 protected:
+    
+    void UpdateStreams();
 
-    void ClearAll();
+    int FindStreamBinding(const vRenderable &stream);
+    
+    void StopStream(sStreamBinding &binding);
+    void PauseStream(sStreamBinding &stream);
+    void PlayStream(sStreamBinding &stream);
 
     void ClearDataBindings();
+    void RemoveUnmarkedBindings();
     void ClearBinding(sStreamBinding &bnd);
+    void UnmarkAllBindings();
+
+    int CreateBinding(const vRenderable &stream) { return -1; }
 
     void ReleaseSources();
     void ReleaseBuffers();

@@ -3,7 +3,7 @@
 #include <vector>
 #include <algorithm>
 
-template <class T>
+template <typename T>
 class ObjectPool
 {
 public:
@@ -63,7 +63,7 @@ public:
 
     void Return(const T &object)
     {
-        std::vector<T>::iterator it = std::find(m_Used.begin(), m_Used.end(), object);
+        typename std::vector<T>::iterator it = std::find(m_Used.begin(), m_Used.end(), object);
         if(it != m_Used.end())
         {
             m_Used.erase(it);
