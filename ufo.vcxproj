@@ -107,6 +107,7 @@
     <ClCompile Include="src\model\Building.cpp" />
     <ClCompile Include="src\model\CityCoord.cpp" />
     <ClCompile Include="src\model\Facility.cpp" />
+    <ClCompile Include="src\model\SkilledUnit.cpp" />
     <ClCompile Include="src\model\SkillSet.cpp" />
     <ClCompile Include="src\model\Unit.cpp" />
     <ClCompile Include="src\model\Vehicle.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="src\model\CityCoord.h" />
     <ClInclude Include="src\model\DimensionGate.h" />
     <ClInclude Include="src\model\Facility.h" />
+    <ClInclude Include="src\model\SkilledUnit.h" />
     <ClInclude Include="src\model\SkillSet.h" />
     <ClInclude Include="src\model\Unit.h" />
     <ClInclude Include="src\model\Vehicle.h" />
