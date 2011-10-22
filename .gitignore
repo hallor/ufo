@@ -1,3 +1,10 @@
 xcoma/*
 src/src.pri
 src/src.pro.user
+
+/ipch
+/Debug
+/XCOMA
+/ufo.vcxproj.user
+/ufo.sdf
+/ufo.suo
