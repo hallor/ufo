@@ -1,5 +1,6 @@
 #include "SoundStream.h"
 #include "EngineSettings.h"
+#include "logger.h"
 
 cSoundStream::cSoundStream(const std::string &id)
 {
@@ -131,7 +132,7 @@ void cSoundStream::CreateChunks()
     if(CalculateChunkSize() == 0)
         return;
 
-    for(unsigned int i = m_Chunks.size(); i < EngineSettings::GetMaxSoundStreamChunks(); ++i)
+    for(unsigned int i = m_Chunks.size(); i < EngineSettings::GetMaxQueuedSoundStreamBuffers(); ++i)
     {
         m_Chunks.push_back(new cFixedArray<char>(CalculateChunkSize()));
         m_FreeChunks.push_back(m_Chunks.back());

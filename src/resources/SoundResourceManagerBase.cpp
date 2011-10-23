@@ -129,17 +129,10 @@ void cSoundResourceManagerBase::RemoveResource(unsigned int storage_index)
 
     vResource<ALuint> *res = m_Resources[storage_index];
 
-    // Simple non-stable O(1) removal of array element 
-    if(storage_index == GetResourcesCount() - 1)
-    {
-        m_Resources.pop_back();
-    }
-    else
-    {
-        m_Resources[storage_index] = m_Resources.back();
-        // Update storage index
-        m_Resources[storage_index]->SetStorageIndex(storage_index);
-    }
+    m_Resources[storage_index] = m_Resources.back();
+    // Update storage index
+    m_Resources[storage_index]->SetStorageIndex(storage_index);
+    m_Resources.pop_back();
 
     // Remove all traces of resource ever existing
     UnloadResource(res);

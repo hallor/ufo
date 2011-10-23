@@ -2,6 +2,7 @@
 #include <algorithm>
 #include "RawFile.h"
 #include "FileIO.h"
+#include "logger.h"
 
 using namespace std;
 
@@ -39,6 +40,9 @@ bool cRawFile::Read(cFixedArray<char> *data, bool loop /* = false */)
     if(!m_File || !m_File->IsOpenForRead())
         return false;
 
+    if(loop && m_File->AtEnd())
+        m_File->Seek(0, EFileSeekMethod::FromBegin);
+
     int data_size = data->GetSize();
     int file_size = m_File->GetSize();
     int cur_pos = m_File->GetCurrentPos();
@@ -46,7 +50,7 @@ bool cRawFile::Read(cFixedArray<char> *data, bool loop /* = false */)
 
     if(data_size <= file_size - cur_pos)
     {
-        m_File->Read(data->GetDataPointer(), file_size - cur_pos);
+        m_File->Read(data->GetDataPointer(), data_size);
     }
     else
     {        

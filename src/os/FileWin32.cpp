@@ -129,11 +129,10 @@ int cFileWin32::GetCurrentPos() const
     if(!IsOpen())
         return false;
 
-    long dist = 0;
 
-    DWORD rv = SetFilePointer(m_Handle, 0, &dist, EFileSeekMethod::ToMoveMethod(EFileSeekMethod::Current));
+    DWORD rv = SetFilePointer(m_Handle, 0, NULL, EFileSeekMethod::ToMoveMethod(EFileSeekMethod::Current));
 
-    return rv != INVALID_SET_FILE_POINTER ? dist : 0;
+    return rv != INVALID_SET_FILE_POINTER ? rv : 0;
 }
 
 DWORD cFileWin32::GetSize() const

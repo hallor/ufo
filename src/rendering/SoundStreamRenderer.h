@@ -2,6 +2,7 @@
 #include <vector>
 #include "RendererBase.h"
 #include "ObjectPool.h"
+#include "OpenAL.h"
 
 class vRenderingPropertiesBase;
 class cSoundSource;
@@ -14,12 +15,13 @@ class cSoundSourceManager;
 
 struct sStreamBinding
 {
-    sStreamBinding(const vRenderable *data, cSoundSource *source);
+    sStreamBinding(vRenderable *data, cSoundSource *source);
     sStreamBinding();
 
-    const vRenderable *m_Stream;
+    vRenderable *m_Stream;
     cSoundSource *m_Source;
-    ObjectPool<cSoundBuffer*> m_Buffers;
+    ObjectPool<ALuint> m_RawBuffers;
+    std::vector<cSoundBuffer*> m_Buffers;
     bool m_Marked;
 };
 
@@ -35,7 +37,7 @@ public:
 
     virtual void OnFrame(float dt);
 
-    virtual void Render(const vRenderable &object);
+    virtual void Render(vRenderable &object);
 
     virtual void Release();
 
@@ -54,7 +56,7 @@ protected:
     void ClearBinding(sStreamBinding &bnd);
     void UnmarkAllBindings();
 
-    int CreateBinding(const vRenderable &stream) { return -1; }
+    int CreateBinding(vRenderable &stream);
 
     void ReleaseSources();
     void ReleaseBuffers();

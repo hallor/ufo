@@ -7,9 +7,10 @@
 #include "OpenAL.h"
 #include "EngineSettings.h"
 #include "FixedArray.h"
+#include "logger.h"
 
 
-sStreamBinding::sStreamBinding(const vRenderable *data, cSoundSource *source)
+sStreamBinding::sStreamBinding(vRenderable *data, cSoundSource *source)
 {
     m_Stream = data;
     m_Source = source;
@@ -25,6 +26,8 @@ sStreamBinding::sStreamBinding()
 
 cSoundStreamRenderer::cSoundStreamRenderer()
 {
+    m_BufferManager = NULL;
+    m_SourceManager = NULL;
 };
 
 cSoundStreamRenderer::~cSoundStreamRenderer()
@@ -67,7 +70,7 @@ void cSoundStreamRenderer::OnFrame(float dt)
     UnmarkAllBindings();
 };
 
-void cSoundStreamRenderer::Render(const vRenderable &object)
+void cSoundStreamRenderer::Render(vRenderable &object)
 {
     if(!IsValid())
         return;
@@ -114,6 +117,12 @@ void cSoundStreamRenderer::UpdateStreams()
             continue;
         }
 
+        while(OpenAL::Get().GetProcessedBuffersCount(str.m_Source->Get()) > 0)
+        {
+            ALuint buffer = OpenAL::Get().PopBufferQueue(str.m_Source->Get());
+            str.m_RawBuffers.Return(buffer);
+        }
+
         vSoundStreamProperties *props = dynamic_cast<vSoundStreamProperties*>(str.m_Stream->GetRenderingProperties());
         if(!props)
             continue;
@@ -133,6 +142,8 @@ void cSoundStreamRenderer::UpdateStreams()
         vSoundStreamProperties *props = dynamic_cast<vSoundStreamProperties*>(str.m_Stream->GetRenderingProperties());
 
         props->SetState(OpenAL::Get().GetSourceState(str.m_Source->Get()));
+
+        str.m_Stream->Synchronize(props);
     }
 };
 
@@ -152,14 +163,14 @@ void cSoundStreamRenderer::StopStream(sStreamBinding &binding)
     if(!binding.m_Source)
         return;
 
-    alSourceStop(binding.m_Source->Get());
-
+    OpenAL::Get().SourceStop(binding.m_Source->Get());
+    
     int queued = OpenAL::Get().GetProcessedBuffersCount(binding.m_Source->Get());
     
     for(int i = 0; i < queued; ++i)
         OpenAL::Get().PopBufferQueue(binding.m_Source->Get());
        
-    binding.m_Buffers.FreeAll();
+    binding.m_RawBuffers.FreeAll();
 };
 
 void cSoundStreamRenderer::PauseStream(sStreamBinding &binding)
@@ -167,7 +178,7 @@ void cSoundStreamRenderer::PauseStream(sStreamBinding &binding)
     if(!binding.m_Source)
         return;
 
-    alSourcePause(binding.m_Source->Get());
+    OpenAL::Get().SourcePause(binding.m_Source->Get());
 };
 
 void cSoundStreamRenderer::PlayStream(sStreamBinding &binding)
@@ -188,23 +199,25 @@ void cSoundStreamRenderer::PlayStream(sStreamBinding &binding)
 
     for(unsigned int i = 0; i < props->GetQueuedChunksCount();)
     {
-        cSoundBuffer *buf = NULL;
-        m_Buffers.Get(buf);
-        if(!buf)
+        if(!binding.m_RawBuffers.HasFree())
+            break;
+
+        ALuint buf = 0;
+        binding.m_RawBuffers.Get(buf);
+        if(!OpenAL::Get().IsBuffer(buf))
             break;
 
         cFixedArray<char> *array = props->PopQueue();
         if(!array)
             continue;
 
-        OpenAL::Get().FillBufferData(buf->Get(), array, props->GetFormat(), props->GetFrequency());
-        OpenAL::Get().PushBufferQueue(sid, buf->Get());
-
+        if(OpenAL::Get().FillBufferData(buf, array, props->GetFormat(), props->GetFrequency()))
+            OpenAL::Get().PushBufferQueue(sid, buf);
+        
         ++i;
     }
 
-    if(OpenAL::Get().GetSourceState(sid) != ESourceState::Playing)
-        alSourcePlay(sid);
+    OpenAL::Get().SourcePlay(sid);
 };
 
 void cSoundStreamRenderer::ClearDataBindings()
@@ -240,14 +253,13 @@ void cSoundStreamRenderer::ClearBinding(sStreamBinding &bnd)
 
     bnd.m_Stream = NULL;
 
-    bnd.m_Buffers.FreeAll();
-    while(bnd.m_Buffers.HasFree())
-    {
-        cSoundBuffer *buf = NULL;
-        bnd.m_Buffers.Get(buf);
-        m_Buffers.Return(buf);
-    }
-    bnd.m_Buffers.Clear();
+    bnd.m_RawBuffers.FreeAll();
+
+    for(int i = 0; i < bnd.m_Buffers.size(); ++i)
+        m_Buffers.Return(bnd.m_Buffers[i]);
+    
+    bnd.m_Buffers.clear();
+    bnd.m_RawBuffers.Clear();
 
     bnd.m_Marked = false;
 }
@@ -257,6 +269,30 @@ void cSoundStreamRenderer::UnmarkAllBindings()
     for(unsigned int i = 0; i < m_DataBindings.size(); ++i)
         m_DataBindings[i].m_Marked = false;
 }
+
+int cSoundStreamRenderer::CreateBinding(vRenderable &stream)
+{
+    TryCreateSources(1);
+    TryCreateBuffers(EngineSettings::GetMaxQueuedSoundStreamBuffers());
+    if(!m_Sources.HasFree() || m_Buffers.FreeCount() < EngineSettings::GetMaxQueuedSoundStreamBuffers())
+        return -1;
+
+    sStreamBinding bnd;
+    m_Sources.Get(bnd.m_Source);
+
+    for(unsigned int i = 0; i < EngineSettings::GetMaxQueuedSoundStreamBuffers(); ++i)
+    {
+        cSoundBuffer *buf = NULL;
+        m_Buffers.Get(buf);
+        bnd.m_Buffers.push_back(buf);
+        bnd.m_RawBuffers.Add(buf->Get());
+    }
+
+    bnd.m_Stream = &stream;
+    m_DataBindings.push_back(bnd);
+    
+    return m_DataBindings.size() - 1;
+};
 
 void cSoundStreamRenderer::ReleaseSources()
 {

@@ -43,29 +43,15 @@ int Application::execute(int argc, char* argv[])
         return -1;
 
 	cSoundBufferManager man;
-	cSoundBuffer *buf = man.Get();
 
     cSoundSourceManager srcman;
-    cSoundSource *src = srcman.Get();
-       iFile *file = CreateFileIO();
-		file->Open("xcoma/rawsound/tactical/explosns/explosn1.raw", FFileOpenFlags::OpenExisting | FFileOpenFlags::Read);
-    int length = file->GetSize();
 
-    char *data = new char[length];
-    file->Read(data, length);
-
-    alBufferData(buf->Get(), AL_FORMAT_MONO8, data, length, 22050);
-    
-    delete [] data;
-    file->Close();
-    ReleaseFileIO(file);
-
-    alSourcei(src->Get(), AL_BUFFER, buf->Get());
-        alSourcePlay(src->Get());
 
     cMusicPlayer playa;
     playa.Initialize();
-    playa.PlayMusic("xcoma/rawsound/tactical/explosns/explosn1.raw");
+    playa.PlayMusic("xcoma/music");
+    cSoundStreamRenderer renderer;
+    renderer.Initialize(&man, &srcman);
 
 	while (!shouldQuit())
 	{
@@ -77,15 +63,16 @@ int Application::execute(int argc, char* argv[])
 
         playa.Update(0.0f);
 
+        for(unsigned int i = 0; i < playa.GetStreams().size(); ++i)
+            renderer.Render(*playa.GetStreams()[i]);
+
+        renderer.OnFrame(0.1f);
+
 		fps.endOfFrame();
 	}
 
-    srcman.ReleaseResource(src);
-    man.ReleaseResource(buf);
-
-	buf->Release();
-    src->Release();
-
+    renderer.Release();
+        
 	exit();
 	return 0;
 }

@@ -15,6 +15,7 @@ struct sSourceProperties
     sSourceProperties();
     float m_Volume;
     float m_Pitch;
+    bool  m_Looping;
 };
 
 namespace ESourceState
@@ -51,6 +52,10 @@ public:
     int GetProcessedBuffersCount(ALuint source);
     ALuint PopBufferQueue(ALuint source);
     bool PushBufferQueue(ALuint source, ALuint buffer);
+
+    bool SourcePlay(ALuint source);
+    bool SourceStop(ALuint source);
+    bool SourcePause(ALuint source);
 
     ESourceState::TYPE GetSourceState(ALuint source);
 

@@ -14,5 +14,6 @@ std::string cIdGenerator::Next()
 #else
     snprintf(m_Buffer, sizeof(m_Buffer), "@%i", m_Counter);
 #endif
+    ++m_Counter;
     return (m_Base + m_Buffer);
 };

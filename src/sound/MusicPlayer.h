@@ -20,7 +20,7 @@ public:
     virtual bool PlayMusic(const std::string &path);
     virtual void StopMusic();
 
-    const TRenderableList &GetStreams() const { return m_Streams; }
+    TRenderableList &GetStreams() { return m_Streams; }
 
     virtual void Update(float dt);
 

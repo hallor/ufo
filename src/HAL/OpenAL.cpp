@@ -8,6 +8,7 @@ sSourceProperties::sSourceProperties()
 {
     m_Volume = 1.0f;
     m_Pitch = 1.0f;
+    m_Looping = false;
 }
 
 OpenAL *Instance = NULL;
@@ -158,6 +159,7 @@ bool OpenAL::SetSourceProperties(ALuint source, const sSourceProperties &props)
 
     alSourcef(source, AL_GAIN, props.m_Volume);
     alSourcef(source, AL_PITCH, props.m_Pitch);
+    alSourcei(source, AL_LOOPING, props.m_Looping ? AL_TRUE : AL_FALSE);
 
     return GetLastError() == AL_NO_ERROR;
 };
@@ -205,7 +207,58 @@ bool OpenAL::PushBufferQueue(ALuint source, ALuint buffer)
     
     alSourceQueueBuffers(source, 1, &buffer);
 
-    return GetLastError() == AL_TRUE;
+    return GetLastError() == AL_NO_ERROR;
+};
+
+bool OpenAL::SourcePlay(ALuint source)
+{
+    if(!IsInitialized())
+        return false;
+
+    if(!IsSource(source))
+        return false;
+
+    if(GetSourceState(source) == ESourceState::Playing)
+        return true;
+
+    GetLastError();
+    alSourcePlay(source);
+
+    return GetLastError() == AL_NO_ERROR && GetSourceState(source) == ESourceState::Playing;
+};
+
+bool OpenAL::SourceStop(ALuint source)
+{
+    if(!IsInitialized())
+        return false;
+
+    if(!IsSource(source))
+        return false;
+
+    if(GetSourceState(source) == ESourceState::Stopped)
+        return true;
+
+    GetLastError();
+    alSourceStop(source);
+
+    return GetLastError() == AL_NO_ERROR && GetSourceState(source) == ESourceState::Stopped;
+};
+
+bool OpenAL::SourcePause(ALuint source)
+{
+    if(!IsInitialized())
+        return false;
+
+    if(!IsSource(source))
+        return false;
+
+    if(GetSourceState(source) == ESourceState::Paused)
+        return true;
+
+    GetLastError();
+    alSourcePause(source);
+
+    return GetLastError() == AL_NO_ERROR && GetSourceState(source) == ESourceState::Paused;
 };
 
 ESourceState::TYPE OpenAL::GetSourceState(ALuint source)
