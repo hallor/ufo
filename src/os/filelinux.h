@@ -10,7 +10,7 @@ public:
     FileLinux();
     ~FileLinux();
     // TODO: support for rest of the flags
-    virtual bool Open(const std::string &file, DWORD flags);
+    virtual bool Open(const std::string &file, DWORD f);
     virtual int Write(void *data, DWORD length);
     virtual int Read(void *dest, int length);
     virtual bool Seek(int offset, EFileSeekMethod::TYPE t);
@@ -19,14 +19,15 @@ public:
     virtual bool IsOpenForWrite() const;
     virtual bool IsOpenForRead() const;
     virtual void Close();
-    virtual int GetIndex() const;
-		virtual int GetCurrentPos() const  { return 0; } //TODO;
-		virtual std::string GetPath() const { return std::string(""); } // TODO
-		virtual bool AtEnd() const { return false; } //todo
+    virtual int GetCurrentPos() const;
+    virtual std::string GetPath() const;
+    virtual bool AtEnd() const;
 private:
     FileLinux(const FileLinux & other);
     int fd;
-    int flags;
+    int flags, posix_flags;
+    std::string name;
+    bool atEOF;
 };
 
 #endif

@@ -2,6 +2,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 
 #include "filelinux.h"
 #include "logger.h"
@@ -10,6 +11,7 @@ using namespace std;
 
 FileLinux::FileLinux() : fd(-1), flags(0)
 {
+    atEOF = true;
 }
 
 FileLinux::~FileLinux()
@@ -19,40 +21,49 @@ FileLinux::~FileLinux()
     fd=-1;
 }
 
-bool FileLinux::Open(const std::string &file, DWORD flags)
+bool FileLinux::Open(const std::string &file, DWORD f)
 {
     if (fd>=0)
         close(fd);
 
-    this->flags = 0;
+    this->flags = f;
+    this->posix_flags = 0;
 
-    if (flags & FFileOpenFlags::Read)
-        this->flags = O_RDONLY;
-    if (flags & FFileOpenFlags::Write)
+    if (f & FFileOpenFlags::Read)
+        this->posix_flags = O_RDONLY;
+    if (f & FFileOpenFlags::Write)
     {
-        if (this->flags == O_RDONLY)
-            this->flags = O_RDWR;
+        if (this->posix_flags == O_RDONLY)
+            this->posix_flags = O_RDWR;
         else
-            this->flags = O_WRONLY;
+            this->posix_flags = O_WRONLY;
     }
-    if (flags & FFileOpenFlags::CreateNew)
-        this->flags |= O_CREAT | O_EXCL;
-    if (flags & FFileOpenFlags::OpenAlways)
-        this->flags |= O_CREAT;
+    if (f & FFileOpenFlags::CreateNew)
+        this->posix_flags |= O_CREAT | O_EXCL;
+    if (f & FFileOpenFlags::OpenAlways)
+        this->posix_flags |= O_CREAT;
 
-    fd = open(file.c_str(), this->flags, 644);
+    fd = open(file.c_str(), this->posix_flags, 644);
+    name = file;
+    atEOF = false;
 
     return fd >= 0;
 }
 
 int FileLinux::Write(void *data, DWORD length)
 {
-    return write(fd, data, length);
+    int ret = write(fd, data, length);
+    if (ret<0) // Total hack but ateof interface is stupid ;)
+        atEOF = true;
+    return ret;
 }
 
 int FileLinux::Read(void *dest, int length)
 {
-    return read(fd, dest, length);
+    int ret = read(fd, dest, length);
+    if (ret<0) // Total hack but ateof interface is stupid ;)
+        atEOF = true;
+    return ret;
 }
 
 bool FileLinux::Seek(int offset, EFileSeekMethod::TYPE t)
@@ -78,17 +89,17 @@ DWORD FileLinux::GetSize() const
 
 bool FileLinux::IsOpen() const
 {
-    return lseek(fd, 0, SEEK_CUR) >=0;
+    return lseek(fd, 0, SEEK_CUR) != (off_t)-1;
 }
 
 bool FileLinux::IsOpenForWrite() const
 {
-    return IsOpen() && flags & (O_RDWR | O_WRONLY);
+    return IsOpen() && flags & (FFileOpenFlags::Write);
 }
 
 bool FileLinux::IsOpenForRead() const
 {
-    return IsOpen() && flags & (O_RDWR | O_RDONLY);
+    return IsOpen() && flags & (FFileOpenFlags::Read);
 }
 
 void FileLinux::Close()
@@ -96,10 +107,24 @@ void FileLinux::Close()
     close(fd);
     flags = 0;
     fd = -1;
+    name = string();
+    atEOF = false;
 }
 
-int FileLinux::GetIndex() const
+int FileLinux::GetCurrentPos() const
 {
-    return -1;
+    if (fd <0)
+        return 0;
+    return lseek(fd, 0, SEEK_CUR);
 }
+
+std::string FileLinux::GetPath() const
+{
+    return name;
+}
+
+bool FileLinux::AtEnd() const
+{
+    return atEOF;
+} //todo
 #endif

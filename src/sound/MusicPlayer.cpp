@@ -51,7 +51,7 @@ bool cMusicPlayer::PlayMusic(const std::string &path)
             return false;
 
         stream->BindFile(path, AL_FORMAT_STEREO16);
-        stream->SetFrequency(44100);
+        stream->SetFrequency(22050);
         stream->SetLooping(true);
         stream->SetWantedState(ESourceState::Playing);
         m_CurrentMusic = stream;

@@ -33,6 +33,17 @@
 		type m_##name
 #endif
 
+
+// member returned by value
+#ifndef MEMBERV
+#define MEMBERV(type, name) \
+    public: \
+    const type get##name() const	{ return m_##name; } \
+    void set##name(type new_val) { m_##name = new_val; } \
+    protected: \
+    type m_##name
+#endif
+
 #ifndef CONST_MEMBER
 #define CONST_MEMBER(type, name) \
 		public: \

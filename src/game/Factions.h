@@ -39,4 +39,4 @@ namespace EFactionName
 
     std::string ToString(TYPE t);
     TYPE FromString(const std::string &str);
-};
+}
