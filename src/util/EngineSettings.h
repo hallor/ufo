@@ -11,6 +11,8 @@ public:
     STATIC_PROPERTY(int, MaxSoundBuffers, 256);
     STATIC_PROPERTY(int, MaxSoundSources, 32);
     STATIC_PROPERTY(int, MaxQueuedSoundStreamBuffers, 3);
+    STATIC_PROPERTY(float, LogicUpdateFrequency, 60);
+    STATIC_PROPERTY(int, MaxLogicUpdatesPerFrame, 3);
 
     void DefaultAll();
 

@@ -33,6 +33,8 @@ void EngineSettings::DefaultAll()
     DefaultMaxSoundBuffers();
     DefaultMaxSoundSources();
     DefaultMaxQueuedSoundStreamBuffers();
+    DefaultLogicUpdateFrequency();
+    DefaultMaxLogicUpdatesPerFrame();
 }
 
 EngineSettings::EngineSettings()

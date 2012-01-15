@@ -1,4 +1,6 @@
 #include "Game.h"
+#include "AppSettings.h"
+#include "EngineSettings.h"
 
 Game* g_GameInstance = NULL;
 
@@ -72,6 +74,9 @@ void Game::OnExit()
 {
     m_Running = false;
 
+    AppSettings::Free();
+    EngineSettings::Free();
+
     ClearSDL();
 }
 
@@ -79,6 +84,8 @@ bool Game::Initialize()
 {
     if(!InitSDL())
         return false;
+
+    s_LogicStep = 1.0f / EngineSettings::GetLogicUpdateFrequency();
 
     m_Input.Initialize();
 
@@ -98,7 +105,7 @@ void Game::MainLoop()
 
         UpdateSDLEvents();
 
-        for(int i = 0; i < 3 && m_Accumulator.Check(); ++i)
+        for(int i = 0; i < EngineSettings::GetMaxLogicUpdatesPerFrame() && m_Accumulator.Check(); ++i)
             Update(s_LogicStep);
 
         Draw();
@@ -132,7 +139,7 @@ bool Game::InitSDL()
     if(SDL_Init(SDL_INIT_EVERYTHING))
         return false;
 
-    m_MainSurface = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    m_MainSurface = SDL_SetVideoMode(AppSettings::GetWindowWidth(), AppSettings::GetWindowHeight(), 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
     
     return m_MainSurface != NULL;
 }
