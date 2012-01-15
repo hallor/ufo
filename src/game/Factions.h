@@ -6,7 +6,8 @@ namespace EFactionName
 {
     enum TYPE
     {
-        XCom = 0,
+        None,
+        XCom,
         Alien,
         Government,
         Megapol,

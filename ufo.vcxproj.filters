@@ -241,6 +241,9 @@
     <ClCompile Include="src\game\Game.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\Level.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\os\FileIO.h">
@@ -430,6 +433,9 @@
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\game\Game.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\Level.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
   </ItemGroup>

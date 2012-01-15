@@ -5,6 +5,7 @@ std::string EFactionName::ToString(EFactionName::TYPE t)
 #define WRITE(p) case p: return #p;
     switch(t)
     {
+        WRITE(None)
         WRITE(XCom)
         WRITE(Alien)
         WRITE(Government)
@@ -42,6 +43,7 @@ std::string EFactionName::ToString(EFactionName::TYPE t)
 EFactionName::TYPE EFactionName::FromString(const std::string &str)
 {
 #define IF_RET(p) if(#p == str) return p; else
+    IF_RET(None)
     IF_RET(XCom)
     IF_RET(Alien)
     IF_RET(Government)

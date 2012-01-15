@@ -86,6 +86,7 @@
     <ClCompile Include="src\GameModel.cpp" />
     <ClCompile Include="src\game\Factions.cpp" />
     <ClCompile Include="src\game\Game.cpp" />
+    <ClCompile Include="src\game\Level.cpp" />
     <ClCompile Include="src\gfx.cpp" />
     <ClCompile Include="src\HAL\OpenAL.cpp" />
     <ClCompile Include="src\importer\bitmap.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="src\GameModel.h" />
     <ClInclude Include="src\game\Factions.h" />
     <ClInclude Include="src\game\Game.h" />
+    <ClInclude Include="src\game\Level.h" />
     <ClInclude Include="src\gfx.h" />
     <ClInclude Include="src\HAL\OpenAL.h" />
     <ClInclude Include="src\importer\bitmap.h" />

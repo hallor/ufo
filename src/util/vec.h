@@ -46,3 +46,53 @@ public:
 
     static const vec2 ZERO;
 };
+
+class vec3
+{
+public:
+    vec3();
+    vec3(float val);
+    vec3(float x, float y, float z);
+    vec3(const vec3 &scnd);
+
+    // operators
+
+    vec3 operator = (const vec3 &scnd);
+
+    bool operator == (const vec3 &scnd) const;
+    bool operator != (const vec3 &scnd) const;
+    
+    vec3 operator -= (const vec3 &scnd);
+    vec3 operator -= (float v);
+
+    vec3 operator += (const vec3 &scnd);
+    vec3 operator += (float v);
+    
+    vec3 operator *= (float v);
+    vec3 operator /= (float v);
+
+    vec3 operator - () const;
+    vec3 operator - (const vec3 &scnd) const;
+    vec3 operator - (float v) const;
+
+    vec3 operator + (const vec3 &scnd) const;
+    vec3 operator + (float v) const;
+
+    vec3 operator * (float v) const;
+    vec3 operator / (float v) const;
+
+    // helpers
+    float Length() const;
+    float Dot(const vec3 &v) const;
+    vec3  Cross(const vec3 &v) const;
+    
+    float Volume() const;
+
+    vec3 Normalize();
+    
+    bool IsZero() const;
+
+    float x, y, z;
+
+    static const vec3 ZERO;
+};
