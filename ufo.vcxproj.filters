@@ -65,6 +65,12 @@
     <Filter Include="Source Files\os">
       <UniqueIdentifier>{e0ef5013-fd67-4d08-80e6-1c91be284730}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Input">
+      <UniqueIdentifier>{9a0cd853-a955-4b19-880b-28ea55ddfc58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input">
+      <UniqueIdentifier>{fb025bae-c636-4039-aa53-c50843dc62a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\os\FileEnums.cpp">
@@ -133,16 +139,7 @@
     <ClCompile Include="src\util\RawFile.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\Rand.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\LogicTimer.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
     <ClCompile Include="src\importer\bitmap.cpp">
-      <Filter>Source Files\importer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\importer\cpngfile.cpp">
       <Filter>Source Files\importer</Filter>
     </ClCompile>
     <ClCompile Include="src\importer\cursor.cpp">
@@ -155,9 +152,6 @@
       <Filter>Source Files\importer</Filter>
     </ClCompile>
     <ClCompile Include="src\importer\pcxfile.cpp">
-      <Filter>Source Files\importer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\importer\peoplepath.cpp">
       <Filter>Source Files\importer</Filter>
     </ClCompile>
     <ClCompile Include="src\importer\tabfile.cpp">
@@ -223,16 +217,10 @@
     <ClCompile Include="src\importmanager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\logger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\LogicManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mouse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\SceneManager.cpp">
@@ -244,14 +232,26 @@
     <ClCompile Include="src\shaderprogram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\timer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\utils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\model\SkilledUnit.cpp">
       <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\Timer.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\vec.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Input\GameActions.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Input\Input.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\utils.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\logger.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -318,12 +318,6 @@
     <ClInclude Include="src\util\ObjectPool.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\LogicTimer.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\Rand.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
     <ClInclude Include="src\model\SkillSet.h">
       <Filter>Header Files\model</Filter>
     </ClInclude>
@@ -348,9 +342,6 @@
     <ClInclude Include="src\importer\bitmap.h">
       <Filter>Header Files\importer</Filter>
     </ClInclude>
-    <ClInclude Include="src\importer\cpngfile.h">
-      <Filter>Header Files\importer</Filter>
-    </ClInclude>
     <ClInclude Include="src\importer\cursor.h">
       <Filter>Header Files\importer</Filter>
     </ClInclude>
@@ -361,9 +352,6 @@
       <Filter>Header Files\importer</Filter>
     </ClInclude>
     <ClInclude Include="src\importer\pcxfile.h">
-      <Filter>Header Files\importer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\importer\peoplepath.h">
       <Filter>Header Files\importer</Filter>
     </ClInclude>
     <ClInclude Include="src\importer\tabfile.h">
@@ -414,13 +402,7 @@
     <ClInclude Include="src\importmanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\logger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\LogicManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mouse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\SceneManager.h">
@@ -435,17 +417,32 @@
     <ClInclude Include="src\surface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\resources\SoundResourceManagerBase.h">
       <Filter>Header Files\Resources</Filter>
     </ClInclude>
     <ClInclude Include="src\model\SkilledUnit.h">
       <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input\GameActions.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input\Input.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\Accumulator.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\Timer.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\vec.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\logger.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

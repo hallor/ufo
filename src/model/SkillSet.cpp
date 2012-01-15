@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <stdexcept>
 #include "SkillSet.h"
-#include "Rand.h"
 
 using std::string;
 using std::vector;
@@ -107,31 +106,31 @@ bool SkillSet::heal(AttributeType type, int value)
     return a.getValue() == a.max;
 }
 
-// Generates soldier
-void SkillSet::generateSoldier(const Rand & r)
-{
-    for (int i=0; i<ISkillSet::A_END; ++i)
-        p->attr[i].reset(0);
-
-    for (int i=0; i<ISkillSet::A_ENGINEERING; ++i) // Combat skills
-        p->attr[i].reset(30 + r.get() % 30);
-}
-
-// Generates "random" scientist
-void SkillSet::generateEngineer(const Rand & r)
-{
-    for (int i=0; i<ISkillSet::A_END; ++i)
-        p->attr[i].reset(0);
-
-    for (int i=0; i<ISkillSet::A_ENGINEERING; ++i) // poor combat skills
-        p->attr[i].reset(25 + r.get() % 10);
-
-    p->attr[ISkillSet::A_ENGINEERING + r.get() % 3].reset(50 + r.get() % 50);
-}
-
-
-void SkillSet::generateInfiltrator(const Rand & r)
-{
-    generateSoldier(r);
-    p->attr[ISkillSet::A_INFILTRATION].reset(50 + r.get() % 50);
-}
+//// Generates soldier
+//void SkillSet::generateSoldier(const Rand & r)
+//{
+//    for (int i=0; i<ISkillSet::A_END; ++i)
+//        p->attr[i].reset(0);
+//
+//    for (int i=0; i<ISkillSet::A_ENGINEERING; ++i) // Combat skills
+//        p->attr[i].reset(30 + r.get() % 30);
+//}
+//
+//// Generates "random" scientist
+//void SkillSet::generateEngineer(const Rand & r)
+//{
+//    for (int i=0; i<ISkillSet::A_END; ++i)
+//        p->attr[i].reset(0);
+//
+//    for (int i=0; i<ISkillSet::A_ENGINEERING; ++i) // poor combat skills
+//        p->attr[i].reset(25 + r.get() % 10);
+//
+//    p->attr[ISkillSet::A_ENGINEERING + r.get() % 3].reset(50 + r.get() % 50);
+//}
+//
+//
+//void SkillSet::generateInfiltrator(const Rand & r)
+//{
+//    generateSoldier(r);
+//    p->attr[ISkillSet::A_INFILTRATION].reset(50 + r.get() % 50);
+//}

@@ -35,8 +35,6 @@ bool Application::init(int argc, char* argv[])
 	m_logic->init();
 	m_scene->init();
 
-	// restart game timer
-	m_timer.restart();
 
 	return true;
 }

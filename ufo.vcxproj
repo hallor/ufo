@@ -39,6 +39,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>E:\VS2010\VC\include\OAL;E:\ufo\ufo\src\rendering;E:\ufo\ufo\src\resources;E:\ufo\ufo\src\sound;E:\ufo\ufo\src\os;E:\ufo\ufo\src\importer;E:\ufo\ufo\src\model;E:\ufo\ufo\src\game;E:\ufo\ufo\src\HAL;E:\ufo\ufo\src\util;E:\ufo\ufo\src;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\VS2010\VC\lib\SDL;E:\VS2010\VC\lib\OAL;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -88,20 +90,17 @@
     <ClCompile Include="src\citymap.cpp" />
     <ClCompile Include="src\GameModel.cpp" />
     <ClCompile Include="src\game\Factions.cpp" />
-    <ClCompile Include="src\game\LogicTimer.cpp" />
-    <ClCompile Include="src\game\Rand.cpp" />
     <ClCompile Include="src\gfx.cpp" />
     <ClCompile Include="src\HAL\OpenAL.cpp" />
     <ClCompile Include="src\importer\bitmap.cpp" />
-    <ClCompile Include="src\importer\cpngfile.cpp" />
     <ClCompile Include="src\importer\cursor.cpp" />
     <ClCompile Include="src\importer\palette.cpp" />
     <ClCompile Include="src\importer\pckfile.cpp" />
     <ClCompile Include="src\importer\pcxfile.cpp" />
-    <ClCompile Include="src\importer\peoplepath.cpp" />
     <ClCompile Include="src\importer\tabfile.cpp" />
     <ClCompile Include="src\importmanager.cpp" />
-    <ClCompile Include="src\logger.cpp" />
+    <ClCompile Include="src\Input\GameActions.cpp" />
+    <ClCompile Include="src\Input\Input.cpp" />
     <ClCompile Include="src\LogicManager.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\model\Building.cpp" />
@@ -111,7 +110,6 @@
     <ClCompile Include="src\model\SkillSet.cpp" />
     <ClCompile Include="src\model\Unit.cpp" />
     <ClCompile Include="src\model\Vehicle.cpp" />
-    <ClCompile Include="src\mouse.cpp" />
     <ClCompile Include="src\os\FileEnums.cpp" />
     <ClCompile Include="src\os\FileIO.cpp" />
     <ClCompile Include="src\os\filelinux.cpp" />
@@ -134,13 +132,15 @@
     <ClCompile Include="src\shaderprogram.cpp" />
     <ClCompile Include="src\sound\MusicPlayer.cpp" />
     <ClCompile Include="src\sound\SoundStream.cpp" />
-    <ClCompile Include="src\timer.cpp" />
-    <ClCompile Include="src\utils.cpp" />
     <ClCompile Include="src\util\AppSettings.cpp" />
     <ClCompile Include="src\util\EngineSettings.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">E:\Projects\ufo\ufo\src\sound;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="src\util\logger.cpp" />
     <ClCompile Include="src\util\RawFile.cpp" />
+    <ClCompile Include="src\util\Timer.cpp" />
+    <ClCompile Include="src\util\utils.cpp" />
+    <ClCompile Include="src\util\vec.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h" />
@@ -151,19 +151,17 @@
     <ClInclude Include="src\exceptions.h" />
     <ClInclude Include="src\GameModel.h" />
     <ClInclude Include="src\game\Factions.h" />
-    <ClInclude Include="src\game\LogicTimer.h" />
-    <ClInclude Include="src\game\Rand.h" />
     <ClInclude Include="src\gfx.h" />
     <ClInclude Include="src\HAL\OpenAL.h" />
     <ClInclude Include="src\importer\bitmap.h" />
-    <ClInclude Include="src\importer\cpngfile.h" />
     <ClInclude Include="src\importer\cursor.h" />
     <ClInclude Include="src\importer\palette.h" />
     <ClInclude Include="src\importer\pckfile.h" />
     <ClInclude Include="src\importer\pcxfile.h" />
-    <ClInclude Include="src\importer\peoplepath.h" />
     <ClInclude Include="src\importer\tabfile.h" />
     <ClInclude Include="src\importmanager.h" />
+    <ClInclude Include="src\Input\GameActions.h" />
+    <ClInclude Include="src\Input\Input.h" />
     <ClInclude Include="src\logger.h" />
     <ClInclude Include="src\LogicManager.h" />
     <ClInclude Include="src\model\Building.h" />
@@ -174,7 +172,6 @@
     <ClInclude Include="src\model\SkillSet.h" />
     <ClInclude Include="src\model\Unit.h" />
     <ClInclude Include="src\model\Vehicle.h" />
-    <ClInclude Include="src\mouse.h" />
     <ClInclude Include="src\os\FileEnums.h" />
     <ClInclude Include="src\os\FileIO.h" />
     <ClInclude Include="src\os\filelinux.h" />
@@ -200,13 +197,15 @@
     <ClInclude Include="src\sound\SoundRenderer.h" />
     <ClInclude Include="src\sound\SoundStream.h" />
     <ClInclude Include="src\surface.h" />
-    <ClInclude Include="src\timer.h" />
     <ClInclude Include="src\utils.h" />
+    <ClInclude Include="src\util\Accumulator.h" />
     <ClInclude Include="src\util\AppSettings.h" />
     <ClInclude Include="src\util\EngineSettings.h" />
     <ClInclude Include="src\util\ObjectPool.h" />
     <ClInclude Include="src\util\Property.h" />
     <ClInclude Include="src\util\RawFile.h" />
+    <ClInclude Include="src\util\Timer.h" />
+    <ClInclude Include="src\util\vec.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,7 +1,6 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include "timer.h"
 
 class LogicManager;
 class SceneManager;
@@ -25,7 +24,7 @@ protected:
 	bool shouldQuit() const;
 
 private:
-	RealTimer m_timer;
+
 	bool m_do_quit;
 	LogicManager * m_logic;
 	SceneManager * m_scene;

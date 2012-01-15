@@ -40,8 +40,6 @@ public:
     virtual void use(AttributeType type) = 0;
 };
 
-class Rand;
-
 /** Generic skill set implementation - usable for anyone */
 class SkillSet : public ISkillSet
 {
@@ -81,11 +79,11 @@ public:
     virtual bool heal(AttributeType type, int value);
 
     // Generates soldier
-    void generateSoldier(const Rand & r);
+    //void generateSoldier(const Rand & r);
     // Generates "random" scientist
-    void generateEngineer(const Rand & r);
+    //void generateEngineer(const Rand & r);
     // Generates infiltrator
-    void generateInfiltrator(const Rand & r);
+    //void generateInfiltrator(const Rand & r);
 
 private:
     // TODO: copy constructors for pimpls
