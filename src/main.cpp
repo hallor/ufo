@@ -4,7 +4,7 @@
 #include <crtdbg.h>
 #endif
 #endif
-#include "Application.h"
+#include "Game.h"
 
 int main( int argc, char* argv[] )
 {
@@ -14,8 +14,7 @@ int main( int argc, char* argv[] )
 	#endif
 #endif
 
-	Application * app = new Application;
-	int ret_val = app->execute(argc, argv);
-    delete app;
+    int ret_val = Game::GetSingleton()->OnExecute(argc, argv);
+    Game::Release();
     return ret_val;
 }

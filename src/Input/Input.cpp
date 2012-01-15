@@ -1,4 +1,5 @@
 #include "Input.h"
+#include "Game.h"
 
 sActionKey::sActionKey()
 {
@@ -33,7 +34,7 @@ cInput::cInput()
 bool cInput::Initialize()
 {    
     // temporary key bindings, need to load from .cfg
-    m_KeyForAction[EGameAction::QUIT_GAME] = sActionKey(SDLK_EQUALS);
+    m_KeyForAction[EGameAction::QUIT_GAME] = sActionKey(SDLK_ESCAPE);
 
     return true;
 }
@@ -68,7 +69,7 @@ void cInput::OnSDLEvent(SDL_Event *evn)
         return;
 
     if(pressed)
-        {} // send keypress event to the engine         
+        Game::GetSingleton()->OnInputGameAction(action);       
 }
 
 void cInput::ClearKeyStates()
