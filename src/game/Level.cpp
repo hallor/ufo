@@ -1,20 +1,5 @@
 #include "Level.h"
-    
-
-LevelTile::LevelTile()
-: m_Id(0)
-{
-};
-
-void LevelTile::SetTextureId(int id)
-{
-    m_Id = id;
-};
-
-void LevelTile::SetPos(const vec3 &pos)
-{
-    m_Pos = pos;
-};
+#include "LevelTile.h"
 
 Level::Level()
 : m_Tiles(NULL)
@@ -27,11 +12,13 @@ bool Level::Load(const std::string &file)
 
     m_Dimensions = vec3(MAP_DIM_X, MAP_DIM_Y, MAP_DIM_Z);
     m_Tiles = new LevelTile[(int)m_Dimensions.Volume()];
+    for(int i = 0; i < (int)m_Dimensions.Volume(); ++i)
+        m_Tiles[i].OnCreate();
 
     return true;
 };
 
-const LevelTile* Level::GetTileData(const vec3 &pos) const
+const LevelTile* Level::GetTile(const vec3 &pos) const
 {
     if(!CheckTilePositionBounds(pos))
         return NULL;
@@ -46,8 +33,13 @@ const LevelTile* Level::GetTileData(const vec3 &pos) const
 void Level::Unload()
 {
     if(m_Tiles)
-        delete [] m_Tiles;
+    {
+        for(int i = 0; i < (int)m_Dimensions.Volume(); ++i)
+            m_Tiles[i].OnDestroy();
 
+        delete [] m_Tiles;
+    }
+        
     m_Tiles = NULL;
     m_Dimensions = vec3::ZERO;
 };

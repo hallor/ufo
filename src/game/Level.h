@@ -1,24 +1,8 @@
 #pragma once
-#include "vec.h"
 #include <string>
-// TODO GameObject & GameObjectVis
-class LevelTile
-{
-public:
-    LevelTile(); 
+#include "vec.h"
 
-    int GetTextureId() const { return m_Id; }
-    void SetTextureId(int id);
-
-    vec3 GetPos() const { return m_Pos; }
-    void SetPos(const vec3 &pos);
-
-protected:
-
-    int m_Id;// move id to GameObjectVis & resource manager later
-
-    vec3 m_Pos;
-};
+class LevelTile;
 
 class Level
 {
@@ -27,7 +11,7 @@ public:
 
     bool Load(const std::string &file);
 
-    const LevelTile* GetTileData(const vec3 &pos) const;
+    const LevelTile* GetTile(const vec3 &pos) const;
 
     void Unload();
 
