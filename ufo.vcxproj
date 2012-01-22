@@ -123,11 +123,13 @@
     <ClCompile Include="src\resources\IDGenerator.cpp" />
     <ClCompile Include="src\resources\ManagerBase.cpp" />
     <ClCompile Include="src\resources\ResourceBase.cpp" />
+    <ClCompile Include="src\resources\ResourceEnums.cpp" />
     <ClCompile Include="src\resources\SoundBuffer.cpp" />
     <ClCompile Include="src\resources\SoundBufferManager.cpp" />
     <ClCompile Include="src\resources\SoundResourceManagerBase.cpp" />
     <ClCompile Include="src\resources\SoundSource.cpp" />
     <ClCompile Include="src\resources\SoundSourceManager.cpp" />
+    <ClCompile Include="src\resources\Texture.cpp" />
     <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\screen.cpp" />
     <ClCompile Include="src\shaderprogram.cpp" />
@@ -196,6 +198,8 @@
     <ClInclude Include="src\resources\SoundResourceManagerBase.h" />
     <ClInclude Include="src\resources\SoundSource.h" />
     <ClInclude Include="src\resources\SoundSourceManager.h" />
+    <ClInclude Include="src\resources\Texture.h" />
+    <ClInclude Include="src\resources\TextureManager.h" />
     <ClInclude Include="src\SceneManager.h" />
     <ClInclude Include="src\screen.h" />
     <ClInclude Include="src\shaderprogram.h" />

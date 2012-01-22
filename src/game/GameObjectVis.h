@@ -2,7 +2,7 @@
 #include "vec.h"
 
 class iGameObject;
-class SDL_Surface;
+struct SDL_Surface;
 
 class iGameObjectVis
 {
@@ -30,5 +30,6 @@ private:
 
     iGameObject *m_Parent;    
 
+    // TODO: change to cTexture, make loading through texture manager
     SDL_Surface *m_Texture;
 };

@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 namespace EResourceState
 {
@@ -20,6 +21,10 @@ namespace EResourceType
         OglTexture,
         OalSoundBuffer,
         OalSoundSource,
-        TextureAtlas
+        SDLSurface,
+        _COUNT
     };
+
+    std::string ToString(TYPE t);
+    TYPE FromString(const std::string &str);
 }
