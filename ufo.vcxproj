@@ -130,6 +130,7 @@
     <ClCompile Include="src\resources\SoundSource.cpp" />
     <ClCompile Include="src\resources\SoundSourceManager.cpp" />
     <ClCompile Include="src\resources\Texture.cpp" />
+    <ClCompile Include="src\resources\TextureManager.cpp" />
     <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\screen.cpp" />
     <ClCompile Include="src\shaderprogram.cpp" />

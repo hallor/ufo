@@ -262,6 +262,9 @@
     <ClCompile Include="src\resources\Texture.cpp">
       <Filter>Source Files\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="src\resources\TextureManager.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\os\FileIO.h">
