@@ -8,6 +8,7 @@ namespace ERenderableType
         Object,
         Sound,
         SoundStream,
+        Sprite3D,
         _COUNT
     };
 

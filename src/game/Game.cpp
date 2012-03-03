@@ -1,6 +1,8 @@
 #include "Game.h"
 #include "AppSettings.h"
 #include "EngineSettings.h"
+#include "Level.h"
+#include "pckfile.h"
 
 Game* g_GameInstance = NULL;
 
@@ -43,6 +45,10 @@ int Game::OnExecute(int argc, char *argv[])
         return -2;
 
     m_Running = true;
+
+    Level level;
+    level.Load("xcoma\\ufodata\\citymap1");
+    level.Unload();
 
     MainLoop();
     

@@ -7,11 +7,19 @@
 #include "Input.h"
 #include "Accumulator.h"
 
+class cTextureManager;
+class cSoundBufferManager;
+class cSoundSourceManager;
+
 class Game
 {
 public:
     static Game* GetSingleton();
     static void Release();
+
+    static cTextureManager *GetTextureManager() { return NULL; }
+    static cSoundBufferManager *GetSoundBufferManager() { return NULL; }
+    static cSoundSourceManager *GetSoundSourceManager() { return NULL; }
 
     int  OnExecute(int argc, char *argv[]);
     void OnInputGameAction(EGameAction::TYPE type);

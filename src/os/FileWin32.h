@@ -7,7 +7,7 @@
 class cFileWin32 : public iFile
 {
 public:
-	cFileWin32(int index);
+	cFileWin32();
 	~cFileWin32();
 
     virtual bool Open(const std::string &file, DWORD flags);
@@ -31,8 +31,6 @@ public:
 
 	virtual void Close();
 
-	virtual int GetIndex() const;
-
 protected:
 
 	void Clear();
@@ -43,7 +41,5 @@ protected:
 	DWORD m_Flags;
 
     bool m_AtEnd;
-
-	int m_Index;
 };
 #endif

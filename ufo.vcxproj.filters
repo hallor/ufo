@@ -52,13 +52,7 @@
     <Filter Include="Header Files\model">
       <UniqueIdentifier>{1678731a-d9f3-4563-8bda-f30f469cd4c7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\importer">
-      <UniqueIdentifier>{a1ecef6d-7d37-42e3-8250-1862269549e0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\os" />
-    <Filter Include="Source Files\importer">
-      <UniqueIdentifier>{0ff97f5e-efc9-4bc7-ae44-9c00573c7046}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\model">
       <UniqueIdentifier>{bac88b9c-c593-4aa2-b61c-fe1aa3bd51b0}</UniqueIdentifier>
     </Filter>
@@ -70,6 +64,12 @@
     </Filter>
     <Filter Include="Source Files\Input">
       <UniqueIdentifier>{fb025bae-c636-4039-aa53-c50843dc62a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Sprite">
+      <UniqueIdentifier>{826951b3-4092-4988-bd89-4aeb63f4fbac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sprite">
+      <UniqueIdentifier>{41f5a49e-fa60-4e2a-9f12-32abbce548b3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -139,24 +139,6 @@
     <ClCompile Include="src\util\RawFile.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\importer\bitmap.cpp">
-      <Filter>Source Files\importer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\importer\cursor.cpp">
-      <Filter>Source Files\importer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\importer\palette.cpp">
-      <Filter>Source Files\importer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\importer\pckfile.cpp">
-      <Filter>Source Files\importer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\importer\pcxfile.cpp">
-      <Filter>Source Files\importer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\importer\tabfile.cpp">
-      <Filter>Source Files\importer</Filter>
-    </ClCompile>
     <ClCompile Include="src\model\Building.cpp">
       <Filter>Source Files\model</Filter>
     </ClCompile>
@@ -181,40 +163,7 @@
     <ClCompile Include="src\rendering\SoundStreamRenderer.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="src\City.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\citybuilding.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\cityitem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\citymap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\gfx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\importmanager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LogicManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SceneManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\screen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shaderprogram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\model\SkilledUnit.cpp">
@@ -264,6 +213,9 @@
     </ClCompile>
     <ClCompile Include="src\resources\TextureManager.cpp">
       <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sprite\Sprite3D.cpp">
+      <Filter>Source Files\Sprite</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -351,24 +303,6 @@
     <ClInclude Include="src\model\Vehicle.h">
       <Filter>Header Files\model</Filter>
     </ClInclude>
-    <ClInclude Include="src\importer\bitmap.h">
-      <Filter>Header Files\importer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\importer\cursor.h">
-      <Filter>Header Files\importer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\importer\palette.h">
-      <Filter>Header Files\importer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\importer\pckfile.h">
-      <Filter>Header Files\importer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\importer\pcxfile.h">
-      <Filter>Header Files\importer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\importer\tabfile.h">
-      <Filter>Header Files\importer</Filter>
-    </ClInclude>
     <ClInclude Include="src\rendering\RenderableBase.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
@@ -386,45 +320,6 @@
     </ClInclude>
     <ClInclude Include="src\util\Property.h">
       <Filter>Header Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="src\City.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\citybuilding.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\cityitem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\citymap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\exceptions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameModel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gfx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\importmanager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LogicManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SceneManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\screen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shaderprogram.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\surface.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\resources\SoundResourceManagerBase.h">
       <Filter>Header Files\Resources</Filter>
@@ -450,9 +345,6 @@
     <ClInclude Include="src\util\vec.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="src\logger.h">
-      <Filter>Header Files\Utils</Filter>
-    </ClInclude>
     <ClInclude Include="src\game\Game.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
@@ -476,6 +368,15 @@
     </ClInclude>
     <ClInclude Include="src\resources\TextureManager.h">
       <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\logger.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\os\File.h">
+      <Filter>Header Files\os</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sprite\Sprite3D.h">
+      <Filter>Header Files\Sprite</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

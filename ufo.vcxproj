@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\ufo\ufo\src\Input;E:\Projects\ufo\ufo\src\util;E:\Projects\ufo\ufo\src\sound;E:\Projects\ufo\ufo\src\rendering;E:\Projects\ufo\ufo\src\HAL;E:\Projects\ufo\ufo\src\game;E:\Projects\ufo\ufo\src\resources;E:\Projects\ufo\ufo\src\importer;E:\Projects\ufo\ufo\src\os;E:\Projects\ufo\ufo\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\ufo\ufo\src\sprite;E:\ufo\ufo\src\Input;E:\Projects\ufo\ufo\src\util;E:\Projects\ufo\ufo\src\sound;E:\Projects\ufo\ufo\src\rendering;E:\Projects\ufo\ufo\src\HAL;E:\Projects\ufo\ufo\src\game;E:\Projects\ufo\ufo\src\resources;E:\Projects\ufo\ufo\src\importer;E:\Projects\ufo\ufo\src\os;E:\Projects\ufo\ufo\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -79,11 +79,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\City.cpp" />
-    <ClCompile Include="src\citybuilding.cpp" />
-    <ClCompile Include="src\cityitem.cpp" />
-    <ClCompile Include="src\citymap.cpp" />
-    <ClCompile Include="src\GameModel.cpp" />
     <ClCompile Include="src\game\Factions.cpp" />
     <ClCompile Include="src\game\Game.cpp" />
     <ClCompile Include="src\game\GameObject.cpp" />
@@ -91,18 +86,9 @@
     <ClCompile Include="src\game\Level.cpp" />
     <ClCompile Include="src\game\LevelTile.cpp" />
     <ClCompile Include="src\game\LevelTileVis.cpp" />
-    <ClCompile Include="src\gfx.cpp" />
     <ClCompile Include="src\HAL\OpenAL.cpp" />
-    <ClCompile Include="src\importer\bitmap.cpp" />
-    <ClCompile Include="src\importer\cursor.cpp" />
-    <ClCompile Include="src\importer\palette.cpp" />
-    <ClCompile Include="src\importer\pckfile.cpp" />
-    <ClCompile Include="src\importer\pcxfile.cpp" />
-    <ClCompile Include="src\importer\tabfile.cpp" />
-    <ClCompile Include="src\importmanager.cpp" />
     <ClCompile Include="src\Input\GameActions.cpp" />
     <ClCompile Include="src\Input\Input.cpp" />
-    <ClCompile Include="src\LogicManager.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\model\Building.cpp" />
     <ClCompile Include="src\model\CityCoord.cpp" />
@@ -131,11 +117,9 @@
     <ClCompile Include="src\resources\SoundSourceManager.cpp" />
     <ClCompile Include="src\resources\Texture.cpp" />
     <ClCompile Include="src\resources\TextureManager.cpp" />
-    <ClCompile Include="src\SceneManager.cpp" />
-    <ClCompile Include="src\screen.cpp" />
-    <ClCompile Include="src\shaderprogram.cpp" />
     <ClCompile Include="src\sound\MusicPlayer.cpp" />
     <ClCompile Include="src\sound\SoundStream.cpp" />
+    <ClCompile Include="src\sprite\Sprite3D.cpp" />
     <ClCompile Include="src\util\AppSettings.cpp" />
     <ClCompile Include="src\util\EngineSettings.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">E:\Projects\ufo\ufo\src\sound;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -147,12 +131,6 @@
     <ClCompile Include="src\util\vec.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\City.h" />
-    <ClInclude Include="src\citybuilding.h" />
-    <ClInclude Include="src\cityitem.h" />
-    <ClInclude Include="src\citymap.h" />
-    <ClInclude Include="src\exceptions.h" />
-    <ClInclude Include="src\GameModel.h" />
     <ClInclude Include="src\game\Factions.h" />
     <ClInclude Include="src\game\Game.h" />
     <ClInclude Include="src\game\GameObject.h" />
@@ -160,19 +138,9 @@
     <ClInclude Include="src\game\Level.h" />
     <ClInclude Include="src\game\LevelTile.h" />
     <ClInclude Include="src\game\LevelTileVis.h" />
-    <ClInclude Include="src\gfx.h" />
     <ClInclude Include="src\HAL\OpenAL.h" />
-    <ClInclude Include="src\importer\bitmap.h" />
-    <ClInclude Include="src\importer\cursor.h" />
-    <ClInclude Include="src\importer\palette.h" />
-    <ClInclude Include="src\importer\pckfile.h" />
-    <ClInclude Include="src\importer\pcxfile.h" />
-    <ClInclude Include="src\importer\tabfile.h" />
-    <ClInclude Include="src\importmanager.h" />
     <ClInclude Include="src\Input\GameActions.h" />
     <ClInclude Include="src\Input\Input.h" />
-    <ClInclude Include="src\logger.h" />
-    <ClInclude Include="src\LogicManager.h" />
     <ClInclude Include="src\model\Building.h" />
     <ClInclude Include="src\model\CityCoord.h" />
     <ClInclude Include="src\model\DimensionGate.h" />
@@ -181,6 +149,7 @@
     <ClInclude Include="src\model\SkillSet.h" />
     <ClInclude Include="src\model\Unit.h" />
     <ClInclude Include="src\model\Vehicle.h" />
+    <ClInclude Include="src\os\File.h" />
     <ClInclude Include="src\os\FileEnums.h" />
     <ClInclude Include="src\os\FileIO.h" />
     <ClInclude Include="src\os\filelinux.h" />
@@ -201,17 +170,15 @@
     <ClInclude Include="src\resources\SoundSourceManager.h" />
     <ClInclude Include="src\resources\Texture.h" />
     <ClInclude Include="src\resources\TextureManager.h" />
-    <ClInclude Include="src\SceneManager.h" />
-    <ClInclude Include="src\screen.h" />
-    <ClInclude Include="src\shaderprogram.h" />
     <ClInclude Include="src\sound\MusicPlayer.h" />
     <ClInclude Include="src\sound\SoundRenderer.h" />
     <ClInclude Include="src\sound\SoundStream.h" />
-    <ClInclude Include="src\surface.h" />
+    <ClInclude Include="src\sprite\Sprite3D.h" />
     <ClInclude Include="src\utils.h" />
     <ClInclude Include="src\util\Accumulator.h" />
     <ClInclude Include="src\util\AppSettings.h" />
     <ClInclude Include="src\util\EngineSettings.h" />
+    <ClInclude Include="src\util\logger.h" />
     <ClInclude Include="src\util\ObjectPool.h" />
     <ClInclude Include="src\util\Property.h" />
     <ClInclude Include="src\util\RawFile.h" />

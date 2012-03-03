@@ -2,10 +2,9 @@
 #include "FileIO.h"
 #include "logger.h"
 #ifdef _WIN32
-cFileWin32::cFileWin32(int index)
+cFileWin32::cFileWin32()
 {
   Clear();
-  m_Index = index;
   m_AtEnd = false;
 };
 
@@ -175,11 +174,6 @@ void cFileWin32::Close()
 
     m_Path = "";
 }
-
-int cFileWin32::GetIndex() const
-{
-  return m_Index;
-};
 
 void cFileWin32::Clear()
 {

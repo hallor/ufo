@@ -1,5 +1,10 @@
 #include "Level.h"
 #include "LevelTile.h"
+#include "File.h"
+#include "logger.h"
+
+#include <Windows.h>
+#include <iostream>
 
 Level::Level()
 : m_Tiles(NULL)
@@ -8,13 +13,29 @@ Level::Level()
 
 bool Level::Load(const std::string &file)
 {
+    Unload();
     //TODO make it work perhaps?
+    cFile f;
 
+    if(!f.Open(file, FFileOpenFlags::OpenExisting | FFileOpenFlags::Read))
+        return false;
+        
+    int size = f.GetSize();
+    
     m_Dimensions = vec3(MAP_DIM_X, MAP_DIM_Y, MAP_DIM_Z);
-    m_Tiles = new LevelTile[(int)m_Dimensions.Volume()];
-    for(int i = 0; i < (int)m_Dimensions.Volume(); ++i)
+    m_Tiles = new LevelTile[size];
+    for(int i = 0; i < size; ++i)
         m_Tiles[i].OnCreate();
 
+    for(int i = 0; i < size; ++i)
+    {
+        unsigned char tid = 0;
+        if(!f.Read(&tid, sizeof(tid)))
+            return false;
+
+        m_Tiles[i].SetId(tid);
+    }
+    
     return true;
 };
 
@@ -32,14 +53,21 @@ const LevelTile* Level::GetTile(const vec3 &pos) const
 
 void Level::Unload()
 {
+    unsigned int ts = GetTickCount();
+
     if(m_Tiles)
     {
-        for(int i = 0; i < (int)m_Dimensions.Volume(); ++i)
+        for(int i = 0; i < 200000; ++i)
             m_Tiles[i].OnDestroy();
 
         delete [] m_Tiles;
     }
         
+        
+    unsigned int te = GetTickCount();
+
+    std::cout<<(te - ts) / 1000<<std::endl;
+
     m_Tiles = NULL;
     m_Dimensions = vec3::ZERO;
 };

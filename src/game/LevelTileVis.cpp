@@ -7,14 +7,18 @@ LevelTileVis::LevelTileVis(iGameObject *parent)
 {
 }
 
+void LevelTileVis::OnCreate()
+{
+    InitializeSprite();
+}
+
 void LevelTileVis::OnTileIdChanged()
 {
     int new_id = -1;
     if(GetTile())
         new_id = GetTile()->GetId();
 
-    // TODO: make texture loading
-    SetTexture(NULL);
+    SetTexture("resources\\ufodata\\alien1.bmp");
 }
 
 LevelTile *LevelTileVis::GetTile() const

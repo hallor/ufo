@@ -1,8 +1,9 @@
 #pragma once
+#include <string>
 #include "vec.h"
 
 class iGameObject;
-struct SDL_Surface;
+class cSprite3D;
 
 class iGameObjectVis
 {
@@ -11,18 +12,23 @@ public:
     virtual ~iGameObjectVis();
 
     virtual void OnCreate() {};
-    virtual void OnDestroy() {};
+    virtual void OnDestroy();
 
     virtual iGameObject *GetParent() const { return m_Parent; }
 
-    SDL_Surface *GetTexture() const { return m_Texture; }
-    void SetTexture(SDL_Surface *surf) { m_Texture = surf; }
-    
+    virtual cSprite3D *GetSprite3D() const { return m_Sprite; }
     // Position in parent space
     virtual vec3 GetPosOffset() const { return m_Offset; };
     virtual void SetPosOffset(const vec3 &vec) { m_Offset = vec; };
 
     virtual void Update(float dt) const {};
+
+protected:
+
+    virtual bool SetTexture(const std::string &texture);
+    
+    virtual bool InitializeSprite();
+    virtual void DestroySprite();
 
 private:
 
@@ -30,6 +36,5 @@ private:
 
     iGameObject *m_Parent;    
 
-    // TODO: change to cTexture, make loading through texture manager
-    SDL_Surface *m_Texture;
+    cSprite3D *m_Sprite;
 };

@@ -9,6 +9,8 @@ public:
     LevelTileVis(iGameObject *parent);
     virtual ~LevelTileVis() {};
 
+    virtual void OnCreate();
+
     virtual void OnTileIdChanged();
 
 protected:

@@ -31,10 +31,12 @@ void iGameObject::UpdateVisualisation(float dt)
 
 void iGameObject::DestroyVis()
 {
-    if(GetVis())
+    iGameObjectVis *vis = GetVis();
+
+    if(vis)
     {
-        GetVis()->OnDestroy();
-        delete GetVis();
+        vis->OnDestroy();
+        delete vis;
         m_Visualisation = NULL;
     }
 }
