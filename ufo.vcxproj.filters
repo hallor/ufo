@@ -71,6 +71,9 @@
     <Filter Include="Source Files\Sprite">
       <UniqueIdentifier>{41f5a49e-fa60-4e2a-9f12-32abbce548b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Camera">
+      <UniqueIdentifier>{44ae52d1-cdd8-4f59-a018-1b4b22da3482}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\os\FileEnums.cpp">
@@ -216,6 +219,12 @@
     </ClCompile>
     <ClCompile Include="src\sprite\Sprite3D.cpp">
       <Filter>Source Files\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rendering\SpriteRenderer.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera\CityScapeCamera.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -377,6 +386,15 @@
     </ClInclude>
     <ClInclude Include="src\sprite\Sprite3D.h">
       <Filter>Header Files\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rendering\SpriteRenderer.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Camera\CameraBase.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Camera\CityScapeCamera.h">
+      <Filter>Header Files\Camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -255,7 +255,7 @@ void cSoundStreamRenderer::ClearBinding(sStreamBinding &bnd)
 
     bnd.m_RawBuffers.FreeAll();
 
-    for(int i = 0; i < bnd.m_Buffers.size(); ++i)
+    for(unsigned int i = 0; i < bnd.m_Buffers.size(); ++i)
         m_Buffers.Return(bnd.m_Buffers[i]);
     
     bnd.m_Buffers.clear();

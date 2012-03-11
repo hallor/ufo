@@ -16,9 +16,13 @@ bool vTextureResource::IsValid() const
     return GetState() == EResourceState::Ok && GetSize().x > 0 && GetSize().y > 0;
 }
 
-vec2 vTextureResource::GetSize() const
+vec3 vTextureResource::GetSize() const
 {
-    return vec2::ZERO;
+    vec3 size = vec3::ZERO;
+    size.x = Get() ? Get()->w : 0.0f;
+    size.y = Get() ? Get()->h : 0.0f;
+
+    return size;
 }
 
 cTexture::cTexture(vTextureResource *res)

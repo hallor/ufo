@@ -80,12 +80,12 @@ void cInput::ClearKeyStates()
 
 bool cInput::GetKeyState(SDLKey key) const
 {
-    return SDL_GetKeyState(NULL)[key];
+    return SDL_GetKeyState(NULL)[key] != 0;
 }
 
 bool cInput::GetButtonState(Uint8 button) const
 {
-    return SDL_GetMouseState(NULL, NULL) & button;
+    return (SDL_GetMouseState(NULL, NULL) & button) != 0;
 }
 
 bool cInput::GetActionKeyState(EGameAction::TYPE action) const
@@ -98,7 +98,7 @@ bool cInput::GetActionKeyState(EGameAction::TYPE action) const
     if(key.m_Button == Uint8(-1) && !key.m_KeyboardInput)
         return false;
 
-    return key.m_KeyboardInput ? SDL_GetKeyState(NULL)[key.m_Key] : SDL_GetMouseState(NULL, NULL) & key.m_Button;
+    return key.m_KeyboardInput ? SDL_GetKeyState(NULL)[key.m_Key] != 0 : (SDL_GetMouseState(NULL, NULL) & key.m_Button) != 0;
 }
 
 vec2 cInput::GetMousePos() const

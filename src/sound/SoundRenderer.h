@@ -10,7 +10,7 @@ public:
     
     virtual bool IsValid() { return false; }
 
-    virtual void OnFrame(){};
+    virtual void OnFrame(float dt){};
 
     virtual void Render(const vRenderable &object){};
 

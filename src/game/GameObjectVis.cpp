@@ -24,7 +24,7 @@ bool iGameObjectVis::SetTexture(const std::string &texture)
         return false;
 
     GetSprite3D()->SetTexture(texture);
-    return false;
+    return true;
 }
 
 bool iGameObjectVis::InitializeSprite()
@@ -33,6 +33,7 @@ bool iGameObjectVis::InitializeSprite()
        return true;
        
     m_Sprite = new (std::nothrow) cSprite3D; 
+    m_Sprite->Initialize();
 
     return GetSprite3D() != NULL;
 }

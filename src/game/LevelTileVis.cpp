@@ -18,7 +18,7 @@ void LevelTileVis::OnTileIdChanged()
     if(GetTile())
         new_id = GetTile()->GetId();
 
-    SetTexture("resources\\ufodata\\alien1.bmp");
+    SetTexture("resources\\ufodata\\alien\\alien1.bmp");
 }
 
 LevelTile *LevelTileVis::GetTile() const

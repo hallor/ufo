@@ -11,7 +11,7 @@ public:
 
     virtual bool IsValid() const;
 
-    vec2 GetSize() const;
+    vec3 GetSize() const;
 
 protected:
 };
@@ -24,7 +24,7 @@ public:
     SDL_Surface *Get() const;
     vTextureResource *GetRawResource() const { return m_Resource; }
 
-    vec2 GetSize() const { return GetRawResource() ? GetRawResource()->GetSize() : vec2::ZERO; }
+    vec3 GetSize() const { return GetRawResource() ? GetRawResource()->GetSize() : vec3::ZERO; }
 
     void Release() { delete this; }
 

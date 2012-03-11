@@ -39,7 +39,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>E:\VS2010\VC\include\OAL;E:\ufo\ufo\src\rendering;E:\ufo\ufo\src\resources;E:\ufo\ufo\src\sound;E:\ufo\ufo\src\os;E:\ufo\ufo\src\importer;E:\ufo\ufo\src\model;E:\ufo\ufo\src\game;E:\ufo\ufo\src\HAL;E:\ufo\ufo\src\util;E:\ufo\ufo\src;$(IncludePath)</IncludePath>
+    <IncludePath>E:\ufo\ufo\src\Camera;E:\VS2010\VC\include\OAL;E:\ufo\ufo\src\rendering;E:\ufo\ufo\src\resources;E:\ufo\ufo\src\sound;E:\ufo\ufo\src\os;E:\ufo\ufo\src\importer;E:\ufo\ufo\src\model;E:\ufo\ufo\src\game;E:\ufo\ufo\src\HAL;E:\ufo\ufo\src\util;E:\ufo\ufo\src;$(IncludePath)</IncludePath>
     <LibraryPath>E:\VS2010\VC\lib\SDL;E:\VS2010\VC\lib\OAL;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -79,6 +79,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Camera\CityScapeCamera.cpp" />
     <ClCompile Include="src\game\Factions.cpp" />
     <ClCompile Include="src\game\Game.cpp" />
     <ClCompile Include="src\game\GameObject.cpp" />
@@ -106,6 +107,7 @@
     <ClCompile Include="src\rendering\RendererEnums.cpp" />
     <ClCompile Include="src\rendering\SoundRenderer.cpp" />
     <ClCompile Include="src\rendering\SoundStreamRenderer.cpp" />
+    <ClCompile Include="src\rendering\SpriteRenderer.cpp" />
     <ClCompile Include="src\resources\IDGenerator.cpp" />
     <ClCompile Include="src\resources\ManagerBase.cpp" />
     <ClCompile Include="src\resources\ResourceBase.cpp" />
@@ -131,6 +133,8 @@
     <ClCompile Include="src\util\vec.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Camera\CameraBase.h" />
+    <ClInclude Include="src\Camera\CityScapeCamera.h" />
     <ClInclude Include="src\game\Factions.h" />
     <ClInclude Include="src\game\Game.h" />
     <ClInclude Include="src\game\GameObject.h" />
@@ -158,6 +162,7 @@
     <ClInclude Include="src\rendering\RendererBase.h" />
     <ClInclude Include="src\rendering\RendererEnums.h" />
     <ClInclude Include="src\rendering\SoundStreamRenderer.h" />
+    <ClInclude Include="src\rendering\SpriteRenderer.h" />
     <ClInclude Include="src\resources\FixedArray.h" />
     <ClInclude Include="src\resources\IDGenerator.h" />
     <ClInclude Include="src\resources\ManagerBase.h" />

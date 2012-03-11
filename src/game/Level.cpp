@@ -44,11 +44,13 @@ const LevelTile* Level::GetTile(const vec3 &pos) const
     if(!CheckTilePositionBounds(pos))
         return NULL;
 
-    int x = pos.x;
-    int y = pos.y;
-    int z = pos.z;
+    int x = (int)pos.x;
+    int y = (int)pos.y;
+    int z = (int)pos.z;
 
-    return &m_Tiles[IndexFromPos(pos)];
+    int idx = IndexFromPos(vec3(x, y, z));
+
+    return m_Tiles;
 };
 
 void Level::Unload()

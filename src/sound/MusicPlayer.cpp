@@ -164,7 +164,7 @@ int cMusicPlayer::CreateStream()
 
 void cMusicPlayer::DeleteStream(int index)
 {
-    if(index < 0 || index >= m_Streams.size())
+    if(index < 0 || index >= (int)m_Streams.size())
         return;
 
     vRenderable *stream = m_Streams[index];

@@ -3,6 +3,12 @@
 #include "EngineSettings.h"
 #include "Level.h"
 #include "pckfile.h"
+#include "TextureManager.h"
+#include "SoundSourceManager.h"
+#include "SoundBufferManager.h"
+#include "Sprite3D.h"
+#include "LevelTile.h"
+#include "LevelTileVis.h"
 
 Game* g_GameInstance = NULL;
 
@@ -29,6 +35,9 @@ Game::Game()
     m_Running = false;
 
     m_MainSurface = NULL;
+    m_TextureManager = NULL;
+    m_SoundBufferManager = NULL;
+    m_SoundSourceManager = NULL;
 }
 
 Game::~Game()
@@ -46,13 +55,13 @@ int Game::OnExecute(int argc, char *argv[])
 
     m_Running = true;
 
-    Level level;
-    level.Load("xcoma\\ufodata\\citymap1");
-    level.Unload();
-
+    m_CurrentLevel.Load("xcoma\\ufodata\\citymap1");
+    
     MainLoop();
     
     OnExit();
+
+    m_CurrentLevel.Unload();
 
     return 0;
 }
@@ -80,15 +89,20 @@ void Game::OnExit()
 {
     m_Running = false;
 
+    ReleaseManagers();
+    
+    ClearSDL();
+
     AppSettings::Free();
     EngineSettings::Free();
-
-    ClearSDL();
 }
 
 bool Game::Initialize()
 {
     if(!InitSDL())
+        return false;
+
+    if(!InitManagers())
         return false;
 
     s_LogicStep = 1.0f / EngineSettings::GetLogicUpdateFrequency();
@@ -130,7 +144,7 @@ void Game::UpdateSDLEvents()
 
 void Game::Update(float dt)
 {
-
+    m_CurrentLevel.GetTile(vec3(0.0f, 1.0f, 0.0f))->GetTileVis()->GetSprite3D()->PrepareForRendering();
 }
 
 void Game::Draw()
@@ -157,20 +171,33 @@ void Game::ClearSDL()
     SDL_Quit();
 }
 
-SDL_Surface *Game::LoadTexture(const std::string &tex)
+bool Game::InitManagers()
 {
-    if(!tex.length())
-        return NULL;
+    if(!GetTextureManager())
+        m_TextureManager = new cTextureManager;
 
-    SDL_Surface *tmp = SDL_LoadBMP(tex.c_str());
-    if(!tmp)
-        return NULL;
+    if(!GetSoundSourceManager())
+        m_SoundSourceManager = new cSoundSourceManager;
 
-    SDL_Surface *ret = SDL_DisplayFormat(tmp);
-    
-    SDL_FreeSurface(tmp);
+    if(!GetSoundBufferManager())
+        m_SoundBufferManager = new cSoundBufferManager;
 
-    SDL_SetColorKey(ret, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(ret->format, 255, 0, 255));
 
-    return ret;
+    return GetTextureManager() && GetSoundSourceManager() && GetSoundBufferManager();
+}
+
+void Game::ReleaseManagers()
+{
+    if(GetTextureManager())
+        delete GetTextureManager();
+
+    if(GetSoundSourceManager())
+        delete GetSoundSourceManager();
+
+    if(GetSoundBufferManager())
+        delete GetSoundBufferManager();
+
+    m_TextureManager = NULL;
+    m_SoundSourceManager = NULL;
+    m_SoundBufferManager = NULL;
 }

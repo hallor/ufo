@@ -41,11 +41,11 @@ public:
 
     bool HasFree() const { return FreeCount() > 0; }
 
-    int Size() const { return m_All.size(); }
+    unsigned int Size() const { return m_All.size(); }
 
-    int UsedCount() const { return m_Used.size(); }
+    unsigned int UsedCount() const { return m_Used.size(); }
 
-    int FreeCount() const { return m_Free.size(); }
+    unsigned int FreeCount() const { return m_Free.size(); }
 
     bool Get(T &out)
     {
