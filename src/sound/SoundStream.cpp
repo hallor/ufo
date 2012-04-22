@@ -110,7 +110,7 @@ bool cSoundStream::OpenStream(const std::string &path)
 
 void cSoundStream::CloseStream()
 {
-    m_BoundFile.Release();
+    m_BoundFile.Close();
 };  
 
 bool cSoundStream::CreateRenderingProperties()

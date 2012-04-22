@@ -1,23 +1,21 @@
 #pragma once
 #include <string>
 #include "FixedArray.h"
+#include "File.h"
 
-class iFile;
+class cFile;
 
 class cRawFile
 {
 public:
-    cRawFile();
-    virtual ~cRawFile();
-
     bool Open(const std::string &path);
 
     bool Read(cFixedArray<char> * data, bool loop = false);
 
     int GetSize() const;
 
-    void Release();
+    void Close();
 
 protected:
-    iFile *m_File;
+    cFile m_File;
 };
