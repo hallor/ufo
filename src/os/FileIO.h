@@ -8,9 +8,6 @@
 /*
   TODO:
   - add a way to do copy-by-value of files (refcounts??)
-  - and remove destructor function
-  - Maybe create wrapper so file creation will be the same for all platforms
-    without need for factory (i.e. is factory needed here?)
   - Remove os-dependent flags/dwords/etc. replace with generic enums
 */
 
@@ -89,15 +86,3 @@ public:
 	/* Closes file */
 	virtual void Close() = 0;
 };
-
-/* Creates iFile depending on compilation platform 
-	May return NULL
-	doesnt throw exceptions
-*/
-iFile* CreateFileIO();
-
-/* Releases file created by CreateFileIO()
-	Passing NULL is legal NOP
-	Will reset $f to NULL
-*/
-void ReleaseFileIO(iFile*& f);
