@@ -4,8 +4,8 @@
 vec3 CityScapeCamera::PointWorldToScreen(const vec3 &pt) const
 {
     vec3 out = pt;
-    out.x *= 65.0f;
-    out.y *= 47.0f;
+    out.x *= AppSettings::GetWindowWidth() / 1920.0f;
+    out.y *= AppSettings::GetWindowHeight() / 1080.0f;
 
     return out;
 };

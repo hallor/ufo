@@ -74,7 +74,7 @@ void vSpriteRenderer::OnFrame(float dt)
     m_SpritesToRender.clear();
 }
 
-void vSpriteRenderer::Render(const vRenderable &object)
+void vSpriteRenderer::Render(vRenderable &object)
 {
     if(!IsValid())
         return;

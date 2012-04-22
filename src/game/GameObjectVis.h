@@ -21,7 +21,7 @@ public:
     virtual vec3 GetPosOffset() const { return m_Offset; };
     virtual void SetPosOffset(const vec3 &vec) { m_Offset = vec; };
 
-    virtual void Update(float dt) const {};
+    virtual void Update(float dt);
 
 protected:
 

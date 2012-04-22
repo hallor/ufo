@@ -26,7 +26,7 @@ public:
     virtual void  SetSpeed(float speed) { m_Speed = speed; }
 
     // Rememver to call UpdateVisualisation whenever needed
-    virtual void Update(float dt) {};
+    virtual void Update(float dt) { UpdateVisualisation(dt); };
     virtual void UpdateVisualisation(float dt);
 
 protected:

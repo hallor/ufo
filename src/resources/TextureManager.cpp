@@ -102,7 +102,7 @@ SDL_Surface *cTextureManager::LoadTexture(const std::string &file)
     
     SDL_FreeSurface(tmp);
 
-    SDL_SetColorKey(ret, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(ret->format, 255, 0, 255));
+    SDL_SetColorKey(ret, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(ret->format, 0, 0, 0));
 
     return ret;
 }

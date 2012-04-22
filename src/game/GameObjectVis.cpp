@@ -18,6 +18,12 @@ void iGameObjectVis::OnDestroy()
     DestroySprite();
 }
 
+void iGameObjectVis::Update(float dt)
+{
+    if(GetSprite3D())
+        GetSprite3D()->SetPosition(GetParent()->GetPos() + GetPosOffset());
+}
+
 bool iGameObjectVis::SetTexture(const std::string &texture)
 {
     if(!GetSprite3D())

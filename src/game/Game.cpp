@@ -1,14 +1,9 @@
 #include "Game.h"
 #include "AppSettings.h"
 #include "EngineSettings.h"
-#include "Level.h"
-#include "pckfile.h"
 #include "TextureManager.h"
 #include "SoundSourceManager.h"
 #include "SoundBufferManager.h"
-#include "Sprite3D.h"
-#include "LevelTile.h"
-#include "LevelTileVis.h"
 
 Game* g_GameInstance = NULL;
 
@@ -54,14 +49,10 @@ int Game::OnExecute(int argc, char *argv[])
         return -2;
 
     m_Running = true;
-
-    m_CurrentLevel.Load("xcoma\\ufodata\\citymap1");
-    
+        
     MainLoop();
     
     OnExit();
-
-    m_CurrentLevel.Unload();
 
     return 0;
 }
@@ -104,11 +95,11 @@ bool Game::Initialize()
 
     if(!InitManagers())
         return false;
-
+        
     s_LogicStep = 1.0f / EngineSettings::GetLogicUpdateFrequency();
 
     m_Input.Initialize();
-
+    
     m_GameTimer.Start();
     m_Accumulator = Accumulator<float>(s_LogicStep);
 
@@ -116,7 +107,7 @@ bool Game::Initialize()
 }
 
 void Game::MainLoop()
-{
+{    
     while(m_Running)
     {
         m_GameTimer.Tick();
@@ -125,7 +116,7 @@ void Game::MainLoop()
 
         UpdateSDLEvents();
 
-        for(int i = 0; i < EngineSettings::GetMaxLogicUpdatesPerFrame() && m_Accumulator.Check(); ++i)
+        for(unsigned int i = 0; i < EngineSettings::GetMaxLogicUpdatesPerFrame() && m_Accumulator.Check(); ++i)
             Update(s_LogicStep);
 
         Draw();
@@ -144,12 +135,12 @@ void Game::UpdateSDLEvents()
 
 void Game::Update(float dt)
 {
-    m_CurrentLevel.GetTile(vec3(0.0f, 1.0f, 0.0f))->GetTileVis()->GetSprite3D()->PrepareForRendering();
+
 }
 
 void Game::Draw()
 {    
-    SDL_Flip(m_MainSurface);
+
 }
 
 bool Game::InitSDL()

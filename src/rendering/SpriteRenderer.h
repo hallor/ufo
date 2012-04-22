@@ -21,7 +21,7 @@ public:
 
     virtual void OnFrame(float dt);
 
-    virtual void Render(const vRenderable &object);
+    virtual void Render(vRenderable &object);
 
     iCamera *GetCamera() const { return m_Camera; }
 

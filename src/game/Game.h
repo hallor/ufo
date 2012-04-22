@@ -6,7 +6,6 @@
 #include "Timer.h"
 #include "Input.h"
 #include "Accumulator.h"
-#include "Level.h"
 
 class cTextureManager;
 class cSoundBufferManager;
@@ -64,9 +63,7 @@ protected:
 
     bool InitManagers();
     void ReleaseManagers();
-
-    Level m_CurrentLevel;
-
+    
     cTextureManager     *m_TextureManager;
     cSoundBufferManager *m_SoundBufferManager;
     cSoundSourceManager *m_SoundSourceManager;
