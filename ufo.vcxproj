@@ -99,7 +99,6 @@
     <ClCompile Include="src\model\Unit.cpp" />
     <ClCompile Include="src\model\Vehicle.cpp" />
     <ClCompile Include="src\os\FileEnums.cpp" />
-    <ClCompile Include="src\os\FileIO.cpp" />
     <ClCompile Include="src\os\filelinux.cpp" />
     <ClCompile Include="src\os\FileWin32.cpp" />
     <ClCompile Include="src\rendering\RenderableBase.cpp" />

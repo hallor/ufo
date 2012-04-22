@@ -82,9 +82,6 @@
     <ClCompile Include="src\os\FileWin32.cpp">
       <Filter>Source Files\os</Filter>
     </ClCompile>
-    <ClCompile Include="src\os\FileIO.cpp">
-      <Filter>Source Files\os</Filter>
-    </ClCompile>
     <ClCompile Include="src\os\filelinux.cpp">
       <Filter>Source Files\os</Filter>
     </ClCompile>
