@@ -34,10 +34,9 @@ std::string EFactionName::ToString(EFactionName::TYPE t)
         WRITE(Extropians)
         WRITE(Technocrats)
         WRITE(Civilian)
+        default: return "Unknown faction";
     }
 #undef WRITE
-
-    return "Unknown faction";
 }
 
 EFactionName::TYPE EFactionName::FromString(const std::string &str)

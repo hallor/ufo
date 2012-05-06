@@ -8,7 +8,7 @@ TARGET =
 include (src.pri)
 
 LIBS += -lSDL -lGL -lGLEW -lopenal
-QMAKE_CXXFLAGS += -pedantic -std=gnu++0x -Wall
+QMAKE_CXXFLAGS += -std=gnu++0x -Wall -Wno-unused-parameter
 
 HEADERS += \
     os/compat_sdl.h

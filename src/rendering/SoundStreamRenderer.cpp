@@ -132,6 +132,7 @@ void cSoundStreamRenderer::UpdateStreams()
         case ESourceState::Playing: PlayStream(str); break;
         case ESourceState::Stopped: StopStream(str); break;
         case ESourceState::Paused:  PauseStream(str); break;
+        default: break;
         }
     }
 

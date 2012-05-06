@@ -53,7 +53,7 @@ bool cRawFile::Read(cFixedArray<char> *data, bool loop /* = false */)
         {
             m_File.Read(data->GetDataPointer(), size_to_read);
 
-            memcpy(data->GetDataPointer() + size_to_read, 0, data_size - size_to_read); 
+            memset(data->GetDataPointer() + size_to_read, 0, data_size - size_to_read);
         }
     }
 

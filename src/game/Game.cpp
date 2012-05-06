@@ -62,6 +62,7 @@ void Game::OnInputGameAction(EGameAction::TYPE action)
     switch(action)
     {
         case EGameAction::QUIT_GAME: m_Running = false; break;
+        default: break;
     }
 }
 

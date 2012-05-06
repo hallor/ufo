@@ -10,6 +10,8 @@ std::string EResourceType::ToString(EResourceType::TYPE t)
         WRITE(OalSoundBuffer)
         WRITE(OalSoundSource)
         WRITE(SDLSurface)
+        WRITE(None)
+        default: return "Unknown";
     }
 
 #undef WRITE

@@ -141,7 +141,7 @@ int cTextureManager::FindResource(vResource<SDL_Surface*> *res) const
 
 void cTextureManager::RemoveResource(unsigned int storage_index)
 {
-    if(storage_index < 0 || storage_index >= GetResourcesCount())
+    if(storage_index >= GetResourcesCount())
         return;
     
     m_Resources[storage_index] = m_Resources.back();
@@ -151,7 +151,7 @@ void cTextureManager::RemoveResource(unsigned int storage_index)
 
 void cTextureManager::DeleteResource(unsigned int storage_index)
 {
-    if(storage_index < 0 || storage_index >= GetResourcesCount())
+    if(storage_index >= GetResourcesCount())
         return;
 
     vTextureResource *res = m_Resources[storage_index];

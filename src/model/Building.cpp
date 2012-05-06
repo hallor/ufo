@@ -41,20 +41,23 @@ void Building::exit(const Vehicle * v)
 	return;
 }
 
+// Temporary until implementation ready
+CityCoordV fake_lz = CityCoordV();
+
 // Returns places where flying vehicles can land
 const CityCoordV & Building::landingZones() const
 {
-	return CityCoordV();
+    return fake_lz;
 }
 
 // Returns places where ground vehicles can enter building
 const CityCoordV & Building::taxiZones() const
 {
-	return CityCoordV();
+    return fake_lz;
 }
 
 // Pedestrian tube entrances
 const CityCoordV & Building::tubeZones() const
 {
-	return CityCoordV();
+    return fake_lz;
 }
