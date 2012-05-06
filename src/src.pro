@@ -9,3 +9,6 @@ include (src.pri)
 
 LIBS += -lSDL -lGL -lGLEW -lopenal
 QMAKE_CXXFLAGS += -pedantic -std=gnu++0x -Wall
+
+HEADERS += \
+    os/compat_sdl.h

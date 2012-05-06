@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL\SDL.h>
+#include "compat_sdl.h"
 #include <vector>
 #include "RendererBase.h"
 

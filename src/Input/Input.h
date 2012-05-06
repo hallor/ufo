@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL\SDL.h>
+#include "compat_sdl.h"
 #include "GameActions.h"
 #include "vec.h"
 

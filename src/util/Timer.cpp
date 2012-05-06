@@ -1,5 +1,5 @@
 #include "Timer.h"
-#include <SDL\SDL.h>
+#include "compat_sdl.h"
 #include <iostream>
 
 cTimer::cTimer()
