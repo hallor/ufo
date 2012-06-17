@@ -35,6 +35,10 @@ bool cInput::Initialize()
 {    
     // temporary key bindings, need to load from .cfg
     m_KeyForAction[EGameAction::QUIT_GAME] = sActionKey(SDLK_ESCAPE);
+    m_KeyForAction[EGameAction::MOVE_LEFT] = sActionKey(SDLK_LEFT);
+    m_KeyForAction[EGameAction::MOVE_RIGHT] = sActionKey(SDLK_RIGHT);
+    m_KeyForAction[EGameAction::MOVE_UP] = sActionKey(SDLK_UP);
+    m_KeyForAction[EGameAction::MOVE_DOWN] = sActionKey(SDLK_DOWN);
 
     return true;
 }
@@ -101,12 +105,12 @@ bool cInput::GetActionKeyState(EGameAction::TYPE action) const
     return key.m_KeyboardInput ? SDL_GetKeyState(NULL)[key.m_Key] != 0 : (SDL_GetMouseState(NULL, NULL) & key.m_Button) != 0;
 }
 
-vec2 cInput::GetMousePos() const
+vec3 cInput::GetMousePos() const
 {
     int x = 0, y = 0;
     SDL_GetMouseState(&x, &y);
 
-    return vec2((float)x, (float)y);
+    return vec3((float)x, (float)y, 0.0f);
 }
 
 EGameAction::TYPE cInput::GetActionForKey(SDLKey key) const

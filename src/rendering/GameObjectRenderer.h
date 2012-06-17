@@ -2,16 +2,18 @@
 #include "compat_sdl.h"
 #include <vector>
 #include "RendererBase.h"
+#include "vec.h"
 
 class vSprite3DProperties;
 class cTexture;
 class iCamera;
+class iGameObject;
 
-class vSpriteRenderer : public iRendererBase
+class vGameObjectRenderer : public iRendererBase
 {
 public:
-    vSpriteRenderer();
-    virtual ~vSpriteRenderer();
+    vGameObjectRenderer();
+    virtual ~vGameObjectRenderer();
 
     virtual bool Initialize(cTexture* error_texture);
 
@@ -21,13 +23,18 @@ public:
 
     virtual void OnFrame(float dt);
 
-    virtual void Render(vRenderable &object);
+    virtual void Render(vRenderable *object);
+    virtual void Render(iGameObject *igo);
+
+    virtual void SetOffset(const vec3 &vec) { m_Offset = vec; }
 
     iCamera *GetCamera() const { return m_Camera; }
 
 protected:
 
     bool InitSDL();
+
+    vec3 m_Offset;
 
     iCamera *m_Camera;
     SDL_Surface *m_MainSurface;

@@ -7,8 +7,6 @@
 class vRenderable;
 class cSoundStream;
 
-typedef std::vector<vRenderable*> TRenderableList;
-
 class cMusicPlayer 
 {
 public:
@@ -20,7 +18,7 @@ public:
     virtual bool PlayMusic(const std::string &path);
     virtual void StopMusic();
 
-    TRenderableList &GetStreams() { return m_Streams; }
+    std::vector<vRenderable*> &GetStreams() { return m_Streams; }
 
     virtual void Update(float dt);
 
@@ -49,5 +47,5 @@ protected:
 
     cSoundStream *m_CurrentMusic;
 
-    TRenderableList m_Streams;
+    std::vector<vRenderable*> m_Streams;
 };

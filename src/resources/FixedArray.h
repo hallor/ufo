@@ -1,21 +1,22 @@
 #pragma once
 
 template <class T>
-class cFixedArray 
+class FixedArray 
 {
 public:
-    cFixedArray(unsigned int size)
+    FixedArray(unsigned int size)
     {
         m_Array = new T[size];
         m_Size = size;
     }
-    ~cFixedArray()
+    ~FixedArray()
     {
         if(m_Array)
             delete [] m_Array;
     };
 
     int GetSize() const { return m_Size; }
+    int GetDataSize() const { return m_Size * sizeof(T); }
 
     T* GetDataPointer() const { return m_Array; }
 

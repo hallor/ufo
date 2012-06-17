@@ -31,7 +31,7 @@ public:
     bool GetButtonState(Uint8 button) const;
     bool GetActionKeyState(EGameAction::TYPE action) const;
 
-    vec2 GetMousePos() const;
+    vec3 GetMousePos() const;
     
     EGameAction::TYPE GetActionForKey(SDLKey key) const;
     EGameAction::TYPE GetActionForButton(Uint8 button) const;

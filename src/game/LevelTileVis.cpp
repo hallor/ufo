@@ -1,6 +1,6 @@
 #include "LevelTileVis.h"
 #include "LevelTile.h"
-#include "Game.h"
+#include "Level.h"
 
 LevelTileVis::LevelTileVis(iGameObject *parent)
 : iGameObjectVis(parent)
@@ -14,11 +14,15 @@ void LevelTileVis::OnCreate()
 
 void LevelTileVis::OnTileIdChanged()
 {
-    int new_id = -1;
-    if(GetTile())
-        new_id = GetTile()->GetId();
+    if(!GetTile())
+        return;
+    
+    int new_id = GetTile()->GetId();
 
-    SetTexture("resources\\ufodata\\alien\\alien1.bmp");
+    if(!GetTile()->GetLevel())
+        return;
+
+    SetTexture(GetTile()->GetLevel()->GetTextureNameByTileId(new_id));
 }
 
 LevelTile *LevelTileVis::GetTile() const

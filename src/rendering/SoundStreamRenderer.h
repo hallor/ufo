@@ -37,7 +37,7 @@ public:
 
     virtual void OnFrame(float dt);
 
-    virtual void Render(vRenderable &object);
+    virtual void Render(vRenderable *object);
 
     virtual void Release();
 

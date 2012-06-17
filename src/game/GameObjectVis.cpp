@@ -24,6 +24,12 @@ void iGameObjectVis::Update(float dt)
         GetSprite3D()->SetPosition(GetParent()->GetPos() + GetPosOffset());
 }
 
+void iGameObjectVis::OnPreRender()
+{
+    if(GetSprite3D())
+        GetSprite3D()->PrepareForRendering();
+}
+
 bool iGameObjectVis::SetTexture(const std::string &texture)
 {
     if(!GetSprite3D())

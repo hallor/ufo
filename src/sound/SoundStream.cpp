@@ -134,7 +134,7 @@ void cSoundStream::CreateChunks()
 
     for(unsigned int i = m_Chunks.size(); i < EngineSettings::GetMaxQueuedSoundStreamBuffers(); ++i)
     {
-        m_Chunks.push_back(new cFixedArray<char>(CalculateChunkSize()));
+        m_Chunks.push_back(new FixedArray<char>(CalculateChunkSize()));
         m_FreeChunks.push_back(m_Chunks.back());
     }
 }
@@ -157,7 +157,7 @@ void cSoundStream::FillChunks()
 {
     while(!m_FreeChunks.empty())
     {
-        cFixedArray<char>* chunk = m_FreeChunks.back();
+        FixedArray<char>* chunk = m_FreeChunks.back();
         
         m_BoundFile.Read(chunk, GetLooping());
         m_BoundChunks.push_back(chunk);
@@ -165,7 +165,7 @@ void cSoundStream::FillChunks()
     }
 };
 
-bool cSoundStream::IsValidChunk(cFixedArray<char> *chunk) const
+bool cSoundStream::IsValidChunk(FixedArray<char> *chunk) const
 {
     for(TArrayList::const_iterator it = m_Chunks.begin(); it != m_Chunks.end(); ++it)
     {
@@ -233,13 +233,13 @@ void vSoundStreamProperties::Synchronize(const vRenderable *object)
     
     // Rewrite chunks queue
     ClearQueue();
-    for(std::list<cFixedArray<char>*>::const_iterator it = stream->GetDataQueue().begin(); it != stream->GetDataQueue().end(); ++it)
+    for(std::list<FixedArray<char>*>::const_iterator it = stream->GetDataQueue().begin(); it != stream->GetDataQueue().end(); ++it)
     {
         PushQueue(*it);
     }
 };
 
-void vSoundStreamProperties::PushQueue(cFixedArray<char> *chunk)
+void vSoundStreamProperties::PushQueue(FixedArray<char> *chunk)
 {
     if(m_ChunksInQueue.size() >= EngineSettings::GetDefaultMaxQueuedSoundStreamBuffers())
         return;
@@ -247,21 +247,21 @@ void vSoundStreamProperties::PushQueue(cFixedArray<char> *chunk)
     m_ChunksInQueue.push_back(chunk);
 };
 
-cFixedArray<char> *vSoundStreamProperties::PeekQueue()
+FixedArray<char> *vSoundStreamProperties::PeekQueue()
 {
     if(m_ChunksInQueue.empty())
         return NULL;
 
-    cFixedArray<char>* chunk = m_ChunksInQueue.front();
+    FixedArray<char>* chunk = m_ChunksInQueue.front();
     return chunk;
 };
 
-cFixedArray<char> *vSoundStreamProperties::PopQueue()
+FixedArray<char> *vSoundStreamProperties::PopQueue()
 {
     if(m_ChunksInQueue.empty())
         return NULL;
 
-    cFixedArray<char>* chunk = m_ChunksInQueue.front();
+    FixedArray<char>* chunk = m_ChunksInQueue.front();
     m_ChunksInQueue.pop_front();
     return chunk;
 };

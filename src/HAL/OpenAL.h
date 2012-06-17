@@ -46,7 +46,7 @@ public:
     bool IsBuffer(ALuint buffer);
     bool IsSource(ALuint source);
 
-    bool FillBufferData(ALuint buffer, cFixedArray<char> *data, ALenum format, ALsizei frequency);
+    bool FillBufferData(ALuint buffer, FixedArray<char> *data, ALenum format, ALsizei frequency);
     bool SetSourceProperties(ALuint source, const sSourceProperties &props);
 
     int GetProcessedBuffersCount(ALuint source);

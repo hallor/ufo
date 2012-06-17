@@ -74,6 +74,9 @@
     <Filter Include="Header Files\Camera">
       <UniqueIdentifier>{44ae52d1-cdd8-4f59-a018-1b4b22da3482}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Compatibility Tools">
+      <UniqueIdentifier>{a2513cf1-7373-4ca4-b5ea-f7d82de8e2dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\os\FileEnums.cpp">
@@ -217,11 +220,17 @@
     <ClCompile Include="src\sprite\Sprite3D.cpp">
       <Filter>Source Files\Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="src\rendering\SpriteRenderer.cpp">
-      <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="src\Camera\CityScapeCamera.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sound\SoundPlayer.cpp">
+      <Filter>Source Files\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sound\Sound.cpp">
+      <Filter>Source Files\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rendering\GameObjectRenderer.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -384,14 +393,26 @@
     <ClInclude Include="src\sprite\Sprite3D.h">
       <Filter>Header Files\Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="src\rendering\SpriteRenderer.h">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="src\Camera\CameraBase.h">
       <Filter>Header Files\Camera</Filter>
     </ClInclude>
     <ClInclude Include="src\Camera\CityScapeCamera.h">
       <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sound\SoundPlayer.h">
+      <Filter>Header Files\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\os\compat_sdl.h">
+      <Filter>Header Files\os</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sound\Sound.h">
+      <Filter>Header Files\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\compatibility\SuperClass.h">
+      <Filter>Header Files\Compatibility Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rendering\GameObjectRenderer.h">
+      <Filter>Header Files\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

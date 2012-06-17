@@ -129,7 +129,7 @@ bool OpenAL::IsSource(ALuint source)
     return alIsSource(source) == AL_TRUE;
 }
 
-bool OpenAL::FillBufferData(ALuint buffer, cFixedArray<char> *data, ALenum format, ALsizei frequency)
+bool OpenAL::FillBufferData(ALuint buffer, FixedArray<char> *data, ALenum format, ALsizei frequency)
 {
     if(!IsInitialized())
         return false;

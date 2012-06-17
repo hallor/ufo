@@ -29,6 +29,12 @@ void iGameObject::UpdateVisualisation(float dt)
         GetVis()->Update(dt);
 }
 
+void iGameObject::OnPreRender()
+{
+    if(GetVis())
+        GetVis()->OnPreRender();
+}
+
 void iGameObject::DestroyVis()
 {
     iGameObjectVis *vis = GetVis();

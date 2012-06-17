@@ -7,6 +7,7 @@
 #include "Property.h"
 #include "FixedArray.h"
 #include "RawFile.h"
+#include "SuperClass.h"
 
 class cSoundBuffer;
 class cSoundSource;
@@ -15,11 +16,9 @@ class vSoundStreamProperties;
 
 class cSoundStream : public vRenderable
 {
-#ifndef _WIN32
-	typedef vRenderable __super;
-#endif
+    DECLARE_SUPER(vRenderable);
     
-    typedef std::list<cFixedArray<char>*> TArrayList;
+    typedef std::list<FixedArray<char>*> TArrayList;
 
 public:
     cSoundStream(const std::string &id);
@@ -92,7 +91,7 @@ protected:
     virtual void FillChunks();
 
     // Checks whether given $chunk belongs to us
-    virtual bool IsValidChunk(cFixedArray<char>* chunk) const;
+    virtual bool IsValidChunk(FixedArray<char>* chunk) const;
 
     // Invalidates all chunks in bound queue
     virtual void ClearBoundQueue();
@@ -109,9 +108,9 @@ protected:
     
     cRawFile m_BoundFile;
     
-    std::list<cFixedArray<char>*> m_BoundChunks;
-    std::list<cFixedArray<char>*> m_FreeChunks;
-    std::list<cFixedArray<char>*> m_Chunks;
+    std::list<FixedArray<char>*> m_BoundChunks;
+    std::list<FixedArray<char>*> m_FreeChunks;
+    std::list<FixedArray<char>*> m_Chunks;
 };
 
 class vSoundStreamProperties : public vRenderingPropertiesBase
@@ -124,19 +123,19 @@ public:
        passing NULL is legal NOP     */
     virtual void Synchronize(const vRenderable *stream);
 
-    const std::list<cFixedArray<char>*> &GetQueue() const { return m_ChunksInQueue; }
+    const std::list<FixedArray<char>*> &GetQueue() const { return m_ChunksInQueue; }
 
     /* Pushes chunk with stream data to the end of the queue
        passing null as a parameter is legal NOP */
-    void PushQueue(cFixedArray<char>* chunk);
+    void PushQueue(FixedArray<char>* chunk);
 
     /* Peeks the next chunk of data in queue
        returns pointer to chunk or NULL when queue is empty  */
-    cFixedArray<char>* PeekQueue();
+    FixedArray<char>* PeekQueue();
     
     /* Pops next chunk from data queue
        return pointer to chunk or NULL when queue is empty   */
-    cFixedArray<char>* PopQueue();
+    FixedArray<char>* PopQueue();
     /* Moves chunks from data queue to free elements queue   */
     void ClearQueue();
 
@@ -159,5 +158,5 @@ public:
     
 protected:
 
-    std::list<cFixedArray<char>*> m_ChunksInQueue;
+    std::list<FixedArray<char>*> m_ChunksInQueue;
 };

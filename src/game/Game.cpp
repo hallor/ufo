@@ -4,6 +4,10 @@
 #include "TextureManager.h"
 #include "SoundSourceManager.h"
 #include "SoundBufferManager.h"
+#include "LevelTile.h"
+#include "Level.h"
+#include "GameObjectRenderer.h"
+#include "CityScapeCamera.h"
 
 Game* g_GameInstance = NULL;
 
@@ -57,11 +61,16 @@ int Game::OnExecute(int argc, char *argv[])
     return 0;
 }
 
+CityScapeCamera cam;
+float layer = 0;
+
 void Game::OnInputGameAction(EGameAction::TYPE action)
 {
     switch(action)
     {
         case EGameAction::QUIT_GAME: m_Running = false; break;
+        case EGameAction::MOVE_UP: ++layer; if(layer > 9) layer = 9; break;
+        case EGameAction::MOVE_DOWN: --layer; if(layer < 0) layer = 0; break;
         default: break;
     }
 }
@@ -77,10 +86,15 @@ void Game::OnSDLEvent(SDL_Event *event)
     m_Input.OnSDLEvent(event);
 }
 
+Level level;
+vGameObjectRenderer renderer;
+
 void Game::OnExit()
 {
     m_Running = false;
 
+    level.Unload();
+    
     ReleaseManagers();
     
     ClearSDL();
@@ -88,6 +102,7 @@ void Game::OnExit()
     AppSettings::Free();
     EngineSettings::Free();
 }
+
 
 bool Game::Initialize()
 {
@@ -97,6 +112,9 @@ bool Game::Initialize()
     if(!InitManagers())
         return false;
         
+    level.Load("resources\\citymap1");
+    level.Update(0.0f);
+
     s_LogicStep = 1.0f / EngineSettings::GetLogicUpdateFrequency();
 
     m_Input.Initialize();
@@ -104,11 +122,14 @@ bool Game::Initialize()
     m_GameTimer.Start();
     m_Accumulator = Accumulator<float>(s_LogicStep);
 
+    renderer.Initialize(NULL);
+    renderer.SetCamera(&cam);
+
     return true;
 }
 
 void Game::MainLoop()
-{    
+{        
     while(m_Running)
     {
         m_GameTimer.Tick();
@@ -119,7 +140,7 @@ void Game::MainLoop()
 
         for(unsigned int i = 0; i < EngineSettings::GetMaxLogicUpdatesPerFrame() && m_Accumulator.Check(); ++i)
             Update(s_LogicStep);
-
+                    
         Draw();
     }
 }
@@ -136,12 +157,40 @@ void Game::UpdateSDLEvents()
 
 void Game::Update(float dt)
 {
+    static float move_speed = 200;
+    vec3 move_vec = vec3::ZERO;
+    move_vec.x -= GetInput()->GetActionKeyState(EGameAction::MOVE_LEFT) ? 1.0f : 0.0f;
+    move_vec.x += GetInput()->GetActionKeyState(EGameAction::MOVE_RIGHT) ? 1.0f : 0.0f;
+    move_vec.z -= GetInput()->GetActionKeyState(EGameAction::MOVE_UP) ? 1.0f : 0.0f;
+    move_vec.z += GetInput()->GetActionKeyState(EGameAction::MOVE_DOWN) ? 1.0f : 0.0f;
 
+    move_vec.Normalize();
+
+    cam.Move(move_vec * move_speed * dt);
 }
 
 void Game::Draw()
-{    
+{        
+    if(GetSDLMainSurface())
+        SDL_FillRect(GetSDLMainSurface(), NULL, 0);
 
+    for(int j = 0; j < 100; ++j)
+    {
+        for(int i = 0; i < 100; ++i)
+        {
+            for(int k = 0; k < 10; ++k)
+            {
+                LevelTile *tile = level.GetTileAt(vec3(i, k, j));
+                if(tile && tile->GetId() != 0)
+                {
+                    tile->OnPreRender();
+                    renderer.Render(tile);
+                }
+            }
+        }
+    }
+    
+    renderer.OnFrame(0.0f);
 }
 
 bool Game::InitSDL()

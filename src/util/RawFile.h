@@ -10,7 +10,7 @@ class cRawFile
 public:
     bool Open(const std::string &path);
 
-    bool Read(cFixedArray<char> * data, bool loop = false);
+    bool Read(FixedArray<char> * data, bool loop = false);
 
     int GetSize() const;
 

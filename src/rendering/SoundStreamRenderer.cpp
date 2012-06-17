@@ -70,23 +70,23 @@ void cSoundStreamRenderer::OnFrame(float dt)
     UnmarkAllBindings();
 };
 
-void cSoundStreamRenderer::Render(vRenderable &object)
+void cSoundStreamRenderer::Render(vRenderable *object)
 {
     if(!IsValid())
         return;
 
-    if(!object.IsValid())
+    if(!object || !object->IsValid())
         return;
 
-    if(object.GetRenderableType() != ERenderableType::SoundStream)
+    if(object->GetRenderableType() != ERenderableType::SoundStream)
         return;
 
-    if(!object.GetRenderingProperties())
+    if(!object->GetRenderingProperties())
         return;
 
-    int binding = FindStreamBinding(object);
+    int binding = FindStreamBinding(*object);
     if(binding < 0)
-        binding = CreateBinding(object);   
+        binding = CreateBinding(*object);   
     
     if(binding >= 0)
         m_DataBindings[binding].m_Marked = true;
@@ -208,7 +208,7 @@ void cSoundStreamRenderer::PlayStream(sStreamBinding &binding)
         if(!OpenAL::Get().IsBuffer(buf))
             break;
 
-        cFixedArray<char> *array = props->PopQueue();
+        FixedArray<char> *array = props->PopQueue();
         if(!array)
             continue;
 

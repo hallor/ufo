@@ -1,9 +1,17 @@
 #include "LevelTile.h"
 #include "LevelTileVis.h"
+#include "Level.h"
 
 LevelTile::LevelTile()
 : m_TileId(-1)
 {
+    m_Parent = nullptr;
+}
+
+void LevelTile::OnCreate(Level *parent)
+{
+    m_Parent = parent;
+    __super::OnCreate();
 }
 
 iGameObjectVis* LevelTile::CreateVis()

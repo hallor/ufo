@@ -12,7 +12,7 @@ bool cRawFile::Open(const std::string &path)
     return m_File.Open(path, FFileOpenFlags::OpenExisting | FFileOpenFlags::Read);
 };
 
-bool cRawFile::Read(cFixedArray<char> *data, bool loop /* = false */)
+bool cRawFile::Read(FixedArray<char> *data, bool loop /* = false */)
 {
     if(!data)
         return false;

@@ -23,6 +23,8 @@ public:
 
     virtual void Update(float dt);
 
+    virtual void OnPreRender();
+
 protected:
 
     virtual bool SetTexture(const std::string &texture);

@@ -3,9 +3,15 @@
 
 vec3 CityScapeCamera::PointWorldToScreen(const vec3 &pt) const
 {
-    vec3 out = pt;
-    out.x *= AppSettings::GetWindowWidth() / 1920.0f;
-    out.y *= AppSettings::GetWindowHeight() / 1080.0f;
+    static vec3 RIGHT = vec3(32.0f, -16.0f, 0.0f);
+    static vec3 FORWARD = vec3(-32.0f, -16.0f, 0.0f);
+    static vec3 UP = vec3(0.0f, -16.0f, 0.0f);
+
+    vec3 out = vec3::ZERO;
+    
+    out = RIGHT * pt.x + (-FORWARD) * pt.z + UP * pt.y;
+
+    out -= RIGHT * m_Pos.x + (-FORWARD) * m_Pos.z + UP * m_Pos.y;
 
     return out;
 };

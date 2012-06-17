@@ -29,6 +29,8 @@ public:
     virtual void Update(float dt) { UpdateVisualisation(dt); };
     virtual void UpdateVisualisation(float dt);
 
+    virtual void OnPreRender();
+
 protected:
     virtual iGameObjectVis* CreateVis() = 0;
     virtual void DestroyVis();

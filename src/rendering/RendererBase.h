@@ -17,5 +17,5 @@ public:
     virtual void OnFrame(float dt);
 
     //  Called to render object using its current properties
-    virtual void Render(vRenderable &object) = 0;
+    virtual void Render(vRenderable *object) = 0;
 };

@@ -1,36 +1,38 @@
-#include "SpriteRenderer.h"
+#include "GameObjectRenderer.h"
+#include "GameObject.h"
+#include "GameObjectVis.h"
 #include "Sprite3D.h"
 #include "Texture.h"
 #include "CameraBase.h"
 #include "AppSettings.h"
 #include "Game.h"
 
-vSpriteRenderer::vSpriteRenderer()
+vGameObjectRenderer::vGameObjectRenderer()
 {
     m_MainSurface = NULL;
     m_ErrorTexture = NULL;
     m_Camera = NULL;
 }
 
-vSpriteRenderer::~vSpriteRenderer()
+vGameObjectRenderer::~vGameObjectRenderer()
 {
     if(m_ErrorTexture)
         m_ErrorTexture->Release();
 }
 
-bool vSpriteRenderer::Initialize(cTexture *error_texture)
+bool vGameObjectRenderer::Initialize(cTexture *error_texture)
 {
     m_ErrorTexture = error_texture;
 
     return InitSDL();
 }
 
-bool vSpriteRenderer::IsValid() const
+bool vGameObjectRenderer::IsValid() const
 {
     return m_MainSurface && m_Camera;
 }
 
-void vSpriteRenderer::OnFrame(float dt)
+void vGameObjectRenderer::OnFrame(float dt)
 {
     if(!IsValid())
         return;
@@ -52,9 +54,9 @@ void vSpriteRenderer::OnFrame(float dt)
         if(!real_texture)
             continue;
 
-        vec3 screen_pos = GetCamera()->PointWorldToScreen(sprite->GetPosition());
+        vec3 screen_pos = GetCamera()->PointWorldToScreen(sprite->GetPosition()) + m_Offset;
         vec3 tex_size = tex->GetSize();
-        screen_pos -= tex_size / 2.0f;
+        //screen_pos -= tex_size / 2.0f;
 
         if(screen_pos.x > screen_br.x || screen_pos.y > screen_br.y || 
            screen_pos.x + tex_size.x < screen_tl.x || screen_pos.y + tex_size.y < screen_tl.y)
@@ -74,15 +76,15 @@ void vSpriteRenderer::OnFrame(float dt)
     m_SpritesToRender.clear();
 }
 
-void vSpriteRenderer::Render(vRenderable &object)
+void vGameObjectRenderer::Render(vRenderable *object)
 {
-    if(!IsValid())
+    if(!object)
+        return;
+    
+    if(object->GetRenderableType() != ERenderableType::Sprite3D)
         return;
 
-    if(object.GetRenderableType() != ERenderableType::Sprite3D)
-        return;
-
-    vSprite3DProperties *props = dynamic_cast<vSprite3DProperties*>(object.GetRenderingProperties());
+    vSprite3DProperties *props = dynamic_cast<vSprite3DProperties*>(object->GetRenderingProperties());
 
     if(!props)
         return;
@@ -90,7 +92,15 @@ void vSpriteRenderer::Render(vRenderable &object)
     m_SpritesToRender.push_back(props);
 }
 
-bool vSpriteRenderer::InitSDL()
+void vGameObjectRenderer::Render(iGameObject *igo)
+{
+    if(!igo || !igo->GetVis())
+        return;
+
+    Render(igo->GetVis()->GetSprite3D());
+}
+
+bool vGameObjectRenderer::InitSDL()
 {
     m_MainSurface = Game::GetSingleton()->GetSDLMainSurface();
 
