@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "vec.h"
+#include "Texture.h"
 
 class iGameObject;
 class cSprite3D;
@@ -27,7 +28,7 @@ public:
 
 protected:
 
-    virtual bool SetTexture(const std::string &texture);
+    virtual bool SetTexture(const cTexture &texture);
     
     virtual bool InitializeSprite();
     virtual void DestroySprite();

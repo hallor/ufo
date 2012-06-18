@@ -4,6 +4,7 @@
 #include "TextureManager.h"
 
 cSprite3D::cSprite3D()
+: m_Texture(NULL)
 {
      __super::m_RenderableType = ERenderableType::Sprite3D;
     DefaultPosition();
@@ -54,14 +55,5 @@ void vSprite3DProperties::Synchronize(const vRenderable *object)
         return;
 
     SetPosition(sprite->GetPosition());
-
-    if(m_TextureName != sprite->GetTexture())
-    {        
-        SetTexture(NULL);
-
-        if(Game::GetSingleton()->GetTextureManager())
-            SetTexture(Game::GetSingleton()->GetTextureManager()->Get(sprite->GetTexture()));
-    }
-
-    m_TextureName = sprite->GetTexture();
+    SetTexture(sprite->GetTexture());
 }

@@ -21,8 +21,8 @@ public:
 
     vSprite3DProperties *GetProperties() const;
     
-    void SetTexture(const std::string &tex) { m_Texture = tex; }
-    std::string GetTexture() const { return m_Texture; }
+    void SetTexture(const cTexture &tex) { m_Texture = tex; }
+    cTexture GetTexture() const { return m_Texture; }
 
     PROPERTY(vec3, Position, vec3::ZERO);
 
@@ -31,7 +31,7 @@ protected:
     virtual bool CreateRenderingProperties();
 
 private:
-    std::string m_Texture;
+    cTexture m_Texture;
 };
 
 class vSprite3DProperties : public vRenderingPropertiesBase
@@ -50,6 +50,5 @@ public:
     
 private:
 
-    std::string m_TextureName;
     cTexture    m_Texture;
 };

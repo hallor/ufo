@@ -23,15 +23,17 @@ bool Level::Load(const std::string &file)
     if(f.GetSize() < MAP_DIM.Volume() * sizeof(unsigned short))
         return false;
 
-    if(!CreateTiles(MAP_DIM.Volume()))
+    if(!CreateTiles((int)MAP_DIM.Volume()))
         return false;
 
-    FixedArray<unsigned short> ids(MAP_DIM.Volume());
+    FixedArray<unsigned short> ids((int)MAP_DIM.Volume());
 
     if(!f.Read(ids.GetDataPointer(), ids.GetDataSize()))
         return false;
 
     m_TextureSetPrefix = "city";
+    m_TextureCache.SetTextureManager(Game::GetSingleton()->GetTextureManager());
+    CacheTextures();
 
     int layer = 0;
 
@@ -64,19 +66,12 @@ void Level::Update(float dt)
         (*m_Tiles)[i].Update(dt);
 }
 
-std::string Level::GetTextureNameByTileId(int id) const
+cTexture Level::GetTexture(int id) const
 {
-    static char id_str[32] = {0};
-    _itoa_s<32>(id, id_str, 10);
+    if(id >= m_TextureCache.GetCacheSize())
+        return cTexture(NULL);
 
-    std::string name = "resources\\ufodata\\";
-    name += m_TextureSetPrefix;
-    name += "\\";
-    name += m_TextureSetPrefix;
-    name += id_str;
-    name += ".bmp";
-
-    return name;
+    return m_TextureCache.GetCachedTexture(id);
 }
 
 LevelTile *Level::GetTileAt(const vec3 &pos) const
@@ -116,4 +111,14 @@ void Level::DestroyTiles()
 
     delete m_Tiles;
     m_Tiles = nullptr;
+}
+
+void Level::CacheTextures()
+{
+    std::string name = "resources\\ufodata\\";
+    name += m_TextureSetPrefix;
+    name += "\\";
+    name += m_TextureSetPrefix;
+    
+    m_TextureCache.CreateCache(name, 1000);
 }

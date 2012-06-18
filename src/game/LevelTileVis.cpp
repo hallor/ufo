@@ -22,7 +22,7 @@ void LevelTileVis::OnTileIdChanged()
     if(!GetTile()->GetLevel())
         return;
 
-    SetTexture(GetTile()->GetLevel()->GetTextureNameByTileId(new_id));
+    SetTexture(GetTile()->GetLevel()->GetTexture(new_id));
 }
 
 LevelTile *LevelTileVis::GetTile() const

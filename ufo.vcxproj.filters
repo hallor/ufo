@@ -232,6 +232,9 @@
     <ClCompile Include="src\rendering\GameObjectRenderer.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="src\util\TextureCache.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\os\FileIO.h">
@@ -413,6 +416,9 @@
     </ClInclude>
     <ClInclude Include="src\rendering\GameObjectRenderer.h">
       <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\TextureCache.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

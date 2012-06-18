@@ -30,7 +30,7 @@ void iGameObjectVis::OnPreRender()
         GetSprite3D()->PrepareForRendering();
 }
 
-bool iGameObjectVis::SetTexture(const std::string &texture)
+bool iGameObjectVis::SetTexture(const cTexture &texture)
 {
     if(!GetSprite3D())
         return false;

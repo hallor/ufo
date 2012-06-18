@@ -27,9 +27,7 @@ public:
     vTextureResource *GetRawResource() const { return m_Resource; }
 
     vec3 GetSize() const { return GetRawResource() ? GetRawResource()->GetSize() : vec3::ZERO; }
-
-    void Release() { delete this; }
-
+    
 protected:
 
     vTextureResource *m_Resource;
