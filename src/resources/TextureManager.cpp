@@ -10,7 +10,7 @@ cTextureManager::~cTextureManager()
     ReleaseAll();
 }
 
-cTexture *cTextureManager::Get(const std::string &str)
+cTexture cTextureManager::Get(const std::string &str)
 {
     vTextureResource *res= NULL;
 
@@ -27,7 +27,7 @@ cTexture *cTextureManager::Get(const std::string &str)
     else
         res = m_Resources[index];
 
-    return new cTexture(res);
+    return cTexture(res);
 }
 
 void cTextureManager::Update(float dt)
@@ -67,15 +67,15 @@ bool cTextureManager::IsValidResource(const std::string &res) const
     return m_Resources[index]->IsValid();
 }
 
-bool cTextureManager::IsValidResource(cTexture *tex) const
+bool cTextureManager::IsValidResource(const cTexture &tex) const
 {
-    if(!tex || !tex->GetRawResource())
+    if(!tex.GetRawResource())
         return false;
 
-    if(tex->GetRawResource()->GetParent() != this)
+    if(tex.GetRawResource()->GetParent() != this)
         return false;
 
-    int index = FindResource(tex->GetRawResource());
+    int index = FindResource(tex.GetRawResource());
     if(index < 0)
         return false;
 

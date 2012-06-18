@@ -3,9 +3,9 @@
 #include <vector>
 #include "RendererBase.h"
 #include "vec.h"
+#include "Texture.h"
 
 class vSprite3DProperties;
-class cTexture;
 class iCamera;
 class iGameObject;
 
@@ -15,7 +15,7 @@ public:
     vGameObjectRenderer();
     virtual ~vGameObjectRenderer();
 
-    virtual bool Initialize(cTexture* error_texture);
+    virtual bool Initialize(const cTexture &error_texture);
 
     virtual void SetCamera(iCamera *cam) { m_Camera = cam; }
 
@@ -39,7 +39,7 @@ protected:
     iCamera *m_Camera;
     SDL_Surface *m_MainSurface;
 
-    cTexture *m_ErrorTexture;
+    cTexture m_ErrorTexture;
 
     std::vector<vSprite3DProperties*> m_SpritesToRender;    
 };

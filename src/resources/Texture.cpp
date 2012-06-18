@@ -30,6 +30,23 @@ cTexture::cTexture(vTextureResource *res)
     m_Resource = res;
 }
 
+cTexture::cTexture(const cTexture &other)
+{
+    if(this == &other)
+        return;
+
+    m_Resource = other.m_Resource;
+}
+
+cTexture& cTexture::operator=(const cTexture& other)
+{
+    if(this == &other)
+        return *this;
+
+    m_Resource = other.m_Resource;
+    return *this;
+}
+
 SDL_Surface *cTexture::Get() const
 {
     return m_Resource ? m_Resource->Get() : 0;

@@ -20,6 +20,8 @@ class cTexture
 {
 public:
     cTexture(vTextureResource *res);
+    cTexture(const cTexture &other);
+    cTexture& operator = (const cTexture &other);
 
     SDL_Surface *Get() const;
     vTextureResource *GetRawResource() const { return m_Resource; }

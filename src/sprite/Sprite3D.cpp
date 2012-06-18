@@ -1,6 +1,5 @@
 #include "Sprite3D.h"
 #include "GameObject.h"
-#include "Texture.h"
 #include "Game.h"
 #include "TextureManager.h"
 
@@ -38,15 +37,13 @@ vSprite3DProperties *cSprite3D::GetProperties() const
 }
 
 vSprite3DProperties::vSprite3DProperties()
+: m_Texture(NULL)
 {
     DefaultPosition();
-    DefaultTexture();
 }
 
 vSprite3DProperties::~vSprite3DProperties()
 {
-    if(GetTexture())
-        GetTexture()->Release();
 }
 
 void vSprite3DProperties::Synchronize(const vRenderable *object)
@@ -59,10 +56,7 @@ void vSprite3DProperties::Synchronize(const vRenderable *object)
     SetPosition(sprite->GetPosition());
 
     if(m_TextureName != sprite->GetTexture())
-    {
-        if(GetTexture())
-            GetTexture()->Release();
-        
+    {        
         SetTexture(NULL);
 
         if(Game::GetSingleton()->GetTextureManager())

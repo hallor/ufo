@@ -3,8 +3,9 @@
 #include <vector>
 #include "ManagerBase.h"
 #include "ResourceBase.h"
+#include "Texture.h"
 
-class cTexture;
+
 class vTextureResource;
 
 class cTextureManager : public iManagerBase<SDL_Surface *>
@@ -13,7 +14,7 @@ public:
     cTextureManager();
     virtual ~cTextureManager();
 
-    virtual cTexture *Get(const std::string& id);
+    virtual cTexture Get(const std::string& id);
 
     virtual void Update(float dt);
     virtual unsigned int GetResourcesCount() const;
@@ -23,7 +24,7 @@ public:
     
     virtual bool IsValidResource(vResource<SDL_Surface*> *res) const;
     virtual bool IsValidResource(const std::string &id) const;
-    virtual bool IsValidResource(cTexture *tex) const;
+    virtual bool IsValidResource(const cTexture &tex) const;
 
     virtual void NotifyResourceParentChanged(vResource<SDL_Surface*> *res);
 

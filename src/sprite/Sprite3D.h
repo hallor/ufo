@@ -4,8 +4,8 @@
 #include "RenderableBase.h"
 #include "Property.h"
 #include "vec.h"
+#include "Texture.h"
 
-class cTexture;
 class vSprite3DProperties;
 
 class cSprite3D : public vRenderable
@@ -42,10 +42,14 @@ public:
 
     virtual void Synchronize(const vRenderable *object);
 
-    PROPERTY(vec3, Position, vec3::ZERO);
-    PTR_PROPERTY(cTexture, Texture, NULL);
+    cTexture GetTexture() const { return m_Texture; }
+    void SetTexture(const cTexture &tex) { m_Texture = tex; }
+    void DefaultTexture() { m_Texture = cTexture(NULL); }
 
+    PROPERTY(vec3, Position, vec3::ZERO);    
+    
 private:
 
     std::string m_TextureName;
+    cTexture    m_Texture;
 };

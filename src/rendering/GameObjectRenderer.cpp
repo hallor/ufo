@@ -8,19 +8,17 @@
 #include "Game.h"
 
 vGameObjectRenderer::vGameObjectRenderer()
+: m_ErrorTexture(NULL)
 {
     m_MainSurface = NULL;
-    m_ErrorTexture = NULL;
     m_Camera = NULL;
 }
 
 vGameObjectRenderer::~vGameObjectRenderer()
 {
-    if(m_ErrorTexture)
-        m_ErrorTexture->Release();
 }
 
-bool vGameObjectRenderer::Initialize(cTexture *error_texture)
+bool vGameObjectRenderer::Initialize(const cTexture &error_texture)
 {
     m_ErrorTexture = error_texture;
 
@@ -45,17 +43,17 @@ void vGameObjectRenderer::OnFrame(float dt)
     for(unsigned int i = 0; i < m_SpritesToRender.size(); ++i)
     {
         vSprite3DProperties *sprite = m_SpritesToRender[i];
-        cTexture *tex = sprite->GetTexture();
-        if(!tex || !tex->Get())
+        cTexture tex = sprite->GetTexture();
+        if(!tex.Get())
             tex = m_ErrorTexture;
     
-        SDL_Surface *real_texture = tex ? tex->Get() : NULL;
+        SDL_Surface *real_texture = tex.Get();
 
         if(!real_texture)
             continue;
 
         vec3 screen_pos = GetCamera()->PointWorldToScreen(sprite->GetPosition()) + m_Offset;
-        vec3 tex_size = tex->GetSize();
+        vec3 tex_size = tex.GetSize();
         //screen_pos -= tex_size / 2.0f;
 
         if(screen_pos.x > screen_br.x || screen_pos.y > screen_br.y || 
