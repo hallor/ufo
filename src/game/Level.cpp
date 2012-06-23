@@ -35,14 +35,20 @@ bool Level::Load(const std::string &file)
     m_TextureCache.SetTextureManager(Game::GetSingleton()->GetTextureManager());
     CacheTextures();
 
-    int layer = 0;
+    vec3 pos = vec3::ZERO;
+    int mx = MAP_DIM.x;
+    int my = MAP_DIM.y;
+    int mz = MAP_DIM.z;
+
 
     for(int i = 0; i < ids.GetSize() && i < (*m_Tiles).GetSize(); ++i)
     {
-        layer = i / ((int)MAP_DIM.x * (int)MAP_DIM.z);
-        int px = i - layer * (int)(MAP_DIM.x * MAP_DIM.z);
+        pos.y = i / (mx * mz);
+        pos.z = i % mz;
+        pos.x = (i % (mx * mz) - i % mz) / mz;
+
         (*m_Tiles)[i].SetId(ids[i]);
-        (*m_Tiles)[i].SetPos(vec3(MAP_DIM.x - (px / ((int)MAP_DIM.x)), layer, px % ((int)MAP_DIM.z)));
+        (*m_Tiles)[i].SetPos(pos);
     }
 
     m_Loaded = true;
@@ -85,7 +91,7 @@ LevelTile *Level::GetTileAt(const vec3 &pos) const
     if(pos.x >= MAP_DIM.x || pos.y >= MAP_DIM.y || pos.z >= MAP_DIM.z)
         return NULL;
 
-    return &(*m_Tiles)[pos.z + pos.y * MAP_DIM.x * MAP_DIM.z + pos.x * MAP_DIM.x];
+    return &(*m_Tiles)[pos.x * MAP_DIM.z + pos.y * MAP_DIM.x * MAP_DIM.z + pos.z];
 }
 
 bool Level::CreateTiles(unsigned int count)

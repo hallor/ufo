@@ -39,6 +39,8 @@ bool cInput::Initialize()
     m_KeyForAction[EGameAction::MOVE_RIGHT] = sActionKey(SDLK_RIGHT);
     m_KeyForAction[EGameAction::MOVE_UP] = sActionKey(SDLK_UP);
     m_KeyForAction[EGameAction::MOVE_DOWN] = sActionKey(SDLK_DOWN);
+    m_KeyForAction[EGameAction::LEVEL_NEXT] = sActionKey(SDLK_KP_PLUS);
+    m_KeyForAction[EGameAction::LEVEL_PREV] = sActionKey(SDLK_KP_MINUS);
 
     return true;
 }

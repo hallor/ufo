@@ -62,16 +62,37 @@ int Game::OnExecute(int argc, char *argv[])
 }
 
 CityScapeCamera cam;
-float layer = 0;
+int l = 0;
+
+Level level;
 
 void Game::OnInputGameAction(EGameAction::TYPE action)
 {
+    int wanted_level = l;
     switch(action)
     {
         case EGameAction::QUIT_GAME: m_Running = false; break;
-        case EGameAction::MOVE_UP: ++layer; if(layer > 9) layer = 9; break;
-        case EGameAction::MOVE_DOWN: --layer; if(layer < 0) layer = 0; break;
+        case EGameAction::LEVEL_NEXT: ++wanted_level; break;
+        case EGameAction::LEVEL_PREV: --wanted_level; break; 
         default: break;
+    }
+
+    if(wanted_level > 4)
+        wanted_level = 4;
+    if(wanted_level < 0)
+        wanted_level = 0;
+
+    if(wanted_level != l)
+    {
+        char asd[32] = {0};
+        itoa(wanted_level + 1, asd, 10);
+        std::string name = "resources\\citymap";
+        if(wanted_level > 0)
+            name += asd;
+
+        l = wanted_level;
+        level.Load(name);
+        level.Update(0.0f);
     }
 }
 
@@ -86,7 +107,6 @@ void Game::OnSDLEvent(SDL_Event *event)
     m_Input.OnSDLEvent(event);
 }
 
-Level level;
 vGameObjectRenderer renderer;
 
 void Game::OnExit()
@@ -112,7 +132,7 @@ bool Game::Initialize()
     if(!InitManagers())
         return false;
         
-    level.Load("resources\\citymap1");
+    level.Load("resources\\citymap");
     level.Update(0.0f);
 
     s_LogicStep = 1.0f / EngineSettings::GetLogicUpdateFrequency();
@@ -159,8 +179,8 @@ void Game::Update(float dt)
 {
     static float move_speed = 200;
     vec3 move_vec = vec3::ZERO;
-    move_vec.x -= GetInput()->GetActionKeyState(EGameAction::MOVE_LEFT) ? 1.0f : 0.0f;
-    move_vec.x += GetInput()->GetActionKeyState(EGameAction::MOVE_RIGHT) ? 1.0f : 0.0f;
+    move_vec.x += GetInput()->GetActionKeyState(EGameAction::MOVE_LEFT) ? 1.0f : 0.0f;
+    move_vec.x -= GetInput()->GetActionKeyState(EGameAction::MOVE_RIGHT) ? 1.0f : 0.0f;
     move_vec.z -= GetInput()->GetActionKeyState(EGameAction::MOVE_UP) ? 1.0f : 0.0f;
     move_vec.z += GetInput()->GetActionKeyState(EGameAction::MOVE_DOWN) ? 1.0f : 0.0f;
 
