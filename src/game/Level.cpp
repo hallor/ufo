@@ -121,9 +121,9 @@ void Level::DestroyTiles()
 
 void Level::CacheTextures()
 {
-    std::string name = "resources\\ufodata\\";
+    std::string name = "resources/ufodata/";
     name += m_TextureSetPrefix;
-    name += "\\";
+    name += "/";
     name += m_TextureSetPrefix;
     
     m_TextureCache.CreateCache(name, 1000);
