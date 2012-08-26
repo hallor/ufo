@@ -37,7 +37,7 @@ bool Level::Load(const std::string &file)
 
     vec3 pos = vec3::ZERO;
     int mx = MAP_DIM.x;
-    int my = MAP_DIM.y;
+//    int my = MAP_DIM.y;
     int mz = MAP_DIM.z;
 
 

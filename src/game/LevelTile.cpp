@@ -11,7 +11,7 @@ LevelTile::LevelTile()
 void LevelTile::OnCreate(Level *parent)
 {
     m_Parent = parent;
-    __super::OnCreate();
+    iGameObject::OnCreate();
 }
 
 iGameObjectVis* LevelTile::CreateVis()

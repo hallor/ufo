@@ -1,6 +1,7 @@
 xcoma/*
 src/src.pri
 src/src.pro.user
+*.o
 
 /ipch
 /Debug

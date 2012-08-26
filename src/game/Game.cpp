@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "Game.h"
 #include "AppSettings.h"
 #include "EngineSettings.h"
@@ -85,7 +86,8 @@ void Game::OnInputGameAction(EGameAction::TYPE action)
     if(wanted_level != l)
     {
         char asd[32] = {0};
-        itoa(wanted_level + 1, asd, 10);
+
+        sprintf(asd, "%d", wanted_level + 1);
         std::string name = "resources\\citymap";
         if(wanted_level > 0)
             name += asd;

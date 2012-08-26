@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "TextureCache.h"
 #include "TextureManager.h"
 #include "logger.h"
@@ -68,9 +69,9 @@ void cTextureCache::ClearCache()
 
 std::string cTextureCache::GetPathForId(const std::string &base, int id) const
 {
-    static char id_str[32] = {0};
-    _itoa_s<32>(id, id_str, 10);
+    char id_str[32] = {0};
 
+    snprintf(id_str, 31, "%d", id);
     std::string name = base;
     name += id_str;
     name += ".bmp";
