@@ -181,10 +181,23 @@ void Game::Update(float dt)
 {
     static float move_speed = 200;
     vec3 move_vec = vec3::ZERO;
-    move_vec.x += GetInput()->GetActionKeyState(EGameAction::MOVE_LEFT) ? 1.0f : 0.0f;
-    move_vec.x -= GetInput()->GetActionKeyState(EGameAction::MOVE_RIGHT) ? 1.0f : 0.0f;
-    move_vec.z -= GetInput()->GetActionKeyState(EGameAction::MOVE_UP) ? 1.0f : 0.0f;
-    move_vec.z += GetInput()->GetActionKeyState(EGameAction::MOVE_DOWN) ? 1.0f : 0.0f;
+    if (GetInput()->GetActionKeyState(EGameAction::MOVE_LEFT)) {
+      move_vec.x += 1.0f;
+      move_vec.y += 1.0f;
+    }
+
+    if (GetInput()->GetActionKeyState(EGameAction::MOVE_RIGHT)) {
+      move_vec.x -= 1.0f;
+      move_vec.y -= 1.0f;
+    }
+
+    if (GetInput()->GetActionKeyState(EGameAction::MOVE_UP)) {
+      move_vec.y += 1.0f;
+    }
+
+    if (GetInput()->GetActionKeyState(EGameAction::MOVE_DOWN)) {
+      move_vec.y -= 1.0f;
+    }
 
     move_vec.Normalize();
 
