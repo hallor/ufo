@@ -88,7 +88,7 @@ void Game::OnInputGameAction(EGameAction::TYPE action)
         char asd[32] = {0};
 
         sprintf(asd, "%d", wanted_level + 1);
-        std::string name = "resources/citymap";
+        std::string name = "resources/ufodata/citymap";
         if(wanted_level > 0)
             name += asd;
 
@@ -134,7 +134,7 @@ bool Game::Initialize()
     if(!InitManagers())
         return false;
         
-    level.Load("resources/citymap");
+    level.Load("resources/ufodata/citymap1");
     level.Update(0.0f);
 
     s_LogicStep = 1.0f / EngineSettings::GetLogicUpdateFrequency();
