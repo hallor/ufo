@@ -22,6 +22,10 @@ public:
 
     LevelTile *GetTileAt(const vec3 &pos) const;
 
+	int GetWidth() const	{ return MAP_DIM.x; }
+	int GetHeight()	const	{ return MAP_DIM.y; }
+	int GetBreadth() const	{ return MAP_DIM.z; }
+
     bool IsLoaded() const { return m_Loaded; }
 
 protected:

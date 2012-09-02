@@ -95,6 +95,8 @@ void vGameObjectRenderer::Render(iGameObject *igo)
     if(!igo || !igo->GetVis())
         return;
 
+	igo->OnPreRender();
+
     Render(igo->GetVis()->GetSprite3D());
 }
 

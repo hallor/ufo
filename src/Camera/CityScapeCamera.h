@@ -11,6 +11,10 @@ public:
     virtual void Move(const vec3 &v) { m_Pos += v; }
     virtual vec3 GetPos() const { return m_Pos; }
 
+	static const vec3 UP;
+	static const vec3 RIGHT;
+	static const vec3 FORWARD;
+
 protected:
     vec3 m_Pos;
 };

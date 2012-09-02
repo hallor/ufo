@@ -146,6 +146,7 @@ bool Game::Initialize()
 
     renderer.Initialize(NULL);
     renderer.SetCamera(&cam);
+	renderer.SetOffset(vec3(640, 240, 0));
 
     return true;
 }
@@ -160,10 +161,16 @@ void Game::MainLoop()
 
         UpdateSDLEvents();
 
+		bool draw_frame = false;
+
         for(unsigned int i = 0; i < EngineSettings::GetMaxLogicUpdatesPerFrame() && m_Accumulator.Check(); ++i)
+		{
             Update(s_LogicStep);
-                    
-        Draw();
+			draw_frame = true;
+		}           
+	
+		if (draw_frame)
+	        Draw();
     }
 }
 
@@ -179,29 +186,38 @@ void Game::UpdateSDLEvents()
 
 void Game::Update(float dt)
 {
-    static float move_speed = 200;
+    static float move_speed = 20;
     vec3 move_vec = vec3::ZERO;
-    if (GetInput()->GetActionKeyState(EGameAction::MOVE_LEFT)) {
-      move_vec.x += 1.0f;
-      move_vec.y += 1.0f;
-    }
+    if (GetInput()->GetActionKeyState(EGameAction::MOVE_LEFT))
+	{
+		move_vec.x += 1.0f;
+		move_vec.z -= 1.0f;
+	}
 
-    if (GetInput()->GetActionKeyState(EGameAction::MOVE_RIGHT)) {
-      move_vec.x -= 1.0f;
-      move_vec.y -= 1.0f;
-    }
+    if (GetInput()->GetActionKeyState(EGameAction::MOVE_RIGHT)) 
+	{
+		move_vec.x -= 1.0f;
+		move_vec.z += 1.0f;
+	}
 
-    if (GetInput()->GetActionKeyState(EGameAction::MOVE_UP)) {
-      move_vec.y += 1.0f;
-    }
+    if (GetInput()->GetActionKeyState(EGameAction::MOVE_UP)) 
+	{
+		move_vec.z -= 1.0f;
+		move_vec.x -= 1.0f;
+	}
 
-    if (GetInput()->GetActionKeyState(EGameAction::MOVE_DOWN)) {
-      move_vec.y -= 1.0f;
-    }
+    if (GetInput()->GetActionKeyState(EGameAction::MOVE_DOWN))
+	{
+		move_vec.z += 1.0f;
+		move_vec.x += 1.0f;
+	}
 
     move_vec.Normalize();
 
     cam.Move(move_vec * move_speed * dt);
+
+	if (GetInput()->GetKeyState(SDLK_r))
+		cam.SetPos(vec3::ZERO);
 }
 
 void Game::Draw()
@@ -209,21 +225,49 @@ void Game::Draw()
     if(GetSDLMainSurface())
         SDL_FillRect(GetSDLMainSurface(), NULL, 0);
 
-    for(int j = 0; j < 100; ++j)
+	vec3 cam_pos = cam.GetPos();
+
+	for(int j = cam_pos.z - 10; j < level.GetBreadth() && j < cam_pos.z + 25; ++j)
     {
-        for(int i = 0; i < 100; ++i)
+        for(int i = cam_pos.x - 10; i < level.GetWidth() && i < cam_pos.x + 25; ++i)
         {
-            for(int k = 0; k < 10; ++k)
+            for(int k = 0; k < level.GetHeight(); ++k)
             {
                 LevelTile *tile = level.GetTileAt(vec3(i, k, j));
                 if(tile && tile->GetId() != 0)
-                {
-                    tile->OnPreRender();
                     renderer.Render(tile);
-                }
-            }
+			}
         }
     }
+    
+
+  //  for(int j = cam_pos.z - 10; j < level.GetBreadth() && j < cam_pos.x + 10; ++j)
+  //  {
+		//if (j < 0)
+		//{
+		//	j = -1;
+		//	continue;
+		//}
+
+  //      for(int i = cam_pos.x - 10; i < level.GetWidth() && i < cam_pos.x + 10; ++i)
+  //      {
+		//	if (i < 0)
+		//	{
+		//		i = -1;
+		//		continue;
+		//	}
+
+  //          for(int k = 0; k < level.GetHeight(); ++k)
+  //          {
+  //              LevelTile *tile = level.GetTileAt(vec3(i, k, j));
+  //              if(tile && tile->GetId() != 0)
+  //              {
+  //                  tile->OnPreRender();
+  //                  renderer.Render(tile);
+  //              }
+  //          }
+  //      }
+  //  }
     
     renderer.OnFrame(0.0f);
 }
@@ -235,7 +279,7 @@ bool Game::InitSDL()
     if(SDL_Init(SDL_INIT_EVERYTHING))
         return false;
 
-    m_MainSurface = SDL_SetVideoMode(AppSettings::GetWindowWidth(), AppSettings::GetWindowHeight(), 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    m_MainSurface = SDL_SetVideoMode(AppSettings::GetWindowWidth(), AppSettings::GetWindowHeight(), 32, SDL_ANYFORMAT | SDL_HWSURFACE | SDL_DOUBLEBUF);
     
     return m_MainSurface != NULL;
 }
