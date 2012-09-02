@@ -71,7 +71,7 @@ std::string cTextureCache::GetPathForId(const std::string &base, int id) const
 {
     char id_str[32] = {0};
 
-    snprintf(id_str, 31, "%d", id);
+    sprintf(id_str, "%d", id);
     std::string name = base;
     name += id_str;
     name += ".bmp";
