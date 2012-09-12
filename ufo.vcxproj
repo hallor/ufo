@@ -39,11 +39,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>E:\ufo\ufo\src\util;E:\ufo\ufo\src\sprite;E:\ufo\ufo\src\sound;E:\ufo\ufo\src\resources;E:\ufo\ufo\src\rendering;E:\ufo\ufo\src\os;E:\ufo\ufo\src\model;E:\ufo\ufo\src\Input;E:\ufo\ufo\src\HAL;E:\ufo\ufo\src\game;E:\ufo\ufo\src\compatibility;E:\ufo\ufo\src\Camera;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\VS2010\VC\lib\OAL;E:\VS2010\VC\lib\SDL;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)\src\util;$(ProjectDir)\src\sprite;$(ProjectDir)\src\sound;$(ProjectDir)\src\resources;$(ProjectDir)\src\rendering;$(ProjectDir)\src\os;$(ProjectDir)\src\model;$(ProjectDir)\src\Input;$(ProjectDir)\src\HAL;$(ProjectDir)\src\game;$(ProjectDir)\src\compatibility;$(ProjectDir)\src\Camera;$(ProjectDir)\src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(VCInstallDir)\lib\SDL\;$(VCInstallDir)\lib\OAL\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(ProjectDir)\src\util;$(ProjectDir)\src\sprite;$(ProjectDir)\src\sound;$(ProjectDir)\src\resources;$(ProjectDir)\src\rendering;$(ProjectDir)\src\os;$(ProjectDir)\src\model;$(ProjectDir)\src\Input;$(ProjectDir)\src\HAL;$(ProjectDir)\src\game;$(ProjectDir)\src\compatibility;$(ProjectDir)\src\Camera;$(ProjectDir)\src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(VCInstallDir)\lib\SDL\;$(VCInstallDir)\lib\OAL\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -57,7 +59,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>E:\VS2010\VC\lib\SDL;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(VCInstallDir)\lib\OAL;$(VCInstallDir)\lib\SDL;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>OpenAL32.lib;sdl.lib;sdlmain.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -76,6 +78,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(VCInstallDir)\lib\OAL;$(VCInstallDir)\lib\SDL;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OpenAL32.lib;sdl.lib;sdlmain.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
