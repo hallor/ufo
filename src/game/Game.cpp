@@ -7,10 +7,10 @@
 #include "TextureManager.h"
 #include "SoundSourceManager.h"
 #include "SoundBufferManager.h"
-#include "LevelTile.h"
 #include "Level.h"
 #include "GameObjectRenderer.h"
 #include "CityScapeCamera.h"
+#include "game/Terrain.h"
 
 Game* g_GameInstance = NULL;
 
@@ -229,48 +229,25 @@ void Game::Draw()
 
 	vec3 cam_pos = cam.GetPos();
 
-	for(int j = cam_pos.z - 10; j < level.GetBreadth() && j < cam_pos.z + 25; ++j)
+    const Terrain* terrain = level.GetTerrain();
+    if (terrain)
     {
-        for(int i = cam_pos.x - 10; i < level.GetWidth() && i < cam_pos.x + 25; ++i)
+        const cTextureCache& texture_cache = terrain->GetTextureCache();
+
+        for(int j = (int)cam_pos.z - 10; j < terrain->GetBreadth() && j < (int)cam_pos.z + 25; ++j)
         {
-            for(int k = 0; k < level.GetHeight(); ++k)
+            for(int i = (int)cam_pos.x - 10; i < terrain->GetWidth() && i < (int)cam_pos.x + 25; ++i)
             {
-                LevelTile *tile = level.GetTileAt(vec3(i, k, j));
-                if(tile && tile->GetId() != 0)
-                    renderer.Render(tile);
-			}
+                for(int k = 0; k < terrain->GetHeight(); ++k)
+                {
+                    const STerrainElement& tile = terrain->GetTileAt(vec3((float)i, (float)k, (float)j));
+                    if(tile.m_Id != 0 && !STerrainElement::IsDummy(tile))
+                        renderer.Render(SRenderData(tile.m_Pos, texture_cache.GetCachedTexture(tile.m_Id)));
+                }
+            }
         }
     }
-    
 
-  //  for(int j = cam_pos.z - 10; j < level.GetBreadth() && j < cam_pos.x + 10; ++j)
-  //  {
-		//if (j < 0)
-		//{
-		//	j = -1;
-		//	continue;
-		//}
-
-  //      for(int i = cam_pos.x - 10; i < level.GetWidth() && i < cam_pos.x + 10; ++i)
-  //      {
-		//	if (i < 0)
-		//	{
-		//		i = -1;
-		//		continue;
-		//	}
-
-  //          for(int k = 0; k < level.GetHeight(); ++k)
-  //          {
-  //              LevelTile *tile = level.GetTileAt(vec3(i, k, j));
-  //              if(tile && tile->GetId() != 0)
-  //              {
-  //                  tile->OnPreRender();
-  //                  renderer.Render(tile);
-  //              }
-  //          }
-  //      }
-  //  }
-    
     renderer.OnFrame(0.0f);
 }
 

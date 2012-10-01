@@ -93,6 +93,10 @@ public:
     
     bool IsZero() const;
 
+    float GetWidth() const { return x; }
+    float GetHeight() const { return y; }
+    float GetBreadth() const { return z; }
+
     float x, y, z;
 
     static const vec3 ZERO;

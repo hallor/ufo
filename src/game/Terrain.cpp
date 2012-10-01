@@ -1,12 +1,14 @@
 #include "game_pch.h"
 #include "Terrain.h"
 #include "game/Game.h"
+#include "game/Level.h"
 
 const STerrainElement STerrainElement::s_DummyElement = STerrainElement();
 
-Terrain::Terrain()
+Terrain::Terrain(Level* owner)
 : m_Tiles(nullptr)
 , m_Loaded(false)
+, m_Owner(owner)
 {
     m_Dimensions = vec3(100.0f, 10.0f, 100.0f);
 }

@@ -89,8 +89,6 @@
     <ClCompile Include="src\game\GameObject.cpp" />
     <ClCompile Include="src\game\GameObjectVis.cpp" />
     <ClCompile Include="src\game\Level.cpp" />
-    <ClCompile Include="src\game\LevelTile.cpp" />
-    <ClCompile Include="src\game\LevelTileVis.cpp" />
     <ClCompile Include="src\game\Terrain.cpp" />
     <ClCompile Include="src\game_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -146,8 +144,6 @@
     <ClInclude Include="src\game\GameObject.h" />
     <ClInclude Include="src\game\GameObjectVis.h" />
     <ClInclude Include="src\game\Level.h" />
-    <ClInclude Include="src\game\LevelTile.h" />
-    <ClInclude Include="src\game\LevelTileVis.h" />
     <ClInclude Include="src\game\Terrain.h" />
     <ClInclude Include="src\game_pch.h" />
     <ClInclude Include="src\HAL\OpenAL.h" />

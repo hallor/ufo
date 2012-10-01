@@ -1,6 +1,8 @@
 #pragma once
 #include "TextureCache.h"
 
+class Level;
+
 // this struct could be created using malloc rather than new
 struct STerrainElement
 {
@@ -30,7 +32,7 @@ struct STerrainElement
 class Terrain
 {
 public: 
-    Terrain();
+    Terrain(Level* owner);
     ~Terrain();
 
     bool Load(const std::string& file);
@@ -48,12 +50,16 @@ public:
 
     bool IsLoaded() const { return m_Loaded; }
 
+    Level* GetOwner() const { return m_Owner; }
+
 private:
     
     bool CreateTiles(unsigned int count);
     void DestroyTiles();
 
     void CacheTextures();
+
+    Level* m_Owner;
 
     vec3 m_Dimensions;
 
