@@ -1,3 +1,4 @@
+#include "game_pch.h"
 #include "Factions.h"
 
 std::string EFactionName::ToString(EFactionName::TYPE t)

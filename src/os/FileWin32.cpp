@@ -1,3 +1,4 @@
+#include "game_pch.h"
 #include "FileWin32.h"
 #include "FileIO.h"
 #include "logger.h"

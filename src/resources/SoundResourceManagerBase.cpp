@@ -1,3 +1,4 @@
+#include "game_pch.h"
 #include "SoundResourceManagerBase.h"
 
 cSoundResourceManagerBase::cSoundResourceManagerBase()

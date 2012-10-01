@@ -1,3 +1,4 @@
+#include "game_pch.h"
 #include "Texture.h"
 
 vTextureResource::vTextureResource(SDL_Surface* const &res)

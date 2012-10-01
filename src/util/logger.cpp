@@ -1,3 +1,4 @@
+#include "game_pch.h"
 #include "logger.h"
 //TODO: rewrite to some fancy streams later
 #include <stdio.h>

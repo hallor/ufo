@@ -1,3 +1,4 @@
+#include "game_pch.h"
 #include "SoundBufferManager.h"
 #include "IDGenerator.h"
 #include "SoundBuffer.h"

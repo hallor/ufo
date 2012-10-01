@@ -1,5 +1,6 @@
+#include "game_pch.h"
 #include "RenderableBase.h"
-#include <cstring>
+#include <string>
 
 vRenderable::vRenderable()
 {

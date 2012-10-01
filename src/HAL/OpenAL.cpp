@@ -1,3 +1,4 @@
+#include "game_pch.h"
 #include "OpenAL.h"
 #include "logger.h"
 #ifdef _WIN32

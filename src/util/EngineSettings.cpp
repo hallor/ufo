@@ -1,3 +1,4 @@
+#include "game_pch.h"
 #include "EngineSettings.h"
 
 #ifdef _WIN32

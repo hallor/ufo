@@ -1,3 +1,4 @@
+#include "game_pch.h"
 #include <stdio.h>
 #include "TextureCache.h"
 #include "TextureManager.h"

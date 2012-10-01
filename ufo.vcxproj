@@ -49,12 +49,12 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>E:\ufo\ufo\src\compatibility;E:\ufo\ufo\src\sprite;E:\ufo\ufo\src\Input;E:\Projects\ufo\ufo\src\util;E:\Projects\ufo\ufo\src\sound;E:\Projects\ufo\ufo\src\rendering;E:\Projects\ufo\ufo\src\HAL;E:\Projects\ufo\ufo\src\game;E:\Projects\ufo\ufo\src\resources;E:\Projects\ufo\ufo\src\importer;E:\Projects\ufo\ufo\src\os;E:\Projects\ufo\ufo\src</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>game_pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -66,12 +66,12 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>game_pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -91,8 +91,12 @@
     <ClCompile Include="src\game\Level.cpp" />
     <ClCompile Include="src\game\LevelTile.cpp" />
     <ClCompile Include="src\game\LevelTileVis.cpp" />
+    <ClCompile Include="src\game\Terrain.cpp" />
+    <ClCompile Include="src\game_pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\HAL\OpenAL.cpp" />
-    <ClCompile Include="src\Input\GameActions.cpp" />
     <ClCompile Include="src\Input\Input.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\model\Building.cpp" />
@@ -108,12 +112,9 @@
     <ClCompile Include="src\rendering\RenderableBase.cpp" />
     <ClCompile Include="src\rendering\RendererBase.cpp" />
     <ClCompile Include="src\rendering\RendererEnums.cpp" />
-    <ClCompile Include="src\rendering\SoundRenderer.cpp" />
     <ClCompile Include="src\rendering\SoundStreamRenderer.cpp" />
     <ClCompile Include="src\rendering\GameObjectRenderer.cpp" />
     <ClCompile Include="src\resources\IDGenerator.cpp" />
-    <ClCompile Include="src\resources\ManagerBase.cpp" />
-    <ClCompile Include="src\resources\ResourceBase.cpp" />
     <ClCompile Include="src\resources\ResourceEnums.cpp" />
     <ClCompile Include="src\resources\SoundBuffer.cpp" />
     <ClCompile Include="src\resources\SoundBufferManager.cpp" />
@@ -123,8 +124,6 @@
     <ClCompile Include="src\resources\Texture.cpp" />
     <ClCompile Include="src\resources\TextureManager.cpp" />
     <ClCompile Include="src\sound\MusicPlayer.cpp" />
-    <ClCompile Include="src\sound\Sound.cpp" />
-    <ClCompile Include="src\sound\SoundPlayer.cpp" />
     <ClCompile Include="src\sound\SoundStream.cpp" />
     <ClCompile Include="src\sprite\Sprite3D.cpp" />
     <ClCompile Include="src\util\AppSettings.cpp" />
@@ -149,6 +148,8 @@
     <ClInclude Include="src\game\Level.h" />
     <ClInclude Include="src\game\LevelTile.h" />
     <ClInclude Include="src\game\LevelTileVis.h" />
+    <ClInclude Include="src\game\Terrain.h" />
+    <ClInclude Include="src\game_pch.h" />
     <ClInclude Include="src\HAL\OpenAL.h" />
     <ClInclude Include="src\Input\GameActions.h" />
     <ClInclude Include="src\Input\Input.h" />

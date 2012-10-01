@@ -1,3 +1,4 @@
+#include "game_pch.h"
 #include "Timer.h"
 #include "compat_sdl.h"
 #include <iostream>

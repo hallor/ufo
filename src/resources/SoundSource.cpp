@@ -1,3 +1,4 @@
+#include "game_pch.h"
 #include "SoundSource.h"
 
 vSoundSourceResource::vSoundSourceResource(const ALuint &res)

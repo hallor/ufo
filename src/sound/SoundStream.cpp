@@ -1,3 +1,4 @@
+#include "game_pch.h"
 #include "SoundStream.h"
 #include "EngineSettings.h"
 #include "logger.h"

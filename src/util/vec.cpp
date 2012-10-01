@@ -1,3 +1,4 @@
+#include "game_pch.h"
 #include "vec.h"
 #include <math.h>
 
@@ -350,6 +351,11 @@ float vec3::Length() const
 {
     return sqrt(x * x + y * y + z * z);
 };
+
+float vec3::Length2() const
+{
+    return x * x + y * y + z * z;
+}
 
 float vec3::Dot(const vec3 &v) const
 {

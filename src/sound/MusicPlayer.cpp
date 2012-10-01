@@ -1,3 +1,4 @@
+#include "game_pch.h"
 #include "MusicPlayer.h"
 #include "SoundStream.h"
 #include "AppSettings.h"

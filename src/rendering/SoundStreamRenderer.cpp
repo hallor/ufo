@@ -1,3 +1,4 @@
+#include "game_pch.h"
 #include "SoundStreamRenderer.h"
 #include "SoundBufferManager.h"
 #include "SoundSourceManager.h"

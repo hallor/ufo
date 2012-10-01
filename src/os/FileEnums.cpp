@@ -1,3 +1,4 @@
+#include "game_pch.h"
 #include "FileEnums.h"
 
 #ifdef _WIN32

@@ -1,3 +1,4 @@
+#include "game_pch.h"
 #include "SoundSourceManager.h"
 #include "SoundSource.h"
 #include "OpenAL.h"

@@ -1,3 +1,4 @@
+#include "game_pch.h"
 #include "Sprite3D.h"
 #include "GameObject.h"
 #include "Game.h"

@@ -1,4 +1,6 @@
+#include "game_pch.h"
 #include <stdio.h>
+#include <algorithm>
 #include "Game.h"
 #include "AppSettings.h"
 #include "EngineSettings.h"

@@ -1,3 +1,4 @@
+#include "game_pch.h"
 #include "CityScapeCamera.h"
 #include "AppSettings.h"
 

@@ -83,6 +83,7 @@ public:
 
     // helpers
     float Length() const;
+    float Length2() const;
     float Dot(const vec3 &v) const;
     vec3  Cross(const vec3 &v) const;
     

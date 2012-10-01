@@ -1,9 +1,10 @@
+#include "game_pch.h"
 #include "AppSettings.h"
 
 #ifdef _WIN32
 #include <Windows.h>
 #endif
-#include <cstring>
+#include <string>
 #include "logger.h"
 
 static AppSettings *m_Instance = NULL;

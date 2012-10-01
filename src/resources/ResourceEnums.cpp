@@ -1,3 +1,4 @@
+#include "game_pch.h"
 #include "ResourceEnums.h"
 
 std::string EResourceType::ToString(EResourceType::TYPE t)

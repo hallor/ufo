@@ -1,3 +1,4 @@
+#include "game_pch.h"
 #ifdef _WIN32
 #ifdef _DEBUG
 #define _CRTDBG_MAP_ALLOC

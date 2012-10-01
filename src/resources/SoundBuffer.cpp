@@ -1,3 +1,4 @@
+#include "game_pch.h"
 #include "SoundBuffer.h"
 #ifdef _WIN32
 #include <oal/al.h>

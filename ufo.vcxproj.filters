@@ -94,12 +94,6 @@
     <ClCompile Include="src\resources\SoundSource.cpp">
       <Filter>Source Files\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="src\resources\ManagerBase.cpp">
-      <Filter>Source Files\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="src\resources\ResourceBase.cpp">
-      <Filter>Source Files\Resources</Filter>
-    </ClCompile>
     <ClCompile Include="src\resources\SoundBufferManager.cpp">
       <Filter>Source Files\Resources</Filter>
     </ClCompile>
@@ -160,9 +154,6 @@
     <ClCompile Include="src\model\Vehicle.cpp">
       <Filter>Source Files\model</Filter>
     </ClCompile>
-    <ClCompile Include="src\rendering\SoundRenderer.cpp">
-      <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="src\rendering\SoundStreamRenderer.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
@@ -177,9 +168,6 @@
     </ClCompile>
     <ClCompile Include="src\util\vec.cpp">
       <Filter>Source Files\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Input\GameActions.cpp">
-      <Filter>Source Files\Input</Filter>
     </ClCompile>
     <ClCompile Include="src\Input\Input.cpp">
       <Filter>Source Files\Input</Filter>
@@ -223,17 +211,17 @@
     <ClCompile Include="src\Camera\CityScapeCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\sound\SoundPlayer.cpp">
-      <Filter>Source Files\Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sound\Sound.cpp">
-      <Filter>Source Files\Sound</Filter>
-    </ClCompile>
     <ClCompile Include="src\rendering\GameObjectRenderer.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="src\util\TextureCache.cpp">
       <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\Terrain.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game_pch.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -419,6 +407,12 @@
     </ClInclude>
     <ClInclude Include="src\util\TextureCache.h">
       <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\Terrain.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game_pch.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
