@@ -44,15 +44,14 @@ bool Terrain::Load(const std::string& file)
     CacheTextures();
 
     vec3 pos = vec3::ZERO;
-    int mx = m_Dimensions.x;
-    int mz = m_Dimensions.z;
-
+    int mx = (int)m_Dimensions.x;
+    int mz = (int)m_Dimensions.z;
 
     for(int i = 0; i < ids.GetSize() && i < (*m_Tiles).GetSize(); ++i)
     {
-        pos.y = i / (mx * mz);
-        pos.z = i % mz;
-        pos.x = (i % (mx * mz) - i % mz) / mz;
+        pos.y = (float)(i / (mx * mz));
+        pos.z = (float)(i % mz);
+        pos.x = float((i % (mx * mz) - i % mz) / mz);
 
         (*m_Tiles)[i].m_Id = ids[i];
         (*m_Tiles)[i].m_Pos = pos;
@@ -87,7 +86,7 @@ const STerrainElement& Terrain::GetTileAt(const vec3 &pos) const
     if(pos.x >= m_Dimensions.x || pos.y >= m_Dimensions.y || pos.z >= m_Dimensions.z)
         return STerrainElement::s_DummyElement;
 
-    return (*m_Tiles)[pos.x * m_Dimensions.z + pos.y * m_Dimensions.x * m_Dimensions.z + pos.z];
+    return (*m_Tiles)[(int)(pos.x * m_Dimensions.z + pos.y * m_Dimensions.x * m_Dimensions.z + pos.z)];
 }
 
 bool Terrain::CreateTiles(unsigned int count)

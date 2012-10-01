@@ -191,6 +191,7 @@
     <ClInclude Include="src\util\AppSettings.h" />
     <ClInclude Include="src\util\EngineSettings.h" />
     <ClInclude Include="src\util\logger.h" />
+    <ClInclude Include="src\util\math_utils.h" />
     <ClInclude Include="src\util\ObjectPool.h" />
     <ClInclude Include="src\util\Property.h" />
     <ClInclude Include="src\util\RawFile.h" />

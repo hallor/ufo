@@ -402,5 +402,8 @@
     <ClInclude Include="src\game_pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\math_utils.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
