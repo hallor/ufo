@@ -3,6 +3,7 @@
 #include "vec.h"
 #include "FixedArray.h"
 #include "TextureCache.h"
+#include "Terrain.h"
 
 class LevelTile;
 class cTexture;

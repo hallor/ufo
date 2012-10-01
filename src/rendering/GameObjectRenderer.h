@@ -58,7 +58,5 @@ protected:
 
     cTexture m_ErrorTexture;
 
-    std::vector<SRenderData> m_RenderData;
-
-    std::vector<vSprite3DProperties*> m_SpritesToRender;    
+    std::vector<SRenderData> m_RenderData;   
 };
