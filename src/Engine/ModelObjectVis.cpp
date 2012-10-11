@@ -1,36 +1,35 @@
 #include "game_pch.h"
-#include "GameObjectVis.h"
-#include "GameObject.h"
+#include "ModelObjectVis.h"
+#include "ModelObject.h"
 #include "Sprite3D.h"
 
-iGameObjectVis::iGameObjectVis(iGameObject *parent)
+iModelObjectVis::iModelObjectVis(iModelObject* parent)
 {
     m_Parent = parent;
     m_Sprite = NULL;
 }
 
-iGameObjectVis::~iGameObjectVis()
+void iModelObjectVis::OnCreate()
 {
+    CHECK(GetParent(), "");
+    InitializeSprite();
 }
 
-void iGameObjectVis::OnDestroy()
+void iModelObjectVis::OnDestroy()
 {
     DestroySprite();
 }
 
-void iGameObjectVis::Update(float dt)
+void iModelObjectVis::OnRenderFrame()
 {
-    if(GetSprite3D())
+    if (GetSprite3D())
+    {
         GetSprite3D()->SetPosition(GetParent()->GetPos() + GetPosOffset());
-}
-
-void iGameObjectVis::OnPreRender()
-{
-    if(GetSprite3D())
         GetSprite3D()->PrepareForRendering();
+    }
 }
 
-bool iGameObjectVis::SetTexture(const cTexture &texture)
+bool iModelObjectVis::SetTexture(const cTexture &texture)
 {
     if(!GetSprite3D())
         return false;
@@ -39,7 +38,7 @@ bool iGameObjectVis::SetTexture(const cTexture &texture)
     return true;
 }
 
-bool iGameObjectVis::InitializeSprite()
+bool iModelObjectVis::InitializeSprite()
 {
     if(GetSprite3D())
        return true;
@@ -50,7 +49,7 @@ bool iGameObjectVis::InitializeSprite()
     return GetSprite3D() != NULL;
 }
 
-void iGameObjectVis::DestroySprite()
+void iModelObjectVis::DestroySprite()
 {
     if(!GetSprite3D())
         return;

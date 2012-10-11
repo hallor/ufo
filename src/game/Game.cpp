@@ -11,6 +11,7 @@
 #include "GameObjectRenderer.h"
 #include "CityScapeCamera.h"
 #include "game/Terrain.h"
+#include "game/Vehicle.h"
 
 Game* g_GameInstance = NULL;
 
@@ -40,6 +41,8 @@ Game::Game()
     m_TextureManager = NULL;
     m_SoundBufferManager = NULL;
     m_SoundSourceManager = NULL;
+
+    m_Level = nullptr;
 }
 
 Game::~Game()
@@ -67,8 +70,6 @@ int Game::OnExecute(int argc, char *argv[])
 CityScapeCamera cam;
 int l = 0;
 
-Level level;
-
 void Game::OnInputGameAction(EGameAction::TYPE action)
 {
     int wanted_level = l;
@@ -95,8 +96,7 @@ void Game::OnInputGameAction(EGameAction::TYPE action)
             name += asd;
 
         l = wanted_level;
-        level.Load(name);
-        level.Update(0.0f);
+        m_Level->Load(name);
     }
 }
 
@@ -116,8 +116,6 @@ vGameObjectRenderer renderer;
 void Game::OnExit()
 {
     m_Running = false;
-
-    level.Unload();
     
     ReleaseManagers();
     
@@ -135,9 +133,6 @@ bool Game::Initialize()
 
     if(!InitManagers())
         return false;
-        
-    level.Load("resources/ufodata/citymap1");
-    level.Update(0.0f);
 
     s_LogicStep = 1.0f / EngineSettings::GetLogicUpdateFrequency();
 
@@ -149,6 +144,8 @@ bool Game::Initialize()
     renderer.Initialize(NULL);
     renderer.SetCamera(&cam);
 	renderer.SetOffset(vec3(640, 240, 0));
+
+    m_Level = g_GOFactory.CreateObject<Level>();
 
     return true;
 }
@@ -172,8 +169,13 @@ void Game::MainLoop()
 		}           
 	
 		if (draw_frame)
+        {
+            g_GOFactory.CallHandler(EEngineHandler::HandlerOnRenderFrame);
 	        Draw();
+        }
     }
+    
+    m_Level->Delete();
 }
 
 void Game::UpdateSDLEvents()
@@ -188,6 +190,8 @@ void Game::UpdateSDLEvents()
 
 void Game::Update(float dt)
 {
+    g_GOFactory.CallHandler(EEngineHandler::HandlerOnLogicUpdate);
+    
     static float move_speed = 20;
     vec3 move_vec = vec3::ZERO;
     if (GetInput()->GetActionKeyState(EGameAction::MOVE_LEFT))
@@ -229,7 +233,7 @@ void Game::Draw()
 
 	vec3 cam_pos = cam.GetPos();
 
-    const Terrain* terrain = level.GetTerrain();
+    const Terrain* terrain = m_Level->GetTerrain();
     if (terrain)
     {
         const cTextureCache& texture_cache = terrain->GetTextureCache();
@@ -247,6 +251,10 @@ void Game::Draw()
             }
         }
     }
+
+    for (UINT i = 0; i < m_Level->GetVehiclesCount(); ++i)
+        renderer.Render(m_Level->GetVehicle(i));
+    
 
     renderer.OnFrame(0.0f);
 }

@@ -39,12 +39,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)\src\util;$(ProjectDir)\src\sprite;$(ProjectDir)\src\sound;$(ProjectDir)\src\resources;$(ProjectDir)\src\rendering;$(ProjectDir)\src\os;$(ProjectDir)\src\model;$(ProjectDir)\src\Input;$(ProjectDir)\src\HAL;$(ProjectDir)\src\game;$(ProjectDir)\src\compatibility;$(ProjectDir)\src\Camera;$(ProjectDir)\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\src\util;$(ProjectDir)\src\sprite;$(ProjectDir)\src\engine;$(ProjectDir)\src\sound;$(ProjectDir)\src\resources;$(ProjectDir)\src\rendering;$(ProjectDir)\src\os;$(ProjectDir)\src\model;$(ProjectDir)\src\Input;$(ProjectDir)\src\HAL;$(ProjectDir)\src\game;$(ProjectDir)\src\compatibility;$(ProjectDir)\src\Camera;$(ProjectDir)\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(VCInstallDir)\lib\SDL\;$(VCInstallDir)\lib\OAL\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)\src\util;$(ProjectDir)\src\sprite;$(ProjectDir)\src\sound;$(ProjectDir)\src\resources;$(ProjectDir)\src\rendering;$(ProjectDir)\src\os;$(ProjectDir)\src\model;$(ProjectDir)\src\Input;$(ProjectDir)\src\HAL;$(ProjectDir)\src\game;$(ProjectDir)\src\compatibility;$(ProjectDir)\src\Camera;$(ProjectDir)\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\src\util;$(ProjectDir)\src\sprite;$(ProjectDir)\src\engine;$(ProjectDir)\src\sound;$(ProjectDir)\src\resources;$(ProjectDir)\src\rendering;$(ProjectDir)\src\os;$(ProjectDir)\src\model;$(ProjectDir)\src\Input;$(ProjectDir)\src\HAL;$(ProjectDir)\src\game;$(ProjectDir)\src\compatibility;$(ProjectDir)\src\Camera;$(ProjectDir)\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(VCInstallDir)\lib\SDL\;$(VCInstallDir)\lib\OAL\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -53,7 +53,6 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\ufo\ufo\src\compatibility;E:\ufo\ufo\src\sprite;E:\ufo\ufo\src\Input;E:\Projects\ufo\ufo\src\util;E:\Projects\ufo\ufo\src\sound;E:\Projects\ufo\ufo\src\rendering;E:\Projects\ufo\ufo\src\HAL;E:\Projects\ufo\ufo\src\game;E:\Projects\ufo\ufo\src\resources;E:\Projects\ufo\ufo\src\importer;E:\Projects\ufo\ufo\src\os;E:\Projects\ufo\ufo\src</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>game_pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -84,17 +83,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Camera\CityScapeCamera.cpp" />
+    <ClCompile Include="src\Engine\ModelObject.cpp" />
+    <ClCompile Include="src\Engine\ModelObjectVis.cpp" />
     <ClCompile Include="src\game\Factions.cpp" />
     <ClCompile Include="src\game\Game.cpp" />
-    <ClCompile Include="src\game\GameObject.cpp" />
-    <ClCompile Include="src\game\GameObjectVis.cpp" />
+    <ClCompile Include="src\engine\GameObject.cpp" />
     <ClCompile Include="src\game\Level.cpp" />
     <ClCompile Include="src\game\Terrain.cpp" />
+    <ClCompile Include="src\game\Vehicle.cpp" />
+    <ClCompile Include="src\game\VehicleVis.cpp" />
     <ClCompile Include="src\game_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\HAL\OpenAL.cpp" />
+    <ClCompile Include="src\engine\HandlerTypes.cpp" />
     <ClCompile Include="src\Input\Input.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\model\Building.cpp" />
@@ -103,7 +106,6 @@
     <ClCompile Include="src\model\SkilledUnit.cpp" />
     <ClCompile Include="src\model\SkillSet.cpp" />
     <ClCompile Include="src\model\Unit.cpp" />
-    <ClCompile Include="src\model\Vehicle.cpp" />
     <ClCompile Include="src\os\FileEnums.cpp" />
     <ClCompile Include="src\os\filelinux.cpp" />
     <ClCompile Include="src\os\FileWin32.cpp" />
@@ -112,6 +114,7 @@
     <ClCompile Include="src\rendering\RendererEnums.cpp" />
     <ClCompile Include="src\rendering\SoundStreamRenderer.cpp" />
     <ClCompile Include="src\rendering\GameObjectRenderer.cpp" />
+    <ClCompile Include="src\engine\GameFactory.cpp" />
     <ClCompile Include="src\resources\IDGenerator.cpp" />
     <ClCompile Include="src\resources\ResourceEnums.cpp" />
     <ClCompile Include="src\resources\SoundBuffer.cpp" />
@@ -139,14 +142,19 @@
     <ClInclude Include="src\Camera\CameraBase.h" />
     <ClInclude Include="src\Camera\CityScapeCamera.h" />
     <ClInclude Include="src\compatibility\SuperClass.h" />
+    <ClInclude Include="src\Engine\ModelObject.h" />
+    <ClInclude Include="src\Engine\ModelObjectVis.h" />
     <ClInclude Include="src\game\Factions.h" />
     <ClInclude Include="src\game\Game.h" />
-    <ClInclude Include="src\game\GameObject.h" />
-    <ClInclude Include="src\game\GameObjectVis.h" />
+    <ClInclude Include="src\engine\GameObject.h" />
+    <ClInclude Include="src\engine\GameObjectDef.h" />
     <ClInclude Include="src\game\Level.h" />
     <ClInclude Include="src\game\Terrain.h" />
+    <ClInclude Include="src\game\Vehicle.h" />
+    <ClInclude Include="src\game\VehicleVis.h" />
     <ClInclude Include="src\game_pch.h" />
     <ClInclude Include="src\HAL\OpenAL.h" />
+    <ClInclude Include="src\engine\HandlerTypes.h" />
     <ClInclude Include="src\Input\GameActions.h" />
     <ClInclude Include="src\Input\Input.h" />
     <ClInclude Include="src\model\Building.h" />
@@ -156,7 +164,6 @@
     <ClInclude Include="src\model\SkilledUnit.h" />
     <ClInclude Include="src\model\SkillSet.h" />
     <ClInclude Include="src\model\Unit.h" />
-    <ClInclude Include="src\model\Vehicle.h" />
     <ClInclude Include="src\os\compat_sdl.h" />
     <ClInclude Include="src\os\File.h" />
     <ClInclude Include="src\os\FileEnums.h" />
@@ -169,6 +176,7 @@
     <ClInclude Include="src\rendering\SoundStreamRenderer.h" />
     <ClInclude Include="src\rendering\GameObjectRenderer.h" />
     <ClInclude Include="src\resources\FixedArray.h" />
+    <ClInclude Include="src\engine\GameFactory.h" />
     <ClInclude Include="src\resources\IDGenerator.h" />
     <ClInclude Include="src\resources\ManagerBase.h" />
     <ClInclude Include="src\resources\ResourceBase.h" />
@@ -189,6 +197,7 @@
     <ClInclude Include="src\utils.h" />
     <ClInclude Include="src\util\Accumulator.h" />
     <ClInclude Include="src\util\AppSettings.h" />
+    <ClInclude Include="src\util\Assert.h" />
     <ClInclude Include="src\util\EngineSettings.h" />
     <ClInclude Include="src\util\logger.h" />
     <ClInclude Include="src\util\math_utils.h" />

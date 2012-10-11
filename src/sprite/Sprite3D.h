@@ -10,9 +10,7 @@ class vSprite3DProperties;
 
 class cSprite3D : public vRenderable
 {
-#ifndef _WIN32
-    typedef vRenderable __super;
-#endif
+    DECLARE_SUPER(vRenderable);
 
 public:
     cSprite3D();

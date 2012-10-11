@@ -7,7 +7,7 @@
 
 class vSprite3DProperties;
 class iCamera;
-class iGameObject;
+class iModelObject;
 
 struct SRenderData
 {
@@ -38,7 +38,7 @@ public:
     virtual void OnFrame(float dt);
 
     virtual void Render(vRenderable *object);
-    virtual void Render(iGameObject *igo);
+    virtual void Render(iModelObject *igo);
     virtual void Render(const SRenderData& data) { m_RenderData.push_back(data); }
 
     virtual void SetOffset(const vec3 &vec) { m_Offset = vec; }

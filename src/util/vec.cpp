@@ -357,6 +357,16 @@ float vec3::Length2() const
     return x * x + y * y + z * z;
 }
 
+float vec3::Length_2D() const
+{
+    return sqrt(x * x + z * z);
+};
+
+float vec3::Length2_2D() const
+{
+    return x * x + z * z;
+}
+
 float vec3::Dot(const vec3 &v) const
 {
     return x * v.x + y * v.y + z * v.z;

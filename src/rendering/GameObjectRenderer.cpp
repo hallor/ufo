@@ -1,13 +1,14 @@
 #include "game_pch.h"
 #include <algorithm>
 #include "GameObjectRenderer.h"
-#include "GameObject.h"
-#include "GameObjectVis.h"
+#include "ModelObject.h"
 #include "Sprite3D.h"
 #include "Texture.h"
 #include "CameraBase.h"
 #include "AppSettings.h"
 #include "Game.h"
+#include "ModelObject.h"
+#include "ModelObjectVis.h"
 
 vGameObjectRenderer::vGameObjectRenderer()
 : m_ErrorTexture(NULL)
@@ -104,12 +105,10 @@ void vGameObjectRenderer::Render(vRenderable *object)
     m_RenderData.push_back(data);
 }
 
-void vGameObjectRenderer::Render(iGameObject *igo)
+void vGameObjectRenderer::Render(iModelObject *igo)
 {
     if(!igo || !igo->GetVis())
         return;
-
-	igo->OnPreRender();
 
     Render(igo->GetVis()->GetSprite3D());
 }

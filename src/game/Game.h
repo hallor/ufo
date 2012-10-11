@@ -10,6 +10,7 @@
 class cTextureManager;
 class cSoundBufferManager;
 class cSoundSourceManager;
+class Level;
 
 class Game
 {
@@ -52,6 +53,8 @@ protected:
 
     cTimer m_GameTimer;
     
+    Level *m_Level;
+
     bool m_Running;
     cInput m_Input;
     Accumulator<float> m_Accumulator;

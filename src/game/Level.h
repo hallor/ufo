@@ -1,19 +1,30 @@
 #pragma once
 #include <string>
+#include <vector>
+#include "GameObject.h"
 #include "Terrain.h"
 
 class Terrain;
+class Vehicle;
 
-class Level
+class Level : public iGameObject
 {
+    DECLARE_GAME_OBJECT(Level, iGameObject);
+
 public:
     Level();
+
+    virtual void OnCreate();
+    virtual void OnDestroy();
 
     bool Load(const std::string &file);
     
     void Unload();
 
-    void Update(float dt);
+    virtual void OnLogicUpdate();
+
+    Vehicle* GetVehicle(UINT id) const { return m_Vehicles[id]; }
+    UINT GetVehiclesCount() const { return m_Vehicles.size(); }
 
     const Terrain* GetTerrain() const { return m_Terrain; }
 
@@ -21,5 +32,9 @@ public:
 
 protected:
 
+    void CreateVehicles();
+    void DestroyVehicles();
+
     Terrain* m_Terrain;
+    std::vector<Vehicle*> m_Vehicles;
 };
