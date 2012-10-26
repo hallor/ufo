@@ -38,7 +38,19 @@ bool compare_datas(const SRenderData& d1, const SRenderData& d2)
     const vec3& pos1 = d1.m_Pos;
     const vec3& pos2 = d2.m_Pos;
 
-    return pos1.Length2() < pos2.Length2();
+    if (pos1.x < pos2.x)
+        return true;
+
+    if (pos1.x > pos2.x)
+        return false;
+
+    if (pos1.z < pos2.z)
+        return true;
+
+    if (pos1.z > pos2.z)
+        return false;
+
+    return pos1.y < pos2.y;
 }
 
 void vGameObjectRenderer::SortRenderingData()

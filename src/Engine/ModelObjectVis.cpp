@@ -11,7 +11,7 @@ iModelObjectVis::iModelObjectVis(iModelObject* parent)
 
 void iModelObjectVis::OnCreate()
 {
-    CHECK(GetParent(), "");
+    CHECKI(GetParent(), "");
     InitializeSprite();
 }
 

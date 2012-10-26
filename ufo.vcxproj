@@ -88,6 +88,8 @@
     <ClCompile Include="src\game\Factions.cpp" />
     <ClCompile Include="src\game\Game.cpp" />
     <ClCompile Include="src\engine\GameObject.cpp" />
+    <ClCompile Include="src\game\GameEnums.cpp" />
+    <ClCompile Include="src\game\GameTime.cpp" />
     <ClCompile Include="src\game\Level.cpp" />
     <ClCompile Include="src\game\Terrain.cpp" />
     <ClCompile Include="src\game\Vehicle.cpp" />
@@ -148,6 +150,9 @@
     <ClInclude Include="src\game\Game.h" />
     <ClInclude Include="src\engine\GameObject.h" />
     <ClInclude Include="src\engine\GameObjectDef.h" />
+    <ClInclude Include="src\game\GameEnums.h" />
+    <ClInclude Include="src\game\GameTime.h" />
+    <ClInclude Include="src\game\HMSTime.h" />
     <ClInclude Include="src\game\Level.h" />
     <ClInclude Include="src\game\Terrain.h" />
     <ClInclude Include="src\game\Vehicle.h" />

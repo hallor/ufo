@@ -30,22 +30,22 @@ void cGameFactory::CallHandler(EEngineHandler::TYPE handler)
             break;
             
         default:
-            CHECK(false, "FATAL: INVALID HANDLER PASSED TO [cGameFactory::CallHandler]");
+            CHECKI(false, "FATAL: INVALID HANDLER PASSED TO [cGameFactory::CallHandler]");
         }
     }
     else
-        CHECK(false, "FATAL: INVALID HANDLER PASSED TO [cGameFactory::CallHandler]");
+        CHECKI(false, "FATAL: INVALID HANDLER PASSED TO [cGameFactory::CallHandler]");
 }
 
 void cGameFactory::DestroyObject(iGameObject* obj)
 {
-    CHECK(obj && !obj->IsDestroying(), "");
+    CHECKI(obj && !obj->IsDestroying(), "");
 
     if (!obj || obj->IsDestroying())
         return;
 
     bool created = RemoveObjectFromList(m_CreatedObjects, obj);
-    CHECK(created, ("Object of class %s was not created properly!", obj->GetObjectClassName()));
+    CHECKI(created, ("Object of class %s was not created properly!", obj->GetObjectClassName()));
 
     for (int i = 0; i < EEngineHandler::_COUNT; ++i)
         RemoveObjectFromList(m_RegisteredHandlers[i], obj);
@@ -56,7 +56,7 @@ void cGameFactory::DestroyObject(iGameObject* obj)
 
 void cGameFactory::RegisterHandler(iGameObject* obj, EEngineHandler::TYPE handler)
 {
-    CHECK(obj, "Trying to register invalid handler!");
+    CHECKI(obj, "Trying to register invalid handler!");
 
     if (!obj)
         return;
@@ -69,7 +69,7 @@ void cGameFactory::RegisterHandler(iGameObject* obj, EEngineHandler::TYPE handle
 
 void cGameFactory::UnregisterHandler(iGameObject* obj, EEngineHandler::TYPE handler)
 {
-    CHECK(obj, "");
+    CHECKI(obj, "");
     
     TObjectsList& list = m_RegisteredHandlers[handler];
 
@@ -104,7 +104,7 @@ void cGameFactory::CheckNonReleasedObjects() const
 
     if (nonreleased > 0)
         LogError("%i objects were not released properly!", nonreleased);
-    CHECK(nonreleased == 0, "[cGameFactory::CheckNonReleasedObjects] Some objects were not released properly!");
+    CHECKI(nonreleased == 0, "[cGameFactory::CheckNonReleasedObjects] Some objects were not released properly!");
 };
 
 int cGameFactory::CheckNonReleasedObjects(const TObjectsList& list) const

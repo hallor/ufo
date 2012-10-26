@@ -2,8 +2,8 @@
 #include "Vehicle.h"
 #include "VehicleVis.h"
 
-float Vehicle::s_DirectionChangeTime = 5.0f;
-float Vehicle::s_MoveSpeed = 5.0f;
+float Vehicle::s_DirectionChangeTime = 5.0f * 60.0f;
+float Vehicle::s_MoveSpeed = 5.0f / 60.0f;
 
 Vehicle::Vehicle()
 : m_LastDirectionChange(0.0f)
@@ -23,20 +23,22 @@ void Vehicle::OnCreate()
 
 void Vehicle::OnLogicUpdate()
 {
-    //m_LastDirectionChange += dt;
-    //if (m_LastDirectionChange >= s_DirectionChangeTime)
-    //{
-    //    m_LastDirectionChange -= s_DirectionChangeTime;
-    //    SetWantedPos(vec3(rand() % 100, 6, rand() % 100));
-    //}
-    //
-    //vec3 move_dir = GetWantedPos() - GetPos();
-    //float move_dt = move_dir.Length() / (s_MoveSpeed * dt);
+    float dt = GetGameTimeDelta();
 
-    //if (move_dt <= 1.0f)
-    //    SetPos(GetWantedPos());
-    //else 
-    //    SetPos(GetPos() + move_dir.Normalize() * s_MoveSpeed * dt);
+    m_LastDirectionChange += dt;
+    if (m_LastDirectionChange >= s_DirectionChangeTime)
+    {
+        m_LastDirectionChange -= s_DirectionChangeTime;
+        SetWantedPos(vec3(rand() % 100, 6, rand() % 100));
+    }
+    
+    vec3 move_dir = GetWantedPos() - GetPos();
+    float move_dt = move_dir.Length() / (s_MoveSpeed * dt);
+
+    if (move_dt <= 1.0f)
+        SetPos(GetWantedPos());
+    else 
+        SetPos(GetPos() + move_dir.Normalize() * s_MoveSpeed * dt);
 
     __super::OnLogicUpdate();
 }

@@ -19,3 +19,4 @@
 #include "Timer.h"
 #include "math_utils.h"
 #include "Assert.h"
+#include "GameEnums.h"

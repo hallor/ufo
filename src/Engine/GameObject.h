@@ -1,6 +1,7 @@
 #pragma once
 #include "HandlerTypes.h"
 #include "GameObjectDef.h"
+#include "HMSTime.h"
 
 class iGameObject
 {
@@ -19,6 +20,9 @@ public:
     virtual void OnLogicUpdate() {};
 
     virtual bool IsDestroying() const { return m_IsDestroying; }
+
+    virtual sHMSTime GetGameTime() const;
+    virtual float GetGameTimeDelta() const;
 
 protected:
     virtual void RegisterHandler(EEngineHandler::TYPE handler);

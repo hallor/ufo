@@ -24,7 +24,7 @@ public:
 
     virtual vec3 GetWantedPos() const { return m_WantedPos; };
     virtual void SetWantedPos(const vec3 &pos) { m_WantedPos = pos; }
-
+    
 protected:
 
     virtual iModelObjectVis* CreateVis() = 0;

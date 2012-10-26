@@ -12,6 +12,7 @@
 #include "CityScapeCamera.h"
 #include "game/Terrain.h"
 #include "game/Vehicle.h"
+#include "GameTime.h"
 
 Game* g_GameInstance = NULL;
 
@@ -72,14 +73,23 @@ int l = 0;
 
 void Game::OnInputGameAction(EGameAction::TYPE action)
 {
+    EGameSpeed::TYPE game_speed = m_GameTimer.GetGameSpeed();
     int wanted_level = l;
     switch(action)
     {
         case EGameAction::QUIT_GAME: m_Running = false; break;
         case EGameAction::LEVEL_NEXT: ++wanted_level; break;
-        case EGameAction::LEVEL_PREV: --wanted_level; break; 
+        case EGameAction::LEVEL_PREV: --wanted_level; break;
+        case EGameAction::GAME_SPEED_PAUSED: game_speed = EGameSpeed::SpeedPaused; break;
+        case EGameAction::GAME_SPEED_5S: game_speed = EGameSpeed::Speed5s; break;
+        case EGameAction::GAME_SPEED_1MIN: game_speed = EGameSpeed::Speed1min; break;
+        case EGameAction::GAME_SPEED_15MIN: game_speed = EGameSpeed::Speed15min; break;
+        case EGameAction::GAME_SPEED_1HOUR: game_speed = EGameSpeed::Speed1hour; break;
+        case EGameAction::GAME_SPEED_1DAY: game_speed = EGameSpeed::Speed1day; break;
         default: break;
     }
+
+    m_GameTimer.SetGameSpeed(game_speed);
 
     if(wanted_level > 4)
         wanted_level = 4;
@@ -97,6 +107,8 @@ void Game::OnInputGameAction(EGameAction::TYPE action)
 
         l = wanted_level;
         m_Level->Load(name);
+
+        m_GameTimer.Reset();
     }
 }
 
@@ -138,7 +150,7 @@ bool Game::Initialize()
 
     m_Input.Initialize();
     
-    m_GameTimer.Start();
+    m_RealTimer.Start();
     m_Accumulator = Accumulator<float>(s_LogicStep);
 
     renderer.Initialize(NULL);
@@ -154,9 +166,9 @@ void Game::MainLoop()
 {        
     while(m_Running)
     {
-        m_GameTimer.Tick();
+        m_RealTimer.Tick();
 
-        m_Accumulator.Accumulate(m_GameTimer.GetTimeDelta());
+        m_Accumulator.Accumulate(m_RealTimer.GetTimeDelta());
 
         UpdateSDLEvents();
 
@@ -164,6 +176,7 @@ void Game::MainLoop()
 
         for(unsigned int i = 0; i < EngineSettings::GetMaxLogicUpdatesPerFrame() && m_Accumulator.Check(); ++i)
 		{
+            m_GameTimer.Advance(s_LogicStep);
             Update(s_LogicStep);
 			draw_frame = true;
 		}           
@@ -173,6 +186,13 @@ void Game::MainLoop()
             g_GOFactory.CallHandler(EEngineHandler::HandlerOnRenderFrame);
 	        Draw();
         }
+
+        sHMSTime hmstime = m_GameTimer.GetTimeHMSFormat();
+
+        char time[64] = {0};
+        sprintf_s(time, "%s %i:%i:%i", EGameSpeed::ToString(m_GameTimer.GetGameSpeed()).c_str(), hmstime.m_Hours, hmstime.m_Minutes, hmstime.m_Seconds);
+
+        SDL_WM_SetCaption(time, nullptr);
     }
     
     m_Level->Delete();

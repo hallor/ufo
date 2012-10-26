@@ -1,5 +1,6 @@
 #include "game_pch.h"
 #include "GameObject.h"
+#include "Game.h"
 
 iGameObject::iGameObject()
 {
@@ -27,4 +28,14 @@ void iGameObject::RegisterHandler(EEngineHandler::TYPE handler)
 void iGameObject::UnregisterHandler(EEngineHandler::TYPE handler)
 {
     g_GOFactory.UnregisterHandler(this, handler);
+}
+
+sHMSTime iGameObject::GetGameTime() const
+{
+    return Game::GetSingleton()->GetGameTimer().GetTimeHMSFormat();
+}
+
+float iGameObject::GetGameTimeDelta() const
+{
+    return Game::GetSingleton()->GetGameTimer().GetTimeDelta();
 }

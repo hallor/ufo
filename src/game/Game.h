@@ -6,6 +6,7 @@
 #include "Timer.h"
 #include "Input.h"
 #include "Accumulator.h"
+#include "GameTime.h"
 
 class cTextureManager;
 class cSoundBufferManager;
@@ -31,6 +32,8 @@ public:
 
     SDL_Surface *GetSDLMainSurface() const { return m_MainSurface; }
 
+    const GameTime& GetGameTimer() const { return m_GameTimer; }
+
 protected:
 
     Game();
@@ -51,7 +54,8 @@ protected:
     bool InitSDL();
     void ClearSDL();
 
-    cTimer m_GameTimer;
+    cTimer m_RealTimer;
+    GameTime m_GameTimer;
     
     Level *m_Level;
 

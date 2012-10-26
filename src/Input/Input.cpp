@@ -42,6 +42,12 @@ bool cInput::Initialize()
     m_KeyForAction[EGameAction::MOVE_DOWN] = sActionKey(SDLK_DOWN);
     m_KeyForAction[EGameAction::LEVEL_NEXT] = sActionKey(SDLK_KP_PLUS);
     m_KeyForAction[EGameAction::LEVEL_PREV] = sActionKey(SDLK_KP_MINUS);
+    m_KeyForAction[EGameAction::GAME_SPEED_PAUSED] = sActionKey(SDLK_0);
+    m_KeyForAction[EGameAction::GAME_SPEED_5S] = sActionKey(SDLK_1);
+    m_KeyForAction[EGameAction::GAME_SPEED_1MIN] = sActionKey(SDLK_2);
+    m_KeyForAction[EGameAction::GAME_SPEED_15MIN] = sActionKey(SDLK_3);
+    m_KeyForAction[EGameAction::GAME_SPEED_1HOUR] = sActionKey(SDLK_4);
+    m_KeyForAction[EGameAction::GAME_SPEED_1DAY] = sActionKey(SDLK_5);
 
     return true;
 }
